@@ -9,6 +9,7 @@ import deer from "../src/assets/img/deer.png"
 
 import giraffRes from "../src/assets/img/giraffRes.png"
 import deerRes from "../src/assets/img/deerRes.png"
+import { Coordinates } from "./components/GameImage";
 
 
 const answers: Answer[] = [
@@ -51,21 +52,6 @@ const gameInfo: RoundsInfo = {
     1: { answers: answers2, gamePictures: gamePictures[1] }
 }
 
-const answers: Answer[] = [
-    {
-        answerName: Species.deer,
-        isAnswerTrue: true
-    },
-    {
-        answerName: Species.giraffe,
-        isAnswerTrue: false
-    },
-    {
-        answerName: Species.hog,
-        isAnswerTrue: false
-    },
-]
-
 const answers12: Answer[] = [
     {
         answerName: "Yes",
@@ -106,3 +92,15 @@ export const getGameInfo2 = ()=>{
 export const getGamePictures = ()=>{
     return gamePictures;
 }
+
+
+const coordinates:Coordinates[] = [
+    {x:336,y:14,width:860,height:886},
+    {x:356,y:20,width:402,height:761},
+    {x:0,y:0,width:0,height:0}
+]
+
+export const getPicturesCoordinate = ()=>{
+    return coordinates;
+}
+

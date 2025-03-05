@@ -8,7 +8,7 @@ export const MainPage = () => {
             <h1>Начальный экран</h1>
 
             <Button >
-                <NavLink to={"/game"}>
+                <NavLink to={"/first-round"}>
                     START
                 </NavLink>
             </Button>

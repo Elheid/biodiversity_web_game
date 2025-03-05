@@ -40,3 +40,11 @@
 .read-the-docs {
   color: #888;
 }
+
+
+body { 
+  -ms-user-select: none; 
+  -moz-user-select: none; 
+  -webkit-user-select: none; 
+  user-select: none; 
+}

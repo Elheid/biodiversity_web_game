@@ -1,15 +1,22 @@
 import { Button, Container, Typography } from "@mui/material"
 import { NavLink, useParams } from "react-router";
 
-export const EndGame = ()=>{
-    const { score } = useParams<{ score?: string }>();
+export const GameEnd = ()=>{
+    const { firstScore } = useParams<{ firstScore?: string }>();
+    const {secondScore} = useParams<{secondScore?:string}>();
     return (
         <Container>
             <Typography>
                 Game End
-                Score : 
-                {score}
+                Score without ai: 
+                {firstScore}
             </Typography>
+
+            <Typography>
+            Score with ai: 
+            {secondScore}
+            </Typography>
+            
             <Button >
                 <NavLink to={"/"}>
                     To Home

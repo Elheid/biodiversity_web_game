@@ -1,22 +1,24 @@
 import { useEffect, useRef, useState } from 'react';
-import { Game, RoundsInfo } from '../classes/game';
+import { Game, GameType, RoundsInfo } from '../classes/game';
 import { Species } from '../classes/animalSpecies';
 import { Player } from '../classes/player';
 import { Answer } from '../classes/gameRound';
 import { getCurrAnswers } from '../utill';
 import { useDisablButtonContext } from '../context/DisbleButtonsProvider';
+import { useRoundEndContext } from '../context/RoundEndProvider';
 
 
 
-export const useGameState = (roundsInfo: RoundsInfo, totalRounds: number) => {
+export const useGameState = (roundsInfo: RoundsInfo, totalRounds: number, gameType?:GameType) => {
     const [game, setGame] = useState<Game>();
     const [gameStarted, setGameStarted] = useState(false);
-    const [isRoundEnd, setIsRoundEnd] = useState(false);
+    //const [isRoundEnd, setIsRoundEnd] = useState(false);
     const [currentRound, setCurrentRound] = useState(0);
     const [selectedAnswer, setSelectedAnswer] = useState<Species | null>(null);
     const [currentAnswers, setCurrentAnswers] = useState<Answer[]>([]);
 
     const {buttonsDisabled, setButtonsDisabled}= useDisablButtonContext()
+    const {isRoundEnd, setIsRoundEnd} = useRoundEndContext();
 
     const scoreRef = useRef<HTMLSpanElement>(null);
     const imgRef = useRef<HTMLImageElement>(null);
@@ -33,7 +35,9 @@ export const useGameState = (roundsInfo: RoundsInfo, totalRounds: number) => {
                 scoreRef.current,
                 imgRef.current,
                 stateRef.current,
-                40000
+                40000,
+                undefined,
+                gameType
             );
             setGame(game);
             game.startGame();
@@ -52,6 +56,9 @@ export const useGameState = (roundsInfo: RoundsInfo, totalRounds: number) => {
             };
 
             window.addEventListener("choice-answer", onChoiceAnswer)
+            return ()=>{
+                window.removeEventListener("choice-answer", onChoiceAnswer)
+            }
         }
     }, [roundsInfo,totalRounds, setButtonsDisabled]);
 

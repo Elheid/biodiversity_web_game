@@ -1,6 +1,7 @@
 import { forwardRef, ImgHTMLAttributes, useEffect, useState } from "react";
 import { Game } from "../classes/game";
 import { useDisablButtonContext } from "../context/DisbleButtonsProvider";
+import { useRoundEndContext } from "../context/RoundEndProvider";
 
 interface Coordinates{
     x: number;
@@ -9,26 +10,29 @@ interface Coordinates{
     height:number;
 }
 
-const coordinates:Coordinates[] = [
-    {x:336,y:14,width:860,height:886},
-    {x:356,y:20,width:402,height:761},
-    {x:0,y:0,width:0,height:0}
-]
-
-
 interface GameImageProps {
     game: Game | undefined;
+    coordinates:Coordinates;
 }
 
-export const GameImage = forwardRef<HTMLImageElement, ImgHTMLAttributes<HTMLImageElement> & GameImageProps>(({ game, ...props }, ref) => {
-    
+export const GameImage = forwardRef<HTMLImageElement, ImgHTMLAttributes<HTMLImageElement> & GameImageProps>(({ game, coordinates, ...props }, ref) => {
+
     const { setButtonsDisabled } = useDisablButtonContext();
+    const {isRoundEnd} = useRoundEndContext();
+    
     const [imageDimensions, setImageDimensions] = useState<{
         displayWidth: number;
         displayHeight: number;
         naturalWidth: number;
         naturalHeight: number;
     } | null>(null);
+
+
+    useEffect(()=>{
+        if(game && !isRoundEnd){
+            if(game.isThisSecondType()) setButtonsDisabled(false);
+        }
+    },[game, isRoundEnd]);
 
     const handleImageLoad = (event: React.SyntheticEvent<HTMLImageElement>) => {
         const img = event.currentTarget;
@@ -39,18 +43,16 @@ export const GameImage = forwardRef<HTMLImageElement, ImgHTMLAttributes<HTMLImag
             naturalHeight: img.naturalHeight,
         });
     };
+    const {x,y,width,height} = coordinates;
 
-    const roundNum = game?.roundCounter || 0;
-    const {x,y,width,height} = coordinates[roundNum]
-    
     const onImageClick = (event: React.MouseEvent<HTMLImageElement>) => {
-        if (!game || !imageDimensions || game.isThisSecondType()) return;
+        if ((!game || (game.isThisSecondType()) || !imageDimensions)) return;
 
-        
+
 
         const img = event.currentTarget;
         const rect = img.getBoundingClientRect();
-        
+
         // Рассчёт масштаба
         const scaleX = imageDimensions.naturalWidth / rect.width;
         const scaleY = imageDimensions.naturalHeight / rect.height;
@@ -73,7 +75,7 @@ export const GameImage = forwardRef<HTMLImageElement, ImgHTMLAttributes<HTMLImag
 
     // Рассчёт позиции и размера прямоугольника для отрисовки
     const getAreaStyle = () => {
-        if (!game || !imageDimensions) return;
+        if (!game || !imageDimensions || isRoundEnd) return;
 
         const scaleX = imageDimensions.naturalWidth / imageDimensions.displayWidth;
         const scaleY = imageDimensions.naturalHeight / imageDimensions.displayHeight;
@@ -101,8 +103,8 @@ export const GameImage = forwardRef<HTMLImageElement, ImgHTMLAttributes<HTMLImag
                 ref={ref}
                 {...props}
             />
-            
-            {game && imageDimensions && (
+
+            {game && imageDimensions && !isRoundEnd && (
                 <div
                     style={{
                         position: 'absolute',
@@ -131,69 +133,3 @@ export const GameImage = forwardRef<HTMLImageElement, ImgHTMLAttributes<HTMLImag
         </div>
     );
 });
-
-// const {x,y,width,height} = coordinates[game.roundCounter]
-
-/*
-interface GameImageProps {
-    game: Game | undefined;
-}
-
-interface Coordinates{
-    x: number;
-    y:number;
-    width:number;
-    height:number;
-}
-
-export const GameImage = forwardRef<HTMLImageElement, ImgHTMLAttributes<HTMLImageElement> & GameImageProps>(({ game, ...props }, ref) => {
-    const { setButtonsDisabled } = useDisablButtonContext();
-
-    const onImageClick = (event: React.MouseEvent<HTMLImageElement>) => {
-        if (!game) return;
-
-        const img = event.currentTarget;
-        // Проверяем, загружено ли изображение
-        if (img.naturalWidth === 0 || img.naturalHeight === 0) return;
-
-        // Получаем позицию и размеры изображения на экране
-        const rect = img.getBoundingClientRect();
-        // Рассчитываем масштаб для преобразования координат
-        const scaleX = img.naturalWidth / rect.width;
-        const scaleY = img.naturalHeight / rect.height;
-
-        // Координаты клика относительно исходного изображения
-        const clickX = (event.clientX - rect.left) * scaleX;
-        const clickY = (event.clientY - rect.top) * scaleY;
-
-        // Получаем параметры прямоугольной области из game
-        // Предполагаем, что game содержит x, y, width, height нужной области
-        const {x,y,width,height} = coordinates[game.roundCounter]
-
-        // Проверяем, находится ли клик внутри области
-        if (
-            clickX >= x &&
-            clickX <= x + width &&
-            clickY >= y &&
-            clickY <= y + height
-        ) {
-            setButtonsDisabled(false);
-            game.changePictureToResult();
-        }
-    };
-
-    useEffect(() => {
-        if (ref && typeof ref !== 'function' && ref.current && game) {
-            ref.current.textContent = game.returnBaseRoundPicture();
-        }
-    }, [game, ref]);
-
-    return (
-        <img
-            style={{ maxWidth: "50vw" }}
-            onClick={onImageClick}
-            ref={ref}
-            {...props}
-        />
-    );
-});*/
