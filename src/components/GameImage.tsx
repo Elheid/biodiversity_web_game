@@ -120,7 +120,7 @@ export const GameImage = forwardRef<HTMLImageElement, ImgHTMLAttributes<HTMLImag
                         style={{
                             position: 'absolute',
                             bottom: '100%',
-                            background: 'rgba(255, 0, 0, 0.7)',
+                            background: 'rgba(190, 190, 190, 0.5)',
                             color: 'white',
                             padding: 4,
                             fontSize: 12,
