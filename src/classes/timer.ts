@@ -42,6 +42,14 @@ export class Timer {
         }
     }
 
+    destroy(): void {
+        this.stop();
+        this.callbacks = []; // Очищаем все коллбэки
+        this.remaining = 0;
+        this.durationMs = 0;
+    }
+
+
     // Прошедшее время в миллисекундах
     get elapsedTime(): number {
         if (!this.isRunning) return this.durationMs - this.remaining;

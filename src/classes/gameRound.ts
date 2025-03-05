@@ -40,6 +40,10 @@ export class GameRound {
     public returnCurrentAnswers():Answer[]{
         return this._answers;
     }
+    public returnCurrentPictures():GamePictures{
+        return this._gamePictures;
+    }
+
 
     public startRound():void{
         this.player.newRound();

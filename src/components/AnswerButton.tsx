@@ -1,5 +1,6 @@
 import { Button } from "@mui/material";
 import { Answer } from "../classes/gameRound";
+import { Species } from "../classes/animalSpecies";
 
 interface AnswerButtonProps {
     answer: Answer;

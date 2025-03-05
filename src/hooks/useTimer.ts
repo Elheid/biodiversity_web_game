@@ -1,21 +1,39 @@
 import { useState, useEffect, useRef } from 'react';
 import { Game } from '../classes/game';
 
-export const useTimer = (game?: Game) => {
+export const useTimer = (game: Game | undefined) => {
     const [timeLeft, setTimeLeft] = useState(0);
     const timerRef = useRef<number>(0);
+    const abortControllerRef = useRef(new AbortController());
 
     useEffect(() => {
         if (!game) return;
 
         const updateTimer = () => {
+            if (abortControllerRef.current.signal.aborted) return;
+
             const remaining = game.getTimerValue();
             setTimeLeft(remaining);
-            if (remaining <= 0) window.clearInterval(timerRef.current);
+
+            if (remaining <= 0) {
+                window.clearInterval(timerRef.current);
+            }
         };
 
+        // Запускаем обновление таймера
         timerRef.current = window.setInterval(updateTimer, 100);
-        return () => window.clearInterval(timerRef.current);
+
+        // Обработчик для остановки при закрытии страницы
+        const handleBeforeUnload = () => game.stopGame();
+        window.addEventListener('beforeunload', handleBeforeUnload);
+
+        // Очистка
+        return () => {
+            window.clearInterval(timerRef.current);
+            game.stopGame();
+            window.removeEventListener('beforeunload', handleBeforeUnload);
+            abortControllerRef.current.abort();
+        };
     }, [game]);
 
     const formatTime = (ms: number) => {
