@@ -3,7 +3,8 @@ import { Game } from "../classes/game";
 import { useDisablButtonContext } from "../context/DisbleButtonsProvider";
 import { useRoundEndContext } from "../context/RoundEndProvider";
 
-interface Coordinates{
+
+export interface Coordinates{
     x: number;
     y:number;
     width:number;
@@ -19,7 +20,7 @@ export const GameImage = forwardRef<HTMLImageElement, ImgHTMLAttributes<HTMLImag
 
     const { setButtonsDisabled } = useDisablButtonContext();
     const {isRoundEnd} = useRoundEndContext();
-    
+
     const [imageDimensions, setImageDimensions] = useState<{
         displayWidth: number;
         displayHeight: number;

@@ -12,6 +12,7 @@ import deerRes from "../src/assets/img/deerRes.png"
 import { Coordinates } from "./components/GameImage";
 
 
+
 const answers: Answer[] = [
     {
         answerName: Species.deer,
