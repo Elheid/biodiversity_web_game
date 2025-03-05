@@ -7,7 +7,7 @@ import { AnswerButton } from "../AnswerButton";
 import { useTimer } from "../../hooks/useTimer";
 import { useGameState } from "../../hooks/useGameState";
 import { GameImage } from "../GameImage";
-import { getGameInfo } from "../../tempInfo";
+import { getGameInfo, getGameInfo2 } from "../../tempInfo";
 
 
 export const StartGame = () => {
@@ -34,7 +34,12 @@ export const StartGame = () => {
     useEffect(() => {
         const nav = (e: CustomEventInit<number>) => window.location.href = "/end/" + e.detail;
         const onGameEnd = (e: CustomEventInit<number>) => {
-            nav(e);
+            const round2Info = getGameInfo2();
+            if (!round2Info)
+                nav(e);
+            else{
+                game?.restartNewGame()
+            }
         }
         window.addEventListener("game-end", onGameEnd)
 

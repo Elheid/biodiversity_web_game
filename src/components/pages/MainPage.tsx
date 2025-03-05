@@ -1,6 +1,7 @@
 import { Button, Container } from "@mui/material"
 import { NavLink } from "react-router"
 
+
 export const MainPage = () => {
     return (
         <Container>

@@ -4,7 +4,6 @@ import { Player } from "./player";
 export interface Answer {
     answerName: string,
     isAnswerTrue: boolean;
-
 }
 
 export interface GamePictures{
@@ -14,20 +13,15 @@ export interface GamePictures{
 }
 
 export class GameRound {
-
     private _answers: Answer[];
     public  player: Player;
     private _gamePictures: GamePictures;
     private onFinishRound?: () => void;
 
-
-
-
     constructor(player:Player, _answers: Answer[], _gamePictures:GamePictures, onFinishRound?: () => void) {
         this.player = player;
         this._answers = _answers;
         this._gamePictures = _gamePictures;
-
         this.onFinishRound = onFinishRound;
 
 
