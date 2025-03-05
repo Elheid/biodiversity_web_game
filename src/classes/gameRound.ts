@@ -1,6 +1,5 @@
 import { Species } from "./animalSpecies";
 import { Player } from "./player";
-import { Timer } from "./timer";
 
 export interface Answer {
     answerName: string,
