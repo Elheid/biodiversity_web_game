@@ -109,7 +109,7 @@ export const GameImage = forwardRef<HTMLImageElement, ImgHTMLAttributes<HTMLImag
                 <div
                     style={{
                         position: 'absolute',
-                        border: '2px solid red',
+                        border: '2px solid rgba(190, 190, 190, 0.5)',
                         ...getAreaStyle(),
                         pointerEvents: 'none',
                         boxSizing: 'border-box',
