@@ -1,7 +1,6 @@
-import { Species } from "./animalSpecies";
 
 export class Player {
-    public choiceName: Species | null;
+    public choiceName: string | null;
     public roundState: "process" | "win" | "loose"  = "process";
 
 

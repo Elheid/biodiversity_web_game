@@ -7,6 +7,11 @@ export interface RoundInfo {
     gamePictures: GamePictures
 }
 
+export enum GameType{
+    firstType,
+    secondType
+}
+
 export type RoundsInfo = { [key: number]: RoundInfo }
 
 const BASE_TIME_BEETWEN_ROUNDS = 1200;
@@ -33,8 +38,10 @@ export class Game {
     public timer: Timer;
     private _durationTime: number;
 
+    public gameType : GameType;
 
-    constructor(player: Player, rounds: number, roundsInfo: RoundsInfo, scoreRef: HTMLSpanElement, imageRef: HTMLImageElement, roundStateRef?: HTMLSpanElement, durationTime?: number, timeBetweenRounds?: number) {
+
+    constructor(player: Player, rounds: number, roundsInfo: RoundsInfo, scoreRef: HTMLSpanElement, imageRef: HTMLImageElement, roundStateRef?: HTMLSpanElement, durationTime?: number, timeBetweenRounds?: number, gameType?:GameType) {
         this.player = player;
 
         this.rounds = rounds;
@@ -61,6 +68,43 @@ export class Game {
 
         if (timeBetweenRounds) this.timeBetweenRounds = timeBetweenRounds
         else this.timeBetweenRounds = BASE_TIME_BEETWEN_ROUNDS;
+
+        if (gameType) this.gameType = gameType
+        else this.gameType = GameType.firstType;
+    }
+
+    public restartNewGame(player: Player, rounds: number, roundsInfo: RoundsInfo, scoreRef: HTMLSpanElement, imageRef: HTMLImageElement, roundStateRef?: HTMLSpanElement, durationTime?: number, timeBetweenRounds?: number, gameType?:GameType):void{
+        this.player = player;
+
+        this.rounds = rounds;
+        this.roundsInfo = roundsInfo;
+        this.roundCounter = START_ROUND;
+
+        this.score = START_SCORE;
+
+        this.RoundController = new GameRound(this.player, [], { pictureId: 0, pictureUrl: '', resultPictureUrl: '' }, () => this.changeRoundState());
+
+        this.scoreRef = scoreRef;
+        this.imageRef = imageRef;
+        this.roundStateRef = roundStateRef;
+
+        if (durationTime) this._durationTime = (durationTime)
+        else this._durationTime = (BASE_DURATION_TIME)
+
+        this.timer = new Timer(this._durationTime);
+
+        this.timer.onTimeout(() => {
+            console.log("Game time out");
+            this.finishGane()
+        })
+
+        if (timeBetweenRounds) this.timeBetweenRounds = timeBetweenRounds
+        else this.timeBetweenRounds = BASE_TIME_BEETWEN_ROUNDS;
+
+        if (gameType) this.gameType = gameType
+        else this.gameType = GameType.firstType;
+
+        this.startGame()
     }
 
     protected showResult(message: string): void {
@@ -77,15 +121,29 @@ export class Game {
     public returnBaseRoundPicture(): string {
         return this.RoundController.returnCurrentPictures().pictureUrl;
     }
+    public returnResultRoundPicture():string{
+        return this.RoundController.returnCurrentPictures().resultPictureUrl;
+    }
 
     public changePictureToResult(): void {
         this.imageRef.src = this.RoundController.returnCurrentPictures().resultPictureUrl;
     }
 
     public changePictureOnStart(): void {
-        this.imageRef.src = this.returnBaseRoundPicture()//newUrl
+        if (this.gameType === GameType.firstType)
+            this.imageRef.src = this.returnBaseRoundPicture()//newUrl
+        else this.imageRef.src = this.returnResultRoundPicture()
     }
 
+
+
+    public returnGameType():GameType{
+        return this.gameType
+    }
+
+    public isThisSecondType():boolean{
+        return this.gameType === GameType.secondType;
+    }
 
     public isRoundWin() {
         return this.RoundController.player.playerGetRoundState() === 'win';

@@ -1,20 +1,25 @@
 import './App.css'
 import { BrowserRouter, Route, Routes } from 'react-router'
-import { StartGame } from './components/pages/StartGame'
+import { GameRoundFirst } from './components/pages/GameRoundFirst'
 import { MainPage } from './components/pages/MainPage'
-import { EndGame } from './components/pages/EndGame'
+import { GameEnd } from './components/pages/GameEnd'
 import { DisbleButtonsProvider } from './context/DisbleButtonsProvider'
+import { GameRoundSecond } from './components/pages/GameRoundSecond'
+import { RoundEndProvider } from './context/RoundEndProvider'
 
 function App() {
   return (
     <DisbleButtonsProvider>
-    <BrowserRouter basename="/">
-      <Routes>
-        <Route path="/" element={<MainPage />} />
-        <Route path="/game" element={<StartGame />} />
-        <Route path="/end/:score" element={<EndGame />} />
-      </Routes>
-    </BrowserRouter>
+      <RoundEndProvider>
+        <BrowserRouter basename="/">
+          <Routes>
+            <Route path="/" element={<MainPage />} />
+            <Route path="/first-round" element={<GameRoundFirst />} />
+            <Route path="/second-round/:firstScore" element={<GameRoundSecond />} />
+            <Route path="/end/:firstScore/:secondScore" element={<GameEnd />} />
+          </Routes>
+        </BrowserRouter>
+      </RoundEndProvider>
     </DisbleButtonsProvider>
   )
 }
