@@ -16,8 +16,6 @@ export interface GamePictures{
 
 export class GameRound {
 
-    public timer: Timer;
-    private _durationTime = 100000;
     private _answers: Answer[];
     public  player: Player;
     private _gamePictures: GamePictures;
@@ -26,38 +24,31 @@ export class GameRound {
 
 
 
-    constructor(player:Player, _answers: Answer[], _gamePictures:GamePictures, onFinishRound?: () => void ,durationTime?:number) {
+    constructor(player:Player, _answers: Answer[], _gamePictures:GamePictures, onFinishRound?: () => void) {
         this.player = player;
         this._answers = _answers;
         this._gamePictures = _gamePictures;
-        if (durationTime) this.timer = new Timer(durationTime)
-        else this.timer = new Timer(this._durationTime);
 
         this.onFinishRound = onFinishRound;
 
-        this.timer.onTimeout(()=> {
-            alert("Game round time out");
-            this.finishRound();
-        })
 
     }
     public returnPlayerRoundState(){
         return this.player.roundState;
     }
 
-    public returnTimerValue():number{
-        return this.timer.remainingTime;
+    public returnCurrentAnswers():Answer[]{
+        return this._answers;
     }
 
     public startRound():void{
-        this.timer.start();
         this.player.newRound();
         console.log("Game round started");
     }
 
     public finishRound():void{
         this.onFinishRound?.();
-        this.timer.stop();
+
         console.log("Game round end");
         const endEvent = new CustomEvent<string>("round-end")
         window.dispatchEvent(endEvent)
@@ -68,7 +59,7 @@ export class GameRound {
         console.log(this._gamePictures.resultPictureUrl);
     }
 
-    public ChoiceAnswer(name:string){
+    public ChoiceAnswer(name:string):void{
         this.player.choiceName = name as Species;
 
         const answerEvent = new CustomEvent<string>("choice-answer", {detail:name})

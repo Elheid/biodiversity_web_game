@@ -8,7 +8,7 @@ export class Timer {
 
     private isRunning: boolean = false;
 
-    start() {
+    start():void {
         if (this.isRunning) {
             throw new Error("Timer is already running.");
         }
@@ -28,7 +28,7 @@ export class Timer {
         }, duration);
     }
 
-    stop() {
+    stop():void {
         if (!this.isRunning) return;
         
         // Сохраняем оставшееся время при остановке
@@ -53,7 +53,7 @@ export class Timer {
         return Math.max(this.durationMs - this.elapsedTime, 0);
     }
 
-    onTimeout(callback: () => void) {
+    onTimeout(callback: () => void):void {
         if (!this.callbacks.includes(callback)) {
             this.callbacks.push(callback);
         }

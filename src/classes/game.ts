@@ -1,5 +1,6 @@
 import { Answer, GamePictures, GameRound } from "./gameRound";
 import { Player } from "./player";
+import { Timer } from "./timer";
 
 export interface RoundInfo{
     answers: Answer[]
@@ -8,6 +9,10 @@ export interface RoundInfo{
 
 export type RoundsInfo = { [key: number]: RoundInfo }
 
+const BASE_TIME_BEETWEN_ROUNDS = 1200;
+const BASE_DURATION_TIME = 100000;
+const START_ROUND = 0;
+const START_SCORE = 0;
 export class Game {
 
     protected player: Player;
@@ -16,6 +21,8 @@ export class Game {
     public score: number;
     public RoundController : GameRound;
 
+    public timeBetweenRounds: number;
+
 
     public scoreRef: HTMLSpanElement;
     public imageRef:HTMLImageElement
@@ -23,14 +30,18 @@ export class Game {
 
     private roundsInfo: RoundsInfo;
 
-    constructor(player:Player, rounds: number, roundsInfo:RoundsInfo ,scoreRef:HTMLSpanElement,roundStateRef:HTMLSpanElement, imageRef:HTMLImageElement) {
+    public timer: Timer;
+    private _durationTime:number;
+
+
+    constructor(player:Player, rounds: number, roundsInfo:RoundsInfo ,scoreRef:HTMLSpanElement,roundStateRef:HTMLSpanElement, imageRef:HTMLImageElement, durationTime?:number, timeBetweenRounds?:number) {
         this.player = player;
 
         this.rounds = rounds;
         this.roundsInfo = roundsInfo;
-        this.roundCounter = 0;
+        this.roundCounter = START_ROUND;
 
-        this.score = 0;
+        this.score = START_SCORE;
 
         this.RoundController = new GameRound(this.player,[],{pictureId:0, pictureUrl:'', resultPictureUrl:''}, ()=> this.changeRoundState());
 
@@ -38,51 +49,82 @@ export class Game {
         this.imageRef = imageRef;
         this.roundStateRef = roundStateRef;
 
+
+        
+        if (durationTime) this._durationTime = (durationTime)
+        else this._durationTime = (BASE_DURATION_TIME)
+
+        this.timer = new Timer(this._durationTime);
+
+        this.timer.onTimeout(()=> {
+            console.log("Game time out");
+            this.finishGane()
+        })
+
+
+        if(timeBetweenRounds) this.timeBetweenRounds = timeBetweenRounds
+        else this.timeBetweenRounds = BASE_TIME_BEETWEN_ROUNDS;
+
+
+
     }
 
     protected showResult(message: string): void {
         console.log(message + this.score);
     }
 
-    public getTimerValue(){
+    public getTimerValue():number{
         //if (this.RoundController)
-        return this.RoundController.returnTimerValue();
+        return this.timer.remainingTime;
+    }
+    public getRoundAnswers():Answer[]{
+        return this.RoundController.returnCurrentAnswers();
     }
 
-    public changeScore(){
+    public changeScore():void{
         this.score ++;
         if (this.scoreRef)
         {
             this.scoreRef.textContent = (this.score).toString();
         }
     }
-    public changePictureOnStart(newUrl:string){
+    public changePictureOnStart(newUrl:string):void{
         this.imageRef.src = newUrl
     }
-    public changeRoundState(){
-        this.roundStateRef.textContent = this.RoundController.player.playerGetRoundState()
+    public changeRoundState():void{
+        const roundState = this.RoundController.player.playerGetRoundState();
+        this.roundStateRef.textContent = roundState;
+    }
+    public isRoundWin(){
+        return this.RoundController.player.playerGetRoundState() === 'win';
     }
 
-    public nextRound(e:CustomEventInit<number>){
-        const isTrue = this.RoundController.checkAnswer();
+    public nextRound(e:CustomEventInit<number>,  onNextRoundStart?:()=>void):void{
+        const isAnswerTrue = this.RoundController.checkAnswer();
         this.changeRoundState()
         this.roundCounter++;
-        if (isTrue) {
+        if (isAnswerTrue) {
             this.changeScore();
             console.log("start new Round")
         }
         window.setTimeout(() => {
             this.startGame();
-        }, 2000);
+            onNextRoundStart?.()
+        }, this.timeBetweenRounds);
         console.log(e.detail)
     }
 
-    public startGame(){
+    public finishGane():void{
+        console.log("Game Ends");
+        const endEvent = new CustomEvent<number>("game-end", {detail:this.score})
+        window.dispatchEvent(endEvent)
+    }
 
+    public startGame():void{
+        if (this.roundCounter === START_ROUND) this.timer.start();
+        
         if (this.roundCounter >= this.rounds) {
-            console.log("Game Ends");
-            const endEvent = new CustomEvent<number>("game-end", {detail:this.score})
-            window.dispatchEvent(endEvent)
+            this.finishGane()
             return;
         }
             const answers = this.roundsInfo[this.roundCounter].answers;
