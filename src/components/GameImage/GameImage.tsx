@@ -103,10 +103,6 @@ export const GameImage = forwardRef<HTMLImageElement, ImgHTMLAttributes<HTMLImag
         if (img && game) {
             setImageSrc(img.src);
         }
-        /*if (ref && typeof ref !== 'function' && ref.current && game) {
-            ref.current.src = game.returnBaseRoundPicture();
-            setImageSrc(ref.current.src)
-        }*/
     }, [game, internalRef.current]);
 
     return (

@@ -5,6 +5,19 @@
     font-family: Arial, sans-serif;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     position: relative;
+    user-select: none;
+
+
+    /*Откл выделения картинки*/
+    -webkit-tap-highlight-color: transparent; /* Для Safari/Chrome */
+    tap-highlight-color: transparent; /* Для Firefox */
+
+
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+
+
 }
 
 /* Styles for the image */
