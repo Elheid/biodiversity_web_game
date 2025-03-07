@@ -3,6 +3,7 @@ import { Player } from "./player";
 import { Timer } from "./timer";
 
 export interface RoundInfo {
+    answerTitle?:string;
     answers: Answer[]
     gamePictures: GamePictures
 }
@@ -125,13 +126,31 @@ export class Game {
         return this.RoundController.returnCurrentPictures().resultPictureUrl;
     }
 
+
+    public changeImageOfFullScreen(src: string): void {
+        const imageFull = document.querySelectorAll("img.image");
+        if (imageFull.length > 1) {
+            const imgElement = imageFull[1] as HTMLImageElement;
+            if (imgElement) {
+                imgElement.src = src;
+            } else {
+                console.error("The selected element is not an HTMLImageElement.");
+            }
+        } else {
+            console.error("No image found at the specified index.");
+        }
+    }
+
     public changePictureToResult(): void {
-        this.imageRef.src = this.RoundController.returnCurrentPictures().resultPictureUrl;
+        this.imageRef.src = this.returnResultRoundPicture();
+        this.changeImageOfFullScreen(this.returnResultRoundPicture());
     }
 
     public changePictureOnStart(): void {
-        if (this.gameType === GameType.firstType)
+        if (this.gameType === GameType.firstType){
             this.imageRef.src = this.returnBaseRoundPicture()//newUrl
+            this.changeImageOfFullScreen(this.returnBaseRoundPicture());
+        }
         else this.imageRef.src = this.returnResultRoundPicture()
     }
 

@@ -9,7 +9,7 @@ import deer from "../src/assets/img/deer.png"
 
 import giraffRes from "../src/assets/img/giraffRes.png"
 import deerRes from "../src/assets/img/deerRes.png"
-import { Coordinates } from "./components/GameImage";
+import { Coordinates } from "./components/GameImage/GameImage";
 
 
 
@@ -77,8 +77,8 @@ const answers22: Answer[] = [
 
 
 const gameInfo2: RoundsInfo = {
-    0: { answers: answers12, gamePictures: gamePictures[0] },
-    1: { answers: answers22, gamePictures: gamePictures[1] }
+    0: { answers: answers12, gamePictures: gamePictures[0], answerTitle:"Это Олень?", },
+    1: { answers: answers22, gamePictures: gamePictures[1], answerTitle:"Это Кобан?", }
 }
 
 

@@ -23,7 +23,7 @@ export const DisbleButtonsProvider: React.FC<DisbleButtonsProps> = ({ children }
 export const useDisablButtonContext = () =>{
     const context = useContext(DisbleButtonsContext);
     if (context === undefined) {
-        throw new Error("useGameContext must be used within a DisableButtonsProvider");
+        throw new Error("must used with provider");
     }
     return context;
 };

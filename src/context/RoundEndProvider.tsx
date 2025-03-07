@@ -23,7 +23,7 @@ export const RoundEndProvider: React.FC<RoundEndProps> = ({ children }) => {
 export const useRoundEndContext = () =>{
     const context = useContext(RoundEndContext);
     if (context === undefined) {
-        throw new Error("useGameContext must be used within a DisableButtonsProvider");
+        throw new Error("must used with provider");
     }
     return context;
 };
