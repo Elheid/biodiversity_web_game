@@ -48,3 +48,10 @@ body {
   -webkit-user-select: none; 
   user-select: none; 
 }
+
+
+/**/
+
+.not-active-full-screen img{
+  max-width: 100%;
+}

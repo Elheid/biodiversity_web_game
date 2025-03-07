@@ -1,19 +1,20 @@
 // BaseGame.tsx
 import { Box, Button, Container, List, Paper, Typography } from "@mui/material";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import { useGameState } from "./../hooks/useGameState";
-import { GameImage } from "./GameImage";
+import { GameImage } from "./GameImage/GameImage";
 import { GameType, RoundsInfo } from "../classes/game";
 import { useTimer } from "../hooks/useTimer";
 import { AnswerButton } from "./AnswerButton";
 import { useNavigate, useParams } from "react-router";
 import { getPicturesCoordinate } from "../tempInfo";
+import { ShowFullScreenProvider } from "../context/ShowFullScreen";
 
 interface BaseGameProps {
     getGameInfo: () => RoundsInfo; // Уточните тип согласно вашей реализации
     getNextGameInfo?: () => RoundsInfo; // Опционально для следующего 
-    gameType?:GameType;
+    gameType?: GameType;
 }
 
 export const BaseOfGame = ({ getGameInfo, gameType }: BaseGameProps) => {
@@ -28,16 +29,24 @@ export const BaseOfGame = ({ getGameInfo, gameType }: BaseGameProps) => {
         handleAnswerSelect,
     } = useGameState(getGameInfo(), Object.keys(getGameInfo()).length, gameType);
 
-
-    const navigator = useNavigate();
     const { timeLeft, formatTime } = useTimer(game);
 
-    const { firstScore } = useParams<{ firstScore?: string }>();
+    //Для отображения надписи/вопроса в начале каждого раунда
+    const gameInfo = getGameInfo();
+    const curRound = game?.roundCounter || 0;
+    const [answerQuestion, setAnswerQuestion] = useState<string>("");
 
-    const onAnswerClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-        const answerName = e.currentTarget.textContent;
-        if (answerName) handleAnswerSelect(answerName);
-    };
+    useEffect(()=>{
+        const answerQuestion = gameInfo[curRound]?.answerTitle;
+        if (!isRoundEnd && answerQuestion) {
+            setAnswerQuestion(answerQuestion);
+        }
+    },[curRound, isRoundEnd, gameInfo]);
+    //
+    //Это для перехода между играми и выхода на страницу с подсчетом очков
+    const navigator = useNavigate();
+
+    const { firstScore } = useParams<{ firstScore?: string }>();
 
     useEffect(() => {
         const nav = (e: CustomEventInit<number>) => navigator(`/end/${firstScore}/${e.detail}`)
@@ -53,8 +62,12 @@ export const BaseOfGame = ({ getGameInfo, gameType }: BaseGameProps) => {
         window.addEventListener("game-end", onGameEnd);
         return () => window.removeEventListener("game-end", onGameEnd);
     }, [game, firstScore]);
+    //
 
-    const curRound = game?.roundCounter || 0;
+    const onAnswerClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        const answerName = e.currentTarget.textContent;
+        if (answerName) handleAnswerSelect(answerName);
+    };
 
     return (
         <Container className="start-game">
@@ -64,15 +77,21 @@ export const BaseOfGame = ({ getGameInfo, gameType }: BaseGameProps) => {
                 </Typography>
             </Paper>
 
-            <Box>
+            <Paper>
                 Очки:
                 <Typography ref={scoreRef}>{0}</Typography>
+            </Paper>
+
+            <Box>
+                <ShowFullScreenProvider>
+                    <GameImage ref={imgRef} coordinates={getPicturesCoordinate()[curRound]} game={game}/>
+                </ShowFullScreenProvider>
+                
             </Box>
 
-            <Container>
-                <GameImage ref={imgRef} coordinates={getPicturesCoordinate()[curRound]} game={game}  />
-            </Container>
-
+            <Typography>
+                {answerQuestion}
+            </Typography>
             <List>
                 {currentAnswers?.map((answer) => (
                     <AnswerButton

@@ -17,6 +17,7 @@ function App() {
             <Route path="/first-round" element={<GameRoundFirst />} />
             <Route path="/second-round/:firstScore" element={<GameRoundSecond />} />
             <Route path="/end/:firstScore/:secondScore" element={<GameEnd />} />
+            
           </Routes>
         </BrowserRouter>
       </RoundEndProvider>
