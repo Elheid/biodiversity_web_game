@@ -1,5 +1,5 @@
 // BaseGame.tsx
-import { Box, Button, Container, List, Paper, Typography } from "@mui/material";
+import { Box, Button, ButtonGroup, Container, List, Paper, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 
 import { useGameState } from "./../hooks/useGameState";
@@ -10,6 +10,7 @@ import { AnswerButton } from "./AnswerButton";
 import { useNavigate, useParams } from "react-router";
 import { getPicturesCoordinate } from "../tempInfo";
 import { ShowFullScreenProvider } from "../context/ShowFullScreen";
+import { Home } from "@mui/icons-material";
 
 interface BaseGameProps {
     getGameInfo: () => RoundsInfo; // Уточните тип согласно вашей реализации
@@ -36,12 +37,12 @@ export const BaseOfGame = ({ getGameInfo, gameType }: BaseGameProps) => {
     const curRound = game?.roundCounter || 0;
     const [answerQuestion, setAnswerQuestion] = useState<string>("");
 
-    useEffect(()=>{
+    useEffect(() => {
         const answerQuestion = gameInfo[curRound]?.answerTitle;
         if (!isRoundEnd && answerQuestion) {
             setAnswerQuestion(answerQuestion);
         }
-    },[curRound, isRoundEnd, gameInfo]);
+    }, [curRound, isRoundEnd, gameInfo]);
     //
     //Это для перехода между играми и выхода на страницу с подсчетом очков
     const navigator = useNavigate();
@@ -70,41 +71,63 @@ export const BaseOfGame = ({ getGameInfo, gameType }: BaseGameProps) => {
     };
 
     return (
-        <Container className="start-game">
-            <Paper>
-                <Typography variant="h5" component="h2">
-                    {formatTime(timeLeft)}
-                </Typography>
-            </Paper>
+        <Container className="start-game" sx={{
+            display: "flex",
+            flexDirection: "row"
+        }}>
 
-            <Paper>
+
+            <Paper sx={{ display: "none" }}>
                 Очки:
                 <Typography ref={scoreRef}>{0}</Typography>
             </Paper>
+            
+            <div className="image-container">
+                <div className="main-image">
+                    <ShowFullScreenProvider>
+                        <GameImage ref={imgRef} coordinates={getPicturesCoordinate()[curRound]} game={game} />
+                    </ShowFullScreenProvider>
+                </div>
+            </div>
 
-            <Box>
-                <ShowFullScreenProvider>
-                    <GameImage ref={imgRef} coordinates={getPicturesCoordinate()[curRound]} game={game}/>
-                </ShowFullScreenProvider>
-                
-            </Box>
 
-            <Typography>
-                {answerQuestion}
-            </Typography>
-            <List>
-                {currentAnswers?.map((answer) => (
-                    <AnswerButton
-                        key={answer.answerName}
-                        answer={answer}
-                        isRoundEnd={isRoundEnd}
-                        selectedAnswer={selectedAnswer}
-                        isDisabled={buttonsDisabled}
-                        onClick={onAnswerClick}
-                    />
-                ))}
-            </List>
-            <Button disabled={buttonsDisabled && isRoundEnd} onClick={onAnswerClick}>SKIP ROUND</Button>
+            <Container className="control-part">
+
+                <Box className="timer-container">
+                    <Typography variant="h5" component="h2">
+                        {formatTime(timeLeft)}
+                    </Typography>
+                </Box>
+
+                <div className="buttons">
+                    <Typography className="question-container">
+                        {answerQuestion}
+                    </Typography>
+                    <ButtonGroup orientation="vertical" >
+                        {currentAnswers?.map((answer) => (
+                            <AnswerButton
+                                key={answer.answerName}
+                                answer={answer}
+                                isRoundEnd={isRoundEnd}
+                                selectedAnswer={selectedAnswer}
+                                isDisabled={buttonsDisabled}
+                                onClick={onAnswerClick}
+                            />
+                        ))}
+                    </ButtonGroup>
+                    <Button disabled={buttonsDisabled && isRoundEnd} onClick={onAnswerClick}>SKIP ROUND</Button>
+                </div>
+
+                <Button onClick={() => {
+                    navigator("/")
+                }}>
+                    <Typography>
+                        На главную
+                    </Typography>
+                    <Home />
+                </Button>
+
+            </Container>
         </Container>
     );
 };

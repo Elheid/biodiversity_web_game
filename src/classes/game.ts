@@ -1,3 +1,4 @@
+import { BASE_DURATION_TIME, BASE_TIME_BEETWEN_ROUNDS, START_ROUND, START_SCORE } from "../config";
 import { Answer, GamePictures, GameRound } from "./gameRound";
 import { Player } from "./player";
 import { Timer } from "./timer";
@@ -15,10 +16,6 @@ export enum GameType{
 
 export type RoundsInfo = { [key: number]: RoundInfo }
 
-const BASE_TIME_BEETWEN_ROUNDS = 1200;
-const BASE_DURATION_TIME = 100000;
-const START_ROUND = 0;
-const START_SCORE = 0;
 export class Game {
 
     protected player: Player;
@@ -222,6 +219,7 @@ export class Game {
 
     public stopGame(): void {
         this.timer.destroy();
+        this.RoundController.cleanup();
     }
 
     publicresetGame(): void {

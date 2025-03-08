@@ -18,6 +18,7 @@ export class GameRound {
     private _gamePictures: GamePictures;
     private onFinishRound?: () => void;
 
+
     constructor(player:Player, _answers: Answer[], _gamePictures:GamePictures, onFinishRound?: () => void) {
         this.player = player;
         this._answers = _answers;
@@ -80,6 +81,16 @@ export class GameRound {
         this.player.playerLose();
         this.finishRound();
         return false;
+    }
+
+    public cleanup(): void {
+        // 1. Удаляем обработчики событий
+        
+        // 2. Обнуляем коллбэки
+        this.onFinishRound = undefined;
+        
+        // 3. Дополнительные очистки при необходимости
+        // (например, если есть таймеры в расширенной логике)
     }
 
 }

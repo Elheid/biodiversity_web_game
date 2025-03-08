@@ -6,6 +6,7 @@ import { Answer } from '../classes/gameRound';
 import { getCurrAnswers } from '../utill';
 import { useDisablButtonContext } from '../context/DisbleButtonsProvider';
 import { useRoundEndContext } from '../context/RoundEndProvider';
+import { CURRENT_DURATION_TIME, CURRENT_TIME_BEETWEN_ROUNDS } from '../config';
 
 
 
@@ -35,8 +36,8 @@ export const useGameState = (roundsInfo: RoundsInfo, totalRounds: number, gameTy
                 scoreRef.current,
                 imgRef.current,
                 stateRef.current,
-                40000,
-                undefined,
+                CURRENT_DURATION_TIME,
+                CURRENT_TIME_BEETWEN_ROUNDS,
                 gameType
             );
             setGame(game);
@@ -57,7 +58,11 @@ export const useGameState = (roundsInfo: RoundsInfo, totalRounds: number, gameTy
 
             window.addEventListener("choice-answer", onChoiceAnswer)
             return ()=>{
+                setIsRoundEnd(false);
                 window.removeEventListener("choice-answer", onChoiceAnswer)
+                if (game) {
+                    game.stopGame();
+                }
             }
         }
     }, [roundsInfo,totalRounds, setButtonsDisabled]);

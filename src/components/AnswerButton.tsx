@@ -1,6 +1,11 @@
-import { Button } from "@mui/material";
+
 import { Answer } from "../classes/gameRound";
 import { Species } from "../classes/animalSpecies";
+
+import { useEffect, useState } from "react";
+import { Button } from "@mui/material";
+import { AnswerButtonStyle } from "../style/answerButtonStyle";
+
 
 interface AnswerButtonProps {
     answer: Answer;
@@ -10,6 +15,14 @@ interface AnswerButtonProps {
     onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
+
+enum ButtonImage{
+    disableButton ="disable-button",
+    trueButton = "true-button",
+    falseButton = "false-button",
+    normalButton = "normal-button"
+}
+
 export const AnswerButton = ({
     answer,
     isRoundEnd,
@@ -17,25 +30,37 @@ export const AnswerButton = ({
     isDisabled,
     onClick
 }: AnswerButtonProps) => {
-    let backgroundColor = 'inherit';
+    const [className, setClassName] = useState<string>(ButtonImage.disableButton);
 
-    if (isRoundEnd) {
-        if (answer.isAnswerTrue) {
-            backgroundColor = 'green';
-        } else if (answer.answerName === selectedAnswer) {
-            backgroundColor = 'red';
+    useEffect(() => {
+        if (isDisabled) setClassName(ButtonImage.disableButton);
+        else setClassName(ButtonImage.normalButton);
+        if (isRoundEnd) {
+            if (answer.isAnswerTrue) {
+                setClassName(ButtonImage.trueButton);
+            } else if (answer.answerName === selectedAnswer) {
+                setClassName(ButtonImage.falseButton);
+            }
+        } else {
+            if (answer.answerName === selectedAnswer) {
+                if (answer.answerName === selectedAnswer) {
+                    setClassName(answer.isAnswerTrue 
+                        ? ButtonImage.trueButton 
+                        : ButtonImage.falseButton);
+                }
+            }
         }
-    } else {
-        if (answer.answerName === selectedAnswer) {
-            backgroundColor = answer.isAnswerTrue ? 'green' : 'red';
-        }
-    }
+        
+    }, [isDisabled, isRoundEnd, selectedAnswer, answer]);
+
+
 
     return (
         <Button
             disabled={isDisabled}
             onClick={onClick}
-            style={{ backgroundColor }}
+            className={`${className} background-icon`}
+            sx={AnswerButtonStyle}
         >
             {answer.answerName}
         </Button>
