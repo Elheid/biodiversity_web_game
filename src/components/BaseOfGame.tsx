@@ -1,5 +1,5 @@
 // BaseGame.tsx
-import { Box, Button, ButtonGroup, Container, List, Paper, Typography } from "@mui/material";
+import { Box, Button, ButtonGroup, Container, Paper, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 
 import { useGameState } from "./../hooks/useGameState";

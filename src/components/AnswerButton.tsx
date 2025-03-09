@@ -4,7 +4,7 @@ import { Species } from "../classes/animalSpecies";
 
 import { useEffect, useState } from "react";
 import { Button } from "@mui/material";
-import { AnswerButtonStyle } from "../style/answerButtonStyle";
+import { AnswerButtonStyle } from "../style/AnswerButtonStyle"
 
 
 interface AnswerButtonProps {
