@@ -166,7 +166,6 @@ export class Game {
     }
 
 
-
     public changeScore(): void {
         this.score++;
         if (this.scoreRef) {
