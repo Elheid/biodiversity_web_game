@@ -5,14 +5,8 @@ import { useRoundEndContext } from "../../context/RoundEndProvider";
 import { BoxAreaOnImage } from "./BoxAreaOnImage";
 import { FullScreenImage } from "../FullScreenImage/FullScreenImage";
 import { useShowFullScreen } from "../../context/ShowFullScreen";
+import { Coordinates } from "../../interfaces/coordinates";
 
-
-export interface Coordinates{
-    x: number;
-    y:number;
-    width:number;
-    height:number;
-}
 
 interface GameImageProps {
     game: Game | undefined;

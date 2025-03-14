@@ -4,13 +4,14 @@ import { useEffect, useState } from "react";
 
 import { useGameState } from "./../hooks/useGameState";
 import { GameImage } from "./GameImage/GameImage";
-import { GameType, RoundsInfo } from "../classes/game";
+
 import { useTimer } from "../hooks/useTimer";
 import { AnswerButton } from "./AnswerButton";
 import { useNavigate, useParams } from "react-router";
 import { getPicturesCoordinate } from "../tempInfo";
 import { ShowFullScreenProvider } from "../context/ShowFullScreen";
 import { Home } from "@mui/icons-material";
+import { GameType, RoundsInfo } from "../interfaces/rounds";
 
 interface BaseGameProps {
     getGameInfo: () => RoundsInfo; // Уточните тип согласно вашей реализации

@@ -1,6 +1,6 @@
 // StartGame2.tsx
 
-import { GameType } from "../../classes/game";
+import { GameType } from "../../interfaces/rounds";
 import { getGameInfo2 } from "../../tempInfo";
 import { BaseOfGame } from "../BaseOfGame";
 

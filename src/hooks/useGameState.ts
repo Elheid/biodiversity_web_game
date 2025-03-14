@@ -1,12 +1,13 @@
 import { useEffect, useRef, useState } from 'react';
-import { Game, GameType, RoundsInfo } from '../classes/game';
+import { Game } from '../classes/game';
 import { Species } from '../classes/animalSpecies';
 import { Player } from '../classes/player';
-import { Answer } from '../classes/gameRound';
+
 import { getCurrAnswers } from '../utill';
 import { useDisablButtonContext } from '../context/DisbleButtonsProvider';
 import { useRoundEndContext } from '../context/RoundEndProvider';
 import { CURRENT_DURATION_TIME, CURRENT_TIME_BEETWEN_ROUNDS } from '../config';
+import { Answer, GameType, RoundsInfo } from '../interfaces/rounds';
 
 
 

@@ -1,20 +1,9 @@
 import { BASE_DURATION_TIME, BASE_TIME_BEETWEN_ROUNDS, START_ROUND, START_SCORE } from "../config";
-import { Answer, GamePictures, GameRound } from "./gameRound";
+import { Answer, GameType, RoundsInfo } from "../interfaces/rounds";
+import { GameRound } from "./gameRound";
+
 import { Player } from "./player";
 import { Timer } from "./timer";
-
-export interface RoundInfo {
-    answerTitle?:string;
-    answers: Answer[]
-    gamePictures: GamePictures
-}
-
-export enum GameType{
-    firstType,
-    secondType
-}
-
-export type RoundsInfo = { [key: number]: RoundInfo }
 
 export class Game {
 

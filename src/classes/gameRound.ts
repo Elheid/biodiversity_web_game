@@ -1,16 +1,6 @@
+import { Answer, GamePictures } from "../interfaces/rounds";
 import { Species } from "./animalSpecies";
 import { Player } from "./player";
-
-export interface Answer {
-    answerName: string,
-    isAnswerTrue: boolean;
-}
-
-export interface GamePictures{
-    pictureId: number,
-    pictureUrl:string,
-    resultPictureUrl:string
-}
 
 export class GameRound {
     private _answers: Answer[];
