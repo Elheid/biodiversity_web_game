@@ -169,6 +169,14 @@ export class Game {
             this.roundStateRef.textContent = roundState;
     }
 
+    updateRoundsInfo(newRoundsInfo: RoundsInfo) {
+        this.roundsInfo = { 
+            ...this.roundsInfo, 
+            ...newRoundsInfo 
+        };
+    }
+    
+
     public nextRound(e: CustomEventInit<number>, onNextRoundStart?: () => void): void {
         const isAnswerTrue = this.RoundController.checkAnswer();
         this.changeRoundState()
@@ -216,9 +224,10 @@ export class Game {
         // Дополнительная логика сброса состояния игры
     }
 
+/*
     updateRoundsInfo(newRoundsInfo: RoundsInfo) {
         this.roundsInfo = { ...this.roundsInfo, ...newRoundsInfo };
         this.RoundController.updateRounds(this.roundsInfo);
-    }
+    }*/
     
 }

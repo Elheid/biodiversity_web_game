@@ -29,7 +29,7 @@ export const BaseOfGame = ({ getGameInfo, gameType }: BaseGameProps) => {
         scoreRef,
         imgRef,
         handleAnswerSelect,
-    } = useGameState(getGameInfo(), Object.keys(getGameInfo()).length, gameType);
+    } = useGameState(Object.keys(getGameInfo()).length, gameType);
 
     const { timeLeft, formatTime } = useTimer(game);
 
