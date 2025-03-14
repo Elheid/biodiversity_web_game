@@ -81,11 +81,11 @@ const gameInfo2: RoundsInfo = {
 }
 
 
-export const getGameInfo = ()=>{
+export const getGameInfo = ():RoundsInfo=>{
     return gameInfo
 }
 
-export const getGameInfo2 = ()=>{
+export const getGameInfo2 = ():RoundsInfo=>{
     return gameInfo2;
 }
 
