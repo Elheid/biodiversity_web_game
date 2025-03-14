@@ -215,4 +215,10 @@ export class Game {
         this.timer.destroy();
         // Дополнительная логика сброса состояния игры
     }
+
+    updateRoundsInfo(newRoundsInfo: RoundsInfo) {
+        this.roundsInfo = { ...this.roundsInfo, ...newRoundsInfo };
+        this.RoundController.updateRounds(this.roundsInfo);
+    }
+    
 }

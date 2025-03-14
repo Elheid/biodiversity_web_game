@@ -7,11 +7,12 @@ import { getCurrAnswers } from '../utill';
 import { useDisablButtonContext } from '../context/DisbleButtonsProvider';
 import { useRoundEndContext } from '../context/RoundEndProvider';
 import { CURRENT_DURATION_TIME, CURRENT_TIME_BEETWEN_ROUNDS } from '../config';
-import { Answer, GameType, RoundsInfo } from '../interfaces/rounds';
+import { Answer, GameType } from '../interfaces/rounds';
+import { useLazyRounds } from './useLazyRounds';
 
 
 
-export const useGameState = (roundsInfo: RoundsInfo, totalRounds: number, gameType?:GameType) => {
+export const useGameState = (totalRounds: number, gameType?:GameType) => {
     const [game, setGame] = useState<Game>();
     const [gameStarted, setGameStarted] = useState(false);
     //const [isRoundEnd, setIsRoundEnd] = useState(false);
@@ -26,9 +27,16 @@ export const useGameState = (roundsInfo: RoundsInfo, totalRounds: number, gameTy
     const imgRef = useRef<HTMLImageElement>(null);
     const stateRef = useRef<HTMLSpanElement>(undefined);
 
+    const { roundsInfo, loadRound } = useLazyRounds(gameType || GameType.firstType);
+
+    useEffect(() => {
+        loadRound(currentRound);
+    }, [currentRound, loadRound]);
+    
+
     // Инициализация игры
     useEffect(() => {
-        if (scoreRef.current && imgRef.current) {
+        if (scoreRef.current && imgRef.current && roundsInfo[currentRound]) {
             const player = new Player();
             const game = new Game(
                 player,

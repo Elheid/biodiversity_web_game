@@ -89,9 +89,6 @@ export const getGameInfo2 = ():RoundsInfo=>{
     return gameInfo2;
 }
 
-export const getGamePictures = ()=>{
-    return gamePictures;
-}
 
 
 const coordinates:Coordinates[] = [

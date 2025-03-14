@@ -1,3 +1,4 @@
+
 import { Game } from "./classes/game";
 import { FirstRoundLevelDTO, SecondRoundLevelDTO } from "./interfaces/backendDTO";
 import { Answer, RoundInfo, RoundsInfo } from "./interfaces/rounds";
@@ -11,48 +12,45 @@ export const getCurrAnswers = (game: Game | undefined): Answer[] => {
 }
 
 //маппинг информации с бека на фронт
+export const mapFirstRound = (dto: FirstRoundLevelDTO): RoundInfo => ({
+    answerTitle: dto.correctAnimalName,
+    answers: dto.animalNames.map(name => ({
+        answerName: name,
+        isAnswerTrue: name === dto.correctAnimalName,
+    })),
+    gamePictures: {
+        pictureId: dto.id,
+        pictureUrl: `data:image/jpeg;base64,${dto.levelImage}`,
+        resultPictureUrl: `data:image/jpeg;base64,${dto.imageWithAnimal}`,
+    },
+});
 
+export const mapSecondRound = (dto: SecondRoundLevelDTO): RoundInfo => ({
+    answerTitle: dto.animalNameInQuestion,
+    answers: dto.animalNames.map(name => ({
+        answerName: name,
+        isAnswerTrue: name === dto.correctAnimalName,
+    })),
+    gamePictures: {
+        pictureId: dto.id,
+        pictureUrl: `data:image/jpeg;base64,${dto.imageWithAnimal}`,
+        resultPictureUrl: `data:image/jpeg;base64,${dto.imageWithAnimal}`,
+    },
+});
 
-export const mapFirstRoundLevelDTOToRoundInfo = (dto: FirstRoundLevelDTO): RoundInfo => {
+/*
+export const useRounds = () => {
+    const [rounds, setRounds] = useState<RoundsInfo>({});
+    const service = useMemo(() => new RoundService(), []);
+
+    const loadRound = async (roundNumber: number, type: GameType) => {
+        const round = await service.fetchRound(roundNumber, type);
+        setRounds(prev => ({ ...prev, [roundNumber]: round }));
+    };
+
     return {
-        answerTitle: dto.correctAnimalName, // Название правильного ответа
-        answers: dto.animalNames.map((name) => ({
-            answerName: name,
-            isAnswerTrue: name === dto.correctAnimalName, // Проверка, является ли ответ правильным
-        })),
-        gamePictures: {
-            pictureId: dto.id,
-            pictureUrl: `data:image/jpeg;base64,${dto.levelImage}`, // Основное изображение
-            resultPictureUrl: `data:image/jpeg;base64,${dto.imageWithAnimal}`, // Изображение с выделенным животным
-        },
+        rounds,
+        loadRound,
     };
 };
-const mapSecondRoundLevelDTOToRoundInfo = (dto: SecondRoundLevelDTO): RoundInfo => {
-    return {
-        answerTitle: dto.animalNameInQuestion, // Название животного, о котором задан вопрос
-        answers: dto.animalNames.map((name) => ({
-            answerName: name,
-            isAnswerTrue: name === dto.correctAnimalName, // Проверка, является ли ответ правильным
-        })),
-        gamePictures: {
-            pictureId: dto.id,
-            pictureUrl: `data:image/jpeg;base64,${dto.imageWithAnimal}`, // Основное изображение
-            resultPictureUrl: `data:image/jpeg;base64,${dto.imageWithAnimal}`, // Изображение с выделенным животным
-        },
-    };
-};
-export const mapDTOsToRoundsInfo = (firstRoundDTOs: FirstRoundLevelDTO[], secondRoundDTOs: SecondRoundLevelDTO[]): RoundsInfo => {
-    const roundsInfo: RoundsInfo = {};
-    // Маппинг для первого раунда
-    firstRoundDTOs.forEach((dto, index) => {
-        roundsInfo[index + 1] = mapFirstRoundLevelDTOToRoundInfo(dto);
-    });
-
-    // Маппинг для второго раунда
-    secondRoundDTOs.forEach((dto, index) => {
-        const roundNumber = firstRoundDTOs.length + index + 1;
-        roundsInfo[roundNumber] = mapSecondRoundLevelDTOToRoundInfo(dto);
-    });
-
-    return roundsInfo;
-};
+*/
