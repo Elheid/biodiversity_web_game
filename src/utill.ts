@@ -1,7 +1,7 @@
 
 import { Game } from "./classes/game";
 import { FirstRoundLevelDTO, SecondRoundLevelDTO } from "./interfaces/backendDTO";
-import { Answer, RoundInfo, RoundsInfo } from "./interfaces/rounds";
+import { Answer, RoundInfo } from "./interfaces/rounds";
 
 
 
