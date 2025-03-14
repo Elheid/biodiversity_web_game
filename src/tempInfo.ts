@@ -1,7 +1,5 @@
-import { Answer, GamePictures } from "./classes/gameRound";
 import { Species } from "./classes/animalSpecies";
 
-import { RoundsInfo } from "./classes/game";
 
 
 import giraff from "../src/assets/img/giraff.png"
@@ -9,7 +7,8 @@ import deer from "../src/assets/img/deer.png"
 
 import giraffRes from "../src/assets/img/giraffRes.png"
 import deerRes from "../src/assets/img/deerRes.png"
-import { Coordinates } from "./components/GameImage/GameImage";
+import { Answer, GamePictures, RoundsInfo } from "./interfaces/rounds";
+import { Coordinates } from "./interfaces/coordinates";
 
 
 
