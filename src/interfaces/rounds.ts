@@ -1,3 +1,5 @@
+import { Coordinates } from "./coordinates";
+
 export enum GameType{
     firstType,
     secondType
@@ -6,9 +8,10 @@ export enum GameType{
 export type RoundsInfo = { [key: number]: RoundInfo }
 
 export interface RoundInfo {
+    id:number,
     answerTitle?:string;
-    answers: Answer[]
-    gamePictures: GamePictures
+    answers: Answer[];
+    gamePictures: GamePictures;
 }
 
 
@@ -20,5 +23,6 @@ export interface Answer {
 export interface GamePictures{
     pictureId: number,
     pictureUrl:string,
-    resultPictureUrl:string
+    resultPictureUrl?:string;
+    coordinates?:Coordinates;
 }

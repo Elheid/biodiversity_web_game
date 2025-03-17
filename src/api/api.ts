@@ -4,6 +4,7 @@ import { SERVER_URL } from "../config";
 const BASE_URL = SERVER_URL;
 
 axios.defaults.baseURL = BASE_URL;
+axios.defaults.withCredentials = true;
 //axios.defaults.headers.common['Authorization'] = localStorage.getItem("token") ? `Bearer ${localStorage.getItem("token") }` : undefined;
 
 
@@ -11,6 +12,8 @@ export const MyRoutes = {
     FIRST_ROUND: "first-round",
     SECOND_ROUND: "second-round",
     ANIMALS: "animals",
+
+    SESSION_INVALIDATE:"session/invalidate",
 
     RANDOM_LEVEL: function(currRound: string): string {
         return `${currRound}/random-level`;
@@ -29,6 +32,8 @@ const postData = async(route : string, data:object) =>{
     const response = await axios.post(route, data)
     return response.data;
 }
+
+export const endSession = ()=> axios.post(MyRoutes.SESSION_INVALIDATE)
 
 export const getFirstRoundData = ()=> getData(MyRoutes.FIRST_ROUND);
 export const getSecondRoundData = ()=> getData(MyRoutes.SECOND_ROUND);

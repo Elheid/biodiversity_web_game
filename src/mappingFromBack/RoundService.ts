@@ -8,6 +8,7 @@ export class RoundService {
     //маппинг информации с бека на фронт
     mapFirstRound(dto: FirstRoundLevelDTO): RoundInfo {
         return ({
+            id:dto.id,
             answerTitle: dto.correctAnimalName,
             answers: dto.animalNames.map(name => ({
                 answerName: name,
@@ -23,6 +24,7 @@ export class RoundService {
 
     mapSecondRound(dto: SecondRoundLevelDTO): RoundInfo{
             return ({
+            id:dto.id,
             answerTitle: dto.animalNameInQuestion,
             answers: dto.animalNames.map(name => ({
                 answerName: name,
@@ -30,8 +32,8 @@ export class RoundService {
             })),
             gamePictures: {
                 pictureId: dto.id,
-                pictureUrl: `data:image/jpeg;base64,${dto.imageWithAnimal}`,
-                resultPictureUrl: `data:image/jpeg;base64,${dto.imageWithAnimal}`,
+                pictureUrl: `data:image/jpeg;base64,${dto.levelImage}`,
+                //resultPictureUrl: `data:image/jpeg;base64,${dto.imageWithAnimal}`,
             }
         });
     }

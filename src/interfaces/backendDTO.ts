@@ -14,8 +14,14 @@ export interface FirstRoundLevelDTO {
 
 export interface SecondRoundLevelDTO {
     id: number;
-    imageWithAnimal: string; // base64
+    levelImage: string; // base64
     animalNames: string[];
     correctAnimalName: string;
     animalNameInQuestion: string;
+    animalCoordinates: {
+        x: number;
+        y: number;
+        width: number;
+        height: number;
+    };
 }
