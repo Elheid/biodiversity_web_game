@@ -152,6 +152,15 @@ useEffect(() => {
                 <Typography ref={scoreRef}>{0}</Typography>
             </Paper>
 
+            <div className="description">
+                <Typography variant="h4" component="h2">
+                    Найди животное на снимке
+                </Typography>
+                <Typography variant="body1" component="h2">
+                    Укажи место, где оно находится
+                </Typography>
+            </div>
+            
             <div className="image-container">
                 <div className="main-image">
                     <ShowFullScreenProvider>
