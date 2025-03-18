@@ -1,7 +1,7 @@
 #root {
-  max-width: 1280px;
+  /*max-width: 1280px;*/
   margin: 0 auto;
-  padding: 2rem;
+  /*padding: 2rem;*/
   text-align: center;
 
   --start-button-img-hover:url("/src/assets/img/startHover.svg") center/cover;
@@ -34,7 +34,54 @@ body{
 }
 
 
+div.start-game {
+  display: grid; 
+  row-gap: 2%;
+  column-gap: 10%;
+  grid-template-columns: 5fr 1fr;
+  grid-template-rows: auto auto auto auto; /* Allow rows to adjust based on content */
+  grid-template-areas: 
+    'discription timer' 
+    'image timer' 
+    'image buttons'
+    'image buttons';
+}
+
+@media (max-width: 600px) {
+  div.start-game {
+    grid-template-columns: 1fr; /* Stack items on smaller screens */
+    grid-template-rows: auto auto auto auto; /* Allow rows to adjust based on content */
+    grid-template-areas: 
+      'discription' 
+      'timer' 
+      'image' 
+      'buttons'; /* Stack items vertically */
+  }
+}
+
+
+
+.description{
+  text-align: left;
+  grid-area: discription;
+}
+
+.image-container{
+  grid-area: image;
+}
+
+.timer-container{
+  height: fit-content;
+  grid-area: timer;
+}
+
+.buttons{
+  height: 100%;
+  grid-area: buttons;
+}
+
 /**/
+
 
 .not-active-full-screen img{
   max-width: 100%;
@@ -121,10 +168,21 @@ body{
   background-repeat: no-repeat;
 }
 
-.timer-container{
-  color:black;
+.timer-container-small{
   width: fit-content;
   padding: 25px;
+  font-size: medium;
+}
+
+.timer-container-big{
+  width: fit-content;
+  padding: 4vw;
+}
+
+
+.timer-container{
+  color:black;
+
 
   background: var(--timer-container);
   background-size: contain;

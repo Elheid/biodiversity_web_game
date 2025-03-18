@@ -81,7 +81,17 @@ export const BaseOfGame = ({ getGameInfo, gameType }: BaseGameProps) => {
                 Очки:
                 <Typography ref={scoreRef}>{0}</Typography>
             </Paper>
-            
+
+            <div className="description">
+                <Typography variant="h4" component="h2">
+                    Найди животное на снимке
+                </Typography>
+                <Typography variant="body1" component="h2">
+                    Укажи место, где оно находится
+                </Typography>
+            </div>
+
+
             <div className="image-container">
                 <div className="main-image">
                     <ShowFullScreenProvider>
@@ -91,33 +101,36 @@ export const BaseOfGame = ({ getGameInfo, gameType }: BaseGameProps) => {
             </div>
 
 
-            <Container className="control-part">
+            {/*<Container className="control-part">*/}
 
-                <Box className="timer-container">
-                    <Typography variant="h5" component="h2">
-                        {formatTime(timeLeft)}
-                    </Typography>
-                </Box>
+<Box className="timer-container timer-container-big">
+                <Typography 
+                    variant={window.innerWidth < 600 ? 'h6' : 'h3'} 
+                    component="h3" 
+            
+                >
 
-                <div className="buttons">
-                    <Typography className="question-container">
-                        {answerQuestion}
-                    </Typography>
-                    <ButtonGroup orientation="vertical" >
-                        {currentAnswers?.map((answer) => (
-                            <AnswerButton
-                                key={answer.answerName}
-                                answer={answer}
-                                isRoundEnd={isRoundEnd}
-                                selectedAnswer={selectedAnswer}
-                                isDisabled={buttonsDisabled}
-                                onClick={onAnswerClick}
-                            />
-                        ))}
-                    </ButtonGroup>
-                    <Button disabled={buttonsDisabled && isRoundEnd} onClick={onAnswerClick}>SKIP ROUND</Button>
-                </div>
+                    {formatTime(timeLeft)}
+                </Typography>
+            </Box>
 
+            <div className="buttons">
+                <Typography className="question-container">
+                    {answerQuestion}
+                </Typography>
+                <ButtonGroup orientation={window.innerWidth < 782 ? 'horizontal' : 'vertical'}>
+                    {currentAnswers?.map((answer) => (
+                        <AnswerButton
+                            key={answer.answerName}
+                            answer={answer}
+                            isRoundEnd={isRoundEnd}
+                            selectedAnswer={selectedAnswer}
+                            isDisabled={buttonsDisabled}
+                            onClick={onAnswerClick}
+                        />
+                    ))}
+                </ButtonGroup>
+                <Button disabled={buttonsDisabled && isRoundEnd} onClick={onAnswerClick}>SKIP ROUND</Button>
                 <Button onClick={() => {
                     navigator("/")
                 }}>
@@ -126,8 +139,9 @@ export const BaseOfGame = ({ getGameInfo, gameType }: BaseGameProps) => {
                     </Typography>
                     <Home />
                 </Button>
+            </div>
 
-            </Container>
+            {/*</Container>*/}
         </Container>
     );
 };
