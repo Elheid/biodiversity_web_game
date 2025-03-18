@@ -146,6 +146,8 @@ useEffect(() => {
         : currentAnswers;*/
 
     return (
+      
+      
         <Container className="start-game" sx={{ display: "flex", flexDirection: "row" }}>
             <Paper sx={{ display: "none" }}>
                 Очки:
@@ -159,7 +161,51 @@ useEffect(() => {
                     </ShowFullScreenProvider>
                 </div>
             </div>
+        
+        <Box className="timer-container timer-container-big">
+                <Typography 
+                    variant={window.innerWidth < 600 ? 'h6' : 'h3'} 
+                    component="h3" 
+            
+                >
 
+                    {formatTime(timeLeft)}
+                </Typography>
+            </Box>
+
+            <div className="buttons">
+                <Typography className="question-container">
+                    {answerQuestion}
+                </Typography>
+                <ButtonGroup orientation={window.innerWidth < 782 ? 'horizontal' : 'vertical'}>
+                    {currentAnswers?.map((answer) => (
+                        <AnswerButton
+                            key={answer.answerName}
+                            answer={answer}
+                            isRoundEnd={isRoundEnd}
+                            selectedAnswer={selectedAnswer}
+                            isDisabled={buttonsDisabled}
+                            onClick={onAnswerClick}
+                        />
+                    ))}
+                </ButtonGroup>
+                <Button disabled={buttonsDisabled && isRoundEnd} onClick={onAnswerClick}>SKIP ROUND</Button>
+                <Button onClick={() => {
+                    navigator("/")
+                }}>
+                    <Typography>
+                        На главную
+                    </Typography>
+                    <Home />
+                </Button>
+            </div>
+
+            {/*</Container>*/}
+        </Container>
+    );
+
+};
+/*
             <Container className="control-part">
                 <Box className="timer-container">
                     <Typography variant="h5" component="h2">
@@ -196,7 +242,7 @@ useEffect(() => {
         </Container>
     );
 };
-
+*/
 /*
 export const BaseOfGame = ({ gameType }: BaseGameProps) => {
     const {
@@ -267,7 +313,17 @@ export const BaseOfGame = ({ gameType }: BaseGameProps) => {
                 Очки:
                 <Typography ref={scoreRef}>{0}</Typography>
             </Paper>
-            
+
+            <div className="description">
+                <Typography variant="h4" component="h2">
+                    Найди животное на снимке
+                </Typography>
+                <Typography variant="body1" component="h2">
+                    Укажи место, где оно находится
+                </Typography>
+            </div>
+
+
             <div className="image-container">
                 <div className="main-image">
                     <ShowFullScreenProvider>
@@ -277,156 +333,4 @@ export const BaseOfGame = ({ gameType }: BaseGameProps) => {
             </div>
 
 
-            <Container className="control-part">
-
-                <Box className="timer-container">
-                    <Typography variant="h5" component="h2">
-                        {formatTime(timeLeft)}
-                    </Typography>
-                </Box>
-
-                <div className="buttons">
-                    <Typography className="question-container">
-                        {answerQuestion}
-                    </Typography>
-                    <ButtonGroup orientation="vertical" >
-                        {currentAnswers?.map((answer) => (
-                            <AnswerButton
-                                key={answer.answerName}
-                                answer={answer}
-                                isRoundEnd={isRoundEnd}
-                                selectedAnswer={selectedAnswer}
-                                isDisabled={buttonsDisabled}
-                                onClick={onAnswerClick}
-                            />
-                        ))}
-                    </ButtonGroup>
-                    <Button disabled={buttonsDisabled && isRoundEnd} onClick={onAnswerClick}>SKIP ROUND</Button>
-                </div>
-
-                <Button onClick={() => {
-                    navigator("/")
-                }}>
-                    <Typography>
-                        На главную
-                    </Typography>
-                    <Home />
-                </Button>
-
-            </Container>
-        </Container>
-    );
-};*/
-/*
-export const BaseOfGame = ({ gameType }: BaseGameProps) => {
-    const {
-        isRoundEnd,
-        buttonsDisabled,
-        selectedAnswer,
-        currentAnswers,
-        scoreRef,
-        imgRef,
-        handleAnswerSelect,
-    } = useGameState(2, gameType);
-    const { game } = useGameContext();
-    const { timeLeft, formatTime } = useTimer();
-
-    const curRound = game?.roundCounter || 0;
-    const [answerQuestion, setAnswerQuestion] = useState<string>("");
-
-    useEffect(() => {
-        const answerQuestion = game?.roundsInfo[curRound]?.answerTitle;
-        if (!isRoundEnd && answerQuestion) {
-            setAnswerQuestion(answerQuestion);
-        }
-    }, [curRound, isRoundEnd, game, game?.roundsInfo]);
-
-    const navigator = useNavigate();
-    const { firstScore } = useParams<{ firstScore?: string }>();
-
-    useEffect(() => {
-        const nav = (e: CustomEventInit<number>) => navigator(`/end/${firstScore}/${e.detail}`);
-        const onGameEnd = (e: CustomEventInit<number>) => {
-            if (firstScore) {
-                nav(e);
-            } else {
-                navigator(`/second-round/${e.detail}`, { replace: true });
-            }
-        };
-
-        window.addEventListener("game-end", onGameEnd);
-        return () => window.removeEventListener("game-end", onGameEnd);
-    }, [game, firstScore]);
-
-    const onAnswerClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-        const answerName = e.currentTarget.textContent;
-
-        if (answerQuestion) {
-            // Если есть answerQuestion, передаем его в handleAnswerSelect
-            handleAnswerSelect(answerQuestion);
-        } else if (answerName) {
-            // Иначе передаем текст кнопки
-            handleAnswerSelect(answerName);
-        }
-    };
-
-    // Создаем временные ответы "Да" и "Нет", если answerQuestion существует
-    const tempAnswers = answerQuestion
-        ? [
-            { answerName: "Да", isAnswerTrue: true },
-            { answerName: "Нет", isAnswerTrue: false },
-        ]
-        : currentAnswers;
-
-    return (
-        <Container className="start-game" sx={{ display: "flex", flexDirection: "row" }}>
-            <Paper sx={{ display: "none" }}>
-                Очки:
-                <Typography ref={scoreRef}>{0}</Typography>
-            </Paper>
-
-            <div className="image-container">
-                <div className="main-image">
-                    <ShowFullScreenProvider>
-                        <GameImage ref={imgRef} game={game} />
-                    </ShowFullScreenProvider>
-                </div>
-            </div>
-
-            <Container className="control-part">
-                <Box className="timer-container">
-                    <Typography variant="h5" component="h2">
-                        {formatTime(timeLeft)}
-                    </Typography>
-                </Box>
-
-                <div className="buttons">
-                    <Typography className="question-container">
-                        {answerQuestion}
-                    </Typography>
-                    <ButtonGroup orientation="vertical">
-                        {tempAnswers?.map((answer) => (
-                            <AnswerButton
-                                answer={answer}
-                                key={answer.answerName}
-                                isRoundEnd={isRoundEnd}
-                                selectedAnswer={selectedAnswer}
-                                isDisabled={buttonsDisabled}
-                                onClick={onAnswerClick}
-                            />
-                        ))}
-                    </ButtonGroup>
-                    <Button disabled={buttonsDisabled && isRoundEnd} onClick={onAnswerClick}>
-                        SKIP ROUND
-                    </Button>
-                </div>
-
-                <Button onClick={() => navigator("/")}>
-                    <Typography>На главную</Typography>
-                    <Home />
-                </Button>
-            </Container>
-        </Container>
-    );
-};
-*/
+            {/*<Container className="control-part">*/}
