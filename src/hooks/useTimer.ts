@@ -1,13 +1,15 @@
 import { useState, useEffect, useRef } from 'react';
-import { Game } from '../classes/game';
+import { useGameContext } from '../context/GameContextProvider';
 
-export const useTimer = (game: Game | undefined) => {
+export const useTimer = () => {
+    const {game} = useGameContext();
+
     const [timeLeft, setTimeLeft] = useState(0);
     const timerRef = useRef<number>(0);
     const abortControllerRef = useRef(new AbortController());
 
     useEffect(() => {
-        if (!game) return;
+        if (!game || !game.timer.isRunning) return;
 
         const updateTimer = () => {
             if (abortControllerRef.current.signal.aborted) return;
@@ -34,7 +36,7 @@ export const useTimer = (game: Game | undefined) => {
             window.removeEventListener('beforeunload', handleBeforeUnload);
             abortControllerRef.current.abort();
         };
-    }, [game]);
+    }, [game, game?.timer.isRunning]);
 
     const formatTime = (ms: number) => {
         const seconds = Math.ceil(ms / 1000);

@@ -1,9 +1,13 @@
 // StartGame.tsx
 import { BaseOfGame } from "../BaseOfGame";
-import { getGameInfo } from "../../tempInfo";
 
-export const GameRoundFirst = () => (
+import { useEffect } from "react";
+
+export const GameRoundFirst = () => {
+    useEffect(()=>{
+
+    },[])
+    return (
     <BaseOfGame
-        getGameInfo={getGameInfo}
-    />
-);
+    />)
+}

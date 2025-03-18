@@ -6,7 +6,7 @@ export class Timer {
 
     constructor(private durationMs: number) { }
 
-    private isRunning: boolean = false;
+    public isRunning: boolean = false;
 
     start():void {
         if (this.isRunning) {

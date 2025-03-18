@@ -1,20 +1,13 @@
 import { BASE_DURATION_TIME, BASE_TIME_BEETWEN_ROUNDS, START_ROUND, START_SCORE } from "../config";
-import { Answer, GamePictures, GameRound } from "./gameRound";
+import { Coordinates } from "../interfaces/coordinates";
+import { Answer, GameType, RoundsInfo } from "../interfaces/rounds";
+import { GameRound } from "./gameRound";
+
 import { Player } from "./player";
 import { Timer } from "./timer";
 
-export interface RoundInfo {
-    answerTitle?:string;
-    answers: Answer[]
-    gamePictures: GamePictures
-}
 
-export enum GameType{
-    firstType,
-    secondType
-}
-
-export type RoundsInfo = { [key: number]: RoundInfo }
+const HOLLOW_PICTURES = { pictureId: 0, pictureUrl: '', resultPictureUrl: '', coordinates: { x: 0, y: 0, height: 0, width: 0 } };
 
 export class Game {
 
@@ -31,24 +24,28 @@ export class Game {
     public imageRef: HTMLImageElement
     public roundStateRef: HTMLSpanElement | undefined;
 
-    private roundsInfo: RoundsInfo;
+    public roundsInfo: RoundsInfo;
+
+    public roundTitle = "";
 
     public timer: Timer;
     private _durationTime: number;
 
-    public gameType : GameType;
+    public gameType: GameType;
 
 
-    constructor(player: Player, rounds: number, roundsInfo: RoundsInfo, scoreRef: HTMLSpanElement, imageRef: HTMLImageElement, roundStateRef?: HTMLSpanElement, durationTime?: number, timeBetweenRounds?: number, gameType?:GameType) {
+    constructor(player: Player, rounds: number, scoreRef: HTMLSpanElement, imageRef: HTMLImageElement, roundStateRef?: HTMLSpanElement, durationTime?: number, timeBetweenRounds?: number, gameType?: GameType, roundsInfo?: RoundsInfo) {
         this.player = player;
 
         this.rounds = rounds;
-        this.roundsInfo = roundsInfo;
         this.roundCounter = START_ROUND;
+
+        if(roundsInfo)this.roundsInfo = roundsInfo;
+        else this.roundsInfo = {};
 
         this.score = START_SCORE;
 
-        this.RoundController = new GameRound(this.player, [], { pictureId: 0, pictureUrl: '', resultPictureUrl: '' }, () => this.changeRoundState());
+        this.RoundController = new GameRound(this.player, [], HOLLOW_PICTURES, 0, () => this.changeRoundState());
 
         this.scoreRef = scoreRef;
         this.imageRef = imageRef;
@@ -71,7 +68,7 @@ export class Game {
         else this.gameType = GameType.firstType;
     }
 
-    public restartNewGame(player: Player, rounds: number, roundsInfo: RoundsInfo, scoreRef: HTMLSpanElement, imageRef: HTMLImageElement, roundStateRef?: HTMLSpanElement, durationTime?: number, timeBetweenRounds?: number, gameType?:GameType):void{
+    public restartNewGame(player: Player, rounds: number, roundsInfo: RoundsInfo, scoreRef: HTMLSpanElement, imageRef: HTMLImageElement, roundStateRef?: HTMLSpanElement, durationTime?: number, timeBetweenRounds?: number, gameType?: GameType): void {
         this.player = player;
 
         this.rounds = rounds;
@@ -80,7 +77,7 @@ export class Game {
 
         this.score = START_SCORE;
 
-        this.RoundController = new GameRound(this.player, [], { pictureId: 0, pictureUrl: '', resultPictureUrl: '' }, () => this.changeRoundState());
+        this.RoundController = new GameRound(this.player, [], HOLLOW_PICTURES, 0, () => this.changeRoundState());
 
         this.scoreRef = scoreRef;
         this.imageRef = imageRef;
@@ -119,9 +116,14 @@ export class Game {
     public returnBaseRoundPicture(): string {
         return this.RoundController.returnCurrentPictures().pictureUrl;
     }
-    public returnResultRoundPicture():string{
-        return this.RoundController.returnCurrentPictures().resultPictureUrl;
+    public returnResultRoundPicture(): string {
+        return this.RoundController.returnCurrentPictures().resultPictureUrl ||"";
     }
+
+    public returnPictureCoordinates(): Coordinates | undefined {
+        return this.RoundController.returnCurrentPictures().coordinates;
+    }
+
 
 
     public changeImageOfFullScreen(src: string): void {
@@ -133,8 +135,6 @@ export class Game {
             } else {
                 console.error("The selected element is not an HTMLImageElement.");
             }
-        } else {
-            console.error("No image found at the specified index.");
         }
     }
 
@@ -144,20 +144,20 @@ export class Game {
     }
 
     public changePictureOnStart(): void {
-        if (this.gameType === GameType.firstType){
+        //if (this.gameType === GameType.firstType) {
             this.imageRef.src = this.returnBaseRoundPicture()//newUrl
             this.changeImageOfFullScreen(this.returnBaseRoundPicture());
-        }
-        else this.imageRef.src = this.returnResultRoundPicture()
+        //}
+        //else this.imageRef.src = this.returnResultRoundPicture()
     }
 
 
 
-    public returnGameType():GameType{
+    public returnGameType(): GameType {
         return this.gameType
     }
 
-    public isThisSecondType():boolean{
+    public isThisSecondType(): boolean {
         return this.gameType === GameType.secondType;
     }
 
@@ -179,8 +179,16 @@ export class Game {
             this.roundStateRef.textContent = roundState;
     }
 
-    public nextRound(e: CustomEventInit<number>, onNextRoundStart?: () => void): void {
-        const isAnswerTrue = this.RoundController.checkAnswer();
+    updateRoundsInfo(newRoundsInfo: RoundsInfo) {
+        this.roundsInfo = {
+            ...this.roundsInfo,
+            ...newRoundsInfo
+        };
+    }
+
+
+    /*public nextRound(e: CustomEventInit<number>, onNextRoundStart?: () => void): void {
+        const isAnswerTrue =  this.RoundController.checkAnswer(this.gameType);
         this.changeRoundState()
         this.roundCounter++;
         if (isAnswerTrue) {
@@ -192,7 +200,30 @@ export class Game {
             onNextRoundStart?.()
         }, this.timeBetweenRounds);
         console.log(e.detail)
+    }*/
+
+    public async nextRound(e: CustomEventInit<number>, onNextRoundStart: () => void, loadOnStart:()=>void): Promise<void> {
+        // Сохраняем данные события, так как они могут быть недоступны позже
+        const detail = e.detail;
+
+        const isAnswerTrue =  await this.RoundController.checkAnswer(this.gameType);
+                this.changeRoundState();
+                this.roundCounter++;
+
+                if (isAnswerTrue) {
+                    this.changeScore();
+                    console.log("start new Round");
+                }
+
+                //window.setTimeout(async () => {
+                    await onNextRoundStart();
+                    await loadOnStart();
+                    this.startGame();
+                //}, this.timeBetweenRounds);
+
+                console.log(detail);
     }
+
 
     public finishGane(): void {
         console.log("Game Ends");
@@ -207,13 +238,18 @@ export class Game {
             this.finishGane()
             return;
         }
-        const answers = this.roundsInfo[this.roundCounter].answers;
-        const pictures = this.roundsInfo[this.roundCounter].gamePictures;
-        this.RoundController = new GameRound(this.player, answers, pictures, () => this.changeRoundState());
-        this.RoundController.startRound();
-        this.changeRoundState();
-        this.changePictureOnStart()
-
+        if (this.roundsInfo){
+            const answers = this.roundsInfo[0].answers;
+            const pictures = this.roundsInfo[0].gamePictures;
+    
+    
+            const roundId = this.roundsInfo[0].id;
+            this.roundTitle = this.roundsInfo[0].answerTitle || "";
+            this.RoundController = new GameRound(this.player, answers, pictures, roundId, () => this.changeRoundState());
+            this.RoundController.startRound();
+            this.changeRoundState();
+            this.changePictureOnStart()
+        }
     }
 
     public stopGame(): void {
@@ -225,4 +261,11 @@ export class Game {
         this.timer.destroy();
         // Дополнительная логика сброса состояния игры
     }
+
+    /*
+        updateRoundsInfo(newRoundsInfo: RoundsInfo) {
+            this.roundsInfo = { ...this.roundsInfo, ...newRoundsInfo };
+            this.RoundController.updateRounds(this.roundsInfo);
+        }*/
+
 }

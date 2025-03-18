@@ -1,5 +1,6 @@
+
 import { Game } from "./classes/game";
-import { Answer } from "./classes/gameRound";
+import { Answer } from "./interfaces/rounds";
 
 export const getCurrAnswers = (game: Game | undefined): Answer[] => {
     if (game)

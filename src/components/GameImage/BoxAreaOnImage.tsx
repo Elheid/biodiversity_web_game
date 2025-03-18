@@ -1,5 +1,6 @@
 import { useCallback } from "react";
-import { Coordinates, ImageDimensions } from "./GameImage";
+import { ImageDimensions } from "./GameImage";
+import { Coordinates } from "../../interfaces/coordinates";
 
 interface BoxAreaOnImageProps {
     imageDimensions: ImageDimensions,

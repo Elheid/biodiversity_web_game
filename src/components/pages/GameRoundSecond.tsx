@@ -1,12 +1,12 @@
 // StartGame2.tsx
 
-import { GameType } from "../../classes/game";
-import { getGameInfo2 } from "../../tempInfo";
+import { GameType } from "../../interfaces/rounds";
 import { BaseOfGame } from "../BaseOfGame";
 
-export const GameRoundSecond = () => (
-  <BaseOfGame 
-    getGameInfo={getGameInfo2}
-    gameType={GameType.secondType}
-  />
-);
+export const GameRoundSecond = () => {
+    return (
+    <BaseOfGame
+
+        gameType={GameType.secondType}
+    />)
+}
