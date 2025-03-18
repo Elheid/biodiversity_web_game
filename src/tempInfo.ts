@@ -1,7 +1,5 @@
-import { Answer, GamePictures } from "./classes/gameRound";
 import { Species } from "./classes/animalSpecies";
 
-import { RoundsInfo } from "./classes/game";
 
 
 import giraff from "../src/assets/img/giraff.png"
@@ -9,7 +7,8 @@ import deer from "../src/assets/img/deer.png"
 
 import giraffRes from "../src/assets/img/giraffRes.png"
 import deerRes from "../src/assets/img/deerRes.png"
-import { Coordinates } from "./components/GameImage/GameImage";
+import { Answer, GamePictures, RoundsInfo } from "./interfaces/rounds";
+import { Coordinates } from "./interfaces/coordinates";
 
 
 
@@ -49,8 +48,8 @@ const gamePictures: GamePictures[] = [
 ]
 
 const gameInfo: RoundsInfo = {
-    0: { answers: answers, gamePictures: gamePictures[0] },
-    1: { answers: answers2, gamePictures: gamePictures[1] }
+    0: { answers: answers, gamePictures: gamePictures[0], id:1 },
+    1: { answers: answers2, gamePictures: gamePictures[1], id:1 }
 }
 
 const answers12: Answer[] = [
@@ -77,22 +76,19 @@ const answers22: Answer[] = [
 
 
 const gameInfo2: RoundsInfo = {
-    0: { answers: answers12, gamePictures: gamePictures[0], answerTitle:"Это Олень?", },
-    1: { answers: answers22, gamePictures: gamePictures[1], answerTitle:"Это Кобан?", }
+    0: { answers: answers12, gamePictures: gamePictures[0], answerTitle:"Это Олень?", id:1 },
+    1: { answers: answers22, gamePictures: gamePictures[1], answerTitle:"Это Кобан?", id:1  }
 }
 
 
-export const getGameInfo = ()=>{
+export const getGameInfo = ():RoundsInfo=>{
     return gameInfo
 }
 
-export const getGameInfo2 = ()=>{
+export const getGameInfo2 = ():RoundsInfo=>{
     return gameInfo2;
 }
 
-export const getGamePictures = ()=>{
-    return gamePictures;
-}
 
 
 const coordinates:Coordinates[] = [

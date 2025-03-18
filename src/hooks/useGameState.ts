@@ -1,16 +1,20 @@
 import { useEffect, useRef, useState } from 'react';
-import { Game, GameType, RoundsInfo } from '../classes/game';
+import { Game } from '../classes/game';
 import { Species } from '../classes/animalSpecies';
 import { Player } from '../classes/player';
-import { Answer } from '../classes/gameRound';
+
 import { getCurrAnswers } from '../utill';
 import { useDisablButtonContext } from '../context/DisbleButtonsProvider';
 import { useRoundEndContext } from '../context/RoundEndProvider';
+import { CURRENT_DURATION_TIME, CURRENT_TIME_BEETWEN_ROUNDS } from '../config';
+import { Answer, GameType } from '../interfaces/rounds';
+import { useLazyRounds } from './useLazyRounds';
+import { useGameContext } from '../context/GameContextProvider';
 
 
 
-export const useGameState = (roundsInfo: RoundsInfo, totalRounds: number, gameType?:GameType) => {
-    const [game, setGame] = useState<Game>();
+export const useGameState = (totalRounds: number, gameType?:GameType) => {
+    const {game, setGame} = useGameContext();
     const [gameStarted, setGameStarted] = useState(false);
     //const [isRoundEnd, setIsRoundEnd] = useState(false);
     const [currentRound, setCurrentRound] = useState(0);
@@ -24,6 +28,14 @@ export const useGameState = (roundsInfo: RoundsInfo, totalRounds: number, gameTy
     const imgRef = useRef<HTMLImageElement>(null);
     const stateRef = useRef<HTMLSpanElement>(undefined);
 
+    const { roundsInfo, loadRound } = useLazyRounds();
+
+    /*useEffect(() => {
+        if (game)
+            loadRound(game);
+    }, [currentRound, loadRound, game]);*/
+    
+
     // Инициализация игры
     useEffect(() => {
         if (scoreRef.current && imgRef.current) {
@@ -31,20 +43,24 @@ export const useGameState = (roundsInfo: RoundsInfo, totalRounds: number, gameTy
             const game = new Game(
                 player,
                 totalRounds,
-                roundsInfo,
                 scoreRef.current,
                 imgRef.current,
                 stateRef.current,
-                40000,
-                undefined,
-                gameType
+                CURRENT_DURATION_TIME,
+                CURRENT_TIME_BEETWEN_ROUNDS,
+                gameType,
+                roundsInfo,
             );
             setGame(game);
-            game.startGame();
-            setGameStarted(true);
 
-            setButtonsDisabled(true);
-
+            const start = async()=>{
+                await loadRound(game)
+                game.startGame();
+                setGameStarted(true);
+    
+                setButtonsDisabled(true);
+            }
+            start();
             const onChoiceAnswer = (e: CustomEventInit<number>) => {
                 setIsRoundEnd(true);
                 game?.nextRound(e, () => {
@@ -52,19 +68,32 @@ export const useGameState = (roundsInfo: RoundsInfo, totalRounds: number, gameTy
                     setIsRoundEnd(false);
                     setSelectedAnswer(null);
                     setCurrentRound(prev => prev + 1);
-                });
+                
+                }, ()=>loadRound(game));
             };
 
             window.addEventListener("choice-answer", onChoiceAnswer)
             return ()=>{
+                setIsRoundEnd(false);
                 window.removeEventListener("choice-answer", onChoiceAnswer)
+                if (game) {
+                    game.stopGame();
+                }
             }
         }
-    }, [roundsInfo,totalRounds, setButtonsDisabled]);
+    }, [totalRounds, setButtonsDisabled]);
 
     useEffect(()=>{
         if (gameStarted)
             setCurrentAnswers(getCurrAnswers(game))
+
+        const onCheckedAnswer = () => {
+            if (game?.isThisSecondType())setCurrentAnswers(getCurrAnswers(game))
+        };
+
+        window.addEventListener("checked-answer", onCheckedAnswer);
+        return () => window.removeEventListener("checked-answer", onCheckedAnswer);
+
     },[gameStarted, game, currentRound])
 
 
@@ -89,7 +118,6 @@ export const useGameState = (roundsInfo: RoundsInfo, totalRounds: number, gameTy
 
 
     return {
-        game,
         isRoundEnd,
         buttonsDisabled,
         currentRound,

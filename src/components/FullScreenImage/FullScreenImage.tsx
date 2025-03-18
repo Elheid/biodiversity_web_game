@@ -6,6 +6,25 @@ import { Box, Button } from "@mui/material";
 import FullscreenIcon from '@mui/icons-material/Fullscreen';
 import { CloseFullscreen } from "@mui/icons-material";
 
+interface ImageBoxProps {
+    className?: string;
+    typeOfButton:"show"|"close";
+    onClick:()=>void;
+}
+
+const ImageBox: React.FC<React.PropsWithChildren & ImageBoxProps> = ({ className, typeOfButton, onClick ,children }) => {
+    return (
+        <Box className={className} sx={{ display: "flex" }}>
+            {children}
+            <Button className="fullscreen-button"
+            onClick={onClick}
+            >
+                {typeOfButton === "show" ? <FullscreenIcon /> : <CloseFullscreen />}
+            </Button>
+        </Box>
+
+    )
+}
 
 export const FullScreenImage: React.FC<React.PropsWithChildren> = ({ children }) => {
     const { showFullScreen, setShowFullScreen } = useShowFullScreen();
@@ -18,28 +37,20 @@ export const FullScreenImage: React.FC<React.PropsWithChildren> = ({ children })
         setShowFullScreen(false);
     };
 
-
-//{`${!showFullScreen && "not-active-full-screen"}`}
+    //{`${!showFullScreen && "not-active-full-screen"}`}
     return (
         <div className={styles["container"]}>
-            <Box className={`${"not-active-full-screen"}`} sx={{ display: "flex" }} >
+            <ImageBox className={`${"not-active-full-screen"}`} typeOfButton={"show"} onClick={handleShowFullScreen}>
                 {children}
-                <Button onClick={handleShowFullScreen}>
-                    {<FullscreenIcon />}
-                </Button>
-            </Box>
-
+            </ImageBox>
             {showFullScreen && (
                 <div
                     className={`${styles['fullscreen-overlay']} ${styles['active']}`}
                 >
                     <div className={`${styles["fullscreen-image"]}`}>
-                        <Box sx={{ display: "flex" }}>
+                        <ImageBox onClick={handleCloseFullScreen} typeOfButton={"close"}>
                             {children}
-                            <Button onClick = { handleCloseFullScreen }>
-                                {<CloseFullscreen />}
-                            </Button>
-                        </Box>
+                        </ImageBox>
                     </div>
                 </div>
             )}

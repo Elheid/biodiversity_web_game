@@ -5,3 +5,7 @@ export enum Species{
     hog="Кабан"
 
 }
+
+export const isSpecies = (choice: string): boolean =>{
+    return Object.values(Species).includes(choice as Species);
+}

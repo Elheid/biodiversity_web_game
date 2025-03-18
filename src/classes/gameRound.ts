@@ -1,31 +1,31 @@
-import { Species } from "./animalSpecies";
+import { isAnswerCorrect, MyRoutes } from "../api/api";
+import { Answer, GamePictures, GameType } from "../interfaces/rounds";
+import { isSpecies } from "./animalSpecies";
 import { Player } from "./player";
-
-export interface Answer {
-    answerName: string,
-    isAnswerTrue: boolean;
-}
-
-export interface GamePictures{
-    pictureId: number,
-    pictureUrl:string,
-    resultPictureUrl:string
-}
 
 export class GameRound {
     private _answers: Answer[];
     public  player: Player;
     private _gamePictures: GamePictures;
     private onFinishRound?: () => void;
+    private roundId:number;
 
-    constructor(player:Player, _answers: Answer[], _gamePictures:GamePictures, onFinishRound?: () => void) {
+
+
+
+    constructor(player:Player, _answers: Answer[], _gamePictures:GamePictures, roundId:number, onFinishRound?: () => void) {
         this.player = player;
         this._answers = _answers;
         this._gamePictures = _gamePictures;
         this.onFinishRound = onFinishRound;
 
-
+        this.roundId = roundId;
     }
+
+    public getRoundId():number{
+        return this.roundId;
+    }
+
     public returnPlayerRoundState(){
         return this.player.roundState;
     }
@@ -57,16 +57,34 @@ export class GameRound {
     }
 
     public ChoiceAnswer(name:string):void{
-        this.player.choiceName = name as Species;
+        this.player.choiceName = name;
 
         const answerEvent = new CustomEvent<string>("choice-answer", {detail:name})
         window.dispatchEvent(answerEvent)
     }
 
+    public async isAnswerTrue(choice:string, roundType:GameType){
+        const route = roundType === GameType.firstType ? MyRoutes.FIRST_ROUND:MyRoutes.SECOND_ROUND;
+        const isAnswerTrueObj = await isAnswerCorrect(route, this.roundId, choice || "");
+        const isAnswerTrue = isAnswerTrueObj.isCorrect;
 
-    public checkAnswer():boolean{
+        if( roundType === GameType.secondType ){
+            const answerEvent = new CustomEvent("checked-answer", {
+                detail: {
+                    answerName: choice,
+                    result: isAnswerTrue
+                }
+            });
+            window.dispatchEvent(answerEvent);
+        }
+
+        return isAnswerTrue;
+    }
+
+    public async checkAnswer(roundType:GameType):Promise<boolean>{
         const choice = this.player.selectChoice()
-        const expectedAnswer = this._answers.filter((answer)=>{
+        if (!choice || !isSpecies(choice)) return false;
+        /*const expectedAnswer = this._answers.filter((answer)=>{
             return answer.isAnswerTrue
         })
 
@@ -76,10 +94,24 @@ export class GameRound {
                 this.finishRound();
                 return true;
             }
-        }
+        }*/
+
+        const isAnswerTrue = this.isAnswerTrue(choice, roundType)
+        if (isAnswerTrue) return isAnswerTrue;
+
         this.player.playerLose();
         this.finishRound();
         return false;
+    }
+
+    public cleanup(): void {
+        // 1. Удаляем обработчики событий
+        
+        // 2. Обнуляем коллбэки
+        this.onFinishRound = undefined;
+        
+        // 3. Дополнительные очистки при необходимости
+        // (например, если есть таймеры в расширенной логике)
     }
 
 }

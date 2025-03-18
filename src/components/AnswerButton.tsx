@@ -1,13 +1,28 @@
-import { Button } from "@mui/material";
-import { Answer } from "../classes/gameRound";
+
+
 import { Species } from "../classes/animalSpecies";
+
+import { useEffect, useState } from "react";
+import { Button } from "@mui/material";
+import { AnswerButtonStyle } from "../style/AnswerButtonStyle"
+import { Answer } from "../interfaces/rounds";
+
 
 interface AnswerButtonProps {
     answer: Answer;
     isRoundEnd: boolean;
     selectedAnswer: Species | null;
+
     isDisabled: boolean;
     onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
+}
+
+
+enum ButtonImage {
+    disableButton = "disable-button",
+    trueButton = "true-button",
+    falseButton = "false-button",
+    normalButton = "normal-button"
 }
 
 export const AnswerButton = ({
@@ -17,27 +32,45 @@ export const AnswerButton = ({
     isDisabled,
     onClick
 }: AnswerButtonProps) => {
-    let backgroundColor = 'inherit';
+    const [className, setClassName] = useState<string>(ButtonImage.disableButton);
 
-    if (isRoundEnd) {
-        if (answer.isAnswerTrue) {
-            backgroundColor = 'green';
-        } else if (answer.answerName === selectedAnswer) {
-            backgroundColor = 'red';
-        }
-    } else {
-        if (answer.answerName === selectedAnswer) {
-            backgroundColor = answer.isAnswerTrue ? 'green' : 'red';
-        }
-    }
+    //const { game } = useGameContext();
 
-    return (
-        <Button
-            disabled={isDisabled}
-            onClick={onClick}
-            style={{ backgroundColor }}
-        >
-            {answer.answerName}
-        </Button>
-    );
+    //const curRound = game?.roundCounter || 0;
+    //const animalInQuestion = game?.roundsInfo[curRound]?.answerTitle;
+
+    useEffect(() => {
+        if (isDisabled) setClassName(ButtonImage.disableButton);
+        else setClassName(ButtonImage.normalButton);
+        if (isRoundEnd) {
+            if (answer.isAnswerTrue) {
+                setClassName(ButtonImage.trueButton);
+            } else if (answer.answerName === selectedAnswer) {
+                setClassName(ButtonImage.falseButton);
+            }
+        } else {
+            if (answer.answerName === selectedAnswer) {
+                if (answer.answerName === selectedAnswer) {
+                    setClassName(answer.isAnswerTrue
+                        ? ButtonImage.trueButton
+                        : ButtonImage.falseButton);
+                }
+            }
+        }
+
+    }, [isDisabled, isRoundEnd, selectedAnswer, answer]);
+
+
+    //if (!game?.isThisSecondType()) {
+        return (
+            <Button
+                disabled={isDisabled}
+                onClick={onClick}
+                className={`${className} background-icon`}
+                sx={AnswerButtonStyle}
+            >
+                {answer.answerName}
+            </Button>
+        );
+    //}
 };
