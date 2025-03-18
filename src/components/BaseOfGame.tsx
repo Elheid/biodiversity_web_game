@@ -146,8 +146,6 @@ useEffect(() => {
         : currentAnswers;*/
 
     return (
-      
-      
         <Container className="start-game" sx={{ display: "flex", flexDirection: "row" }}>
             <Paper sx={{ display: "none" }}>
                 Очки:
@@ -175,10 +173,10 @@ useEffect(() => {
 
             <div className="buttons">
                 <Typography className="question-container">
-                    {answerQuestion}
+                    {getAnswerTitle(game)}
                 </Typography>
                 <ButtonGroup orientation={window.innerWidth < 782 ? 'horizontal' : 'vertical'}>
-                    {currentAnswers?.map((answer) => (
+                    {answersToShow?.map((answer) => (
                         <AnswerButton
                             key={answer.answerName}
                             answer={answer}
@@ -330,7 +328,4 @@ export const BaseOfGame = ({ gameType }: BaseGameProps) => {
                         <GameImage ref={imgRef} game={game} />
                     </ShowFullScreenProvider>
                 </div>
-            </div>
-
-
-            {/*<Container className="control-part">*/}
+            </div>*/
