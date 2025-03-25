@@ -10,6 +10,9 @@ import { RoundEndProvider } from './context/RoundEndProvider'
 import { RoundStart } from './components/pages/RoundStart'
 import { GameProvider } from './context/GameContextProvider'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { GameType } from './interfaces/rounds'
+import { GamePointsProvider } from './context/GamePointsProvider'
+import { InterEnd } from './components/pages/InterEnd'
 
 function App() {
 
@@ -25,29 +28,34 @@ function App() {
     <GameProvider>
 
 
-    <QueryClientProvider client={queryClient}>
-    <DisbleButtonsProvider>
-        <RoundEndProvider>
-          <BrowserRouter basename="/">
-            <Routes>
-              <Route path="/" element={<MainPage />} />
-              <Route path="/first-round-start" element={<RoundStart />} />
+      <QueryClientProvider client={queryClient}>
+        <GamePointsProvider>
+          <DisbleButtonsProvider>
+            <RoundEndProvider>
+              <BrowserRouter basename="/">
+                <Routes>
+                  <Route path="/" element={<MainPage />} />
+                  <Route path="/first-round-start" element={<RoundStart roundType={GameType.firstType} />} />
 
-              <Route path="/first-round" element={<GameRoundFirst />} />
+                  <Route path="/first-round" element={<GameRoundFirst />} />
+                  <Route path="/first-round-end" element={<InterEnd />} />
+                  
 
-              <Route path="/second-round-start/:firstScore" element={<RoundStart />} />
+                  <Route path="/second-round-start" element={<RoundStart roundType={GameType.secondType} />} />
 
-              <Route path="/second-round/:firstScore" element={<GameRoundSecond />} />
-              <Route path="/end/:firstScore/:secondScore" element={<GameEnd />} />
+                  <Route path="/second-round" element={<GameRoundSecond />} />
+                  <Route path="/end" element={<GameEnd />} />
 
 
 
-            </Routes>
-          </BrowserRouter>
-        </RoundEndProvider>
-      </DisbleButtonsProvider>
+                </Routes>
+              </BrowserRouter>
+            </RoundEndProvider>
+          </DisbleButtonsProvider>
+        </GamePointsProvider>
 
-    </QueryClientProvider>
+
+      </QueryClientProvider>
     </GameProvider>
 
   )

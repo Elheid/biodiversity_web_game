@@ -3,8 +3,9 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router";
 import { endSession } from "../../api/api";
 import axios from "axios";
+import { GameType } from "../../interfaces/rounds";
 
-export const RoundStart = ()=>{
+export const RoundStart = ({roundType}:{roundType : GameType})=>{
     const nav = useNavigate()
     useEffect(()=>{
         endSession()//end prev session
@@ -17,10 +18,12 @@ export const RoundStart = ()=>{
         axios.get("/animals/Олень");
     }
 
+    const roundStartButton = roundType === GameType.firstType ? "first-round" : "second-round";
+
     return (
         <Button onClick={()=>{
             startSessionRequest()
-            nav("/first-round")
+            nav(`/${roundStartButton}`)
         }}>Start</Button>
     );
 }

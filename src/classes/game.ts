@@ -215,11 +215,11 @@ export class Game {
                     console.log("start new Round");
                 }
 
-                //window.setTimeout(async () => {
+                window.setTimeout(async () => {
                     await onNextRoundStart();
                     await loadOnStart();
                     this.startGame();
-                //}, this.timeBetweenRounds);
+                }, this.timeBetweenRounds);
 
                 console.log(detail);
     }

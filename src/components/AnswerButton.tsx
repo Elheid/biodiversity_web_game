@@ -10,6 +10,7 @@ import { Answer } from "../interfaces/rounds";
 
 interface AnswerButtonProps {
     answer: Answer;
+    isAnswerTrue:boolean;
     isRoundEnd: boolean;
     selectedAnswer: Species | null;
 
@@ -27,6 +28,7 @@ enum ButtonImage {
 
 export const AnswerButton = ({
     answer,
+    isAnswerTrue,
     isRoundEnd,
     selectedAnswer,
     isDisabled,
@@ -42,23 +44,23 @@ export const AnswerButton = ({
     useEffect(() => {
         if (isDisabled) setClassName(ButtonImage.disableButton);
         else setClassName(ButtonImage.normalButton);
-        if (isRoundEnd) {
-            if (answer.isAnswerTrue) {
+       /* if (isRoundEnd) {
+            if (isAnswerTrue && answer.answerName === selectedAnswer) {
                 setClassName(ButtonImage.trueButton);
-            } else if (answer.answerName === selectedAnswer) {
+            } else if (answer.answerName === selectedAnswer && !isAnswerTrue) {
                 setClassName(ButtonImage.falseButton);
             }
-        } else {
+        } else {*/
             if (answer.answerName === selectedAnswer) {
                 if (answer.answerName === selectedAnswer) {
-                    setClassName(answer.isAnswerTrue
+                    setClassName(isAnswerTrue
                         ? ButtonImage.trueButton
                         : ButtonImage.falseButton);
                 }
             }
-        }
+        //}
 
-    }, [isDisabled, isRoundEnd, selectedAnswer, answer]);
+    }, [isDisabled, isRoundEnd, selectedAnswer, answer, isAnswerTrue]);
 
 
     //if (!game?.isThisSecondType()) {

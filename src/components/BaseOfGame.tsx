@@ -7,13 +7,14 @@ import { GameImage } from "./GameImage/GameImage";
 
 import { useTimer } from "../hooks/useTimer";
 import { AnswerButton } from "./AnswerButton";
-import { useNavigate, useParams } from "react-router";
+import { useNavigate } from "react-router";
 
 import { ShowFullScreenProvider } from "../context/ShowFullScreen";
 import { Home } from "@mui/icons-material";
 import { GameType, RoundsInfo } from "../interfaces/rounds";
 import { useGameContext } from "../context/GameContextProvider";
 import { Game } from "../classes/game";
+import { useGamePointsContext } from "../context/GamePointsProvider";
 
 interface BaseGameProps {
     //getGameInfo: () => RoundsInfo; // Уточните тип согласно вашей реализацииs
@@ -51,32 +52,27 @@ export const BaseOfGame = ({ gameType }: BaseGameProps) => {
             setShowYesNo(true); // При новом раунде снова показываем "Да" и "Нет"
         }
 
-       /* const onRoundEnd = (e: CustomEventInit)=>{
-            setAnswerQuestion(getAnswerTitle(game) || "");
-        }
-        window.addEventListener("round-end", ()=> onRoundEnd);
-
-        return()=>{
-
-        }*/
     }, [curRound, game]);
 
     const navigator = useNavigate();
-    const { firstScore } = useParams<{ firstScore?: string }>();
+    const {setFirstRoundPoints, setSecondRoundPoints} = useGamePointsContext()
 
     useEffect(() => {
-        const nav = (e: CustomEventInit<number>) => navigator(`/end/${firstScore}/${e.detail}`);
+        const points = (e: CustomEventInit<number>)=> e.detail || 0;
+        const nav = () => navigator(`/end`);
         const onGameEnd = (e: CustomEventInit<number>) => {
-            if (firstScore) {
-                nav(e);
+            if (gameType === GameType.secondType) {
+                setSecondRoundPoints(points(e));
+                nav();
             } else {
-                navigator(`/second-round/${e.detail}`, { replace: true });
+                setFirstRoundPoints(points(e));
+                navigator(`/first-round-end`, { replace: true });
             }
         };
 
         window.addEventListener("game-end", onGameEnd);
         return () => window.removeEventListener("game-end", onGameEnd);
-    }, [game, firstScore]);
+    }, [game]);
 
     // Обработчик события "checked-answer"
     useEffect(() => {
@@ -94,6 +90,8 @@ export const BaseOfGame = ({ gameType }: BaseGameProps) => {
         return () => window.removeEventListener("checked-answer", onCheckedAnswer);
     }, [game]);
 
+    const [isAnswerTrue, setIsAnswerTrue] = useState(false);
+
     const onAnswerClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         const answerName = e.currentTarget.textContent;
 
@@ -101,12 +99,15 @@ export const BaseOfGame = ({ gameType }: BaseGameProps) => {
             // Если есть answerQuestion и показываем "Да" и "Нет", передаем answerQuestion
             const choice = getAnswerTitle(game) || ""//game?.roundsInfo[curRound]?.answerTitle || "";
             game?.RoundController.isAnswerTrue(choice, GameType.secondType).then(res =>{
+                setIsAnswerTrue(res)
                 const answer = answerName === "Да" ?choice:"Нет";
                 if (res || (!res && answerName === "Да"))
                     handleAnswerSelect(answer);
             })
         } else if (answerName) {
             // Иначе передаем текст кнопки
+            game?.RoundController.isAnswerTrue(answerName, gameType || GameType.firstType).then(res =>{
+                setIsAnswerTrue(res)});
             handleAnswerSelect(answerName);
         }
     };
@@ -168,7 +169,7 @@ useEffect(() => {
                     </ShowFullScreenProvider>
                 </div>
             </div>
-        
+
         <Box className="timer-container timer-container-big">
                 <Typography 
                     variant={window.innerWidth < 600 ? 'h6' : 'h3'} 
@@ -189,6 +190,7 @@ useEffect(() => {
                         <AnswerButton
                             key={answer.answerName}
                             answer={answer}
+                            isAnswerTrue={isAnswerTrue}
                             isRoundEnd={isRoundEnd}
                             selectedAnswer={selectedAnswer}
                             isDisabled={buttonsDisabled}

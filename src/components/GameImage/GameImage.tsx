@@ -133,6 +133,7 @@ export const GameImage = forwardRef<HTMLImageElement, ImgHTMLAttributes<HTMLImag
                 coordinates={coordinates} 
                 imageDimensions={imageDimensions} 
                 drawAreaCondition={!(!game || !imageDimensions || isRoundEnd)}
+                boxColor={"rgba(0, 235, 199, 1)"}
                 />
             )}
         </div>

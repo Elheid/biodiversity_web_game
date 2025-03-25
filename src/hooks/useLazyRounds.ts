@@ -5,12 +5,15 @@ import { mapFirstRound, mapSecondRound } from "../mappingFromBack/mappingDTO";
 import { useGameContext } from "../context/GameContextProvider";
 
 import { Game } from "../classes/game";
+import { useNavigate } from "react-router";
 
 
 export const useLazyRounds = () => {
     const [roundsInfo, setRoundsInfo] = useState<RoundsInfo>({});
     const {game} = useGameContext();
     const loadedRounds = useRef<Set<number>>(new Set());
+
+    const navigate = useNavigate();
 
 
     const loadRound = useCallback(async (game: Game) => {
@@ -36,7 +39,9 @@ export const useLazyRounds = () => {
             game.updateRoundsInfo([mapper(data)])
             loadedRounds.current.add(roundNumber);
         } catch (error) {
+
             console.error('Error loading round:', error);
+            navigate("/")
         }
     }, [game,roundsInfo]);
 
