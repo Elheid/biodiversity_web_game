@@ -161,11 +161,14 @@ div.start-game {
 }
 
 .main-image{
+  position: relative;
   padding: 5%;
   background: var(--image-container);
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
+
+  aspect-ratio: 16/9; 
 }
 
 .timer-container-small{

@@ -9,7 +9,7 @@ import { useShowFullScreen } from "../../context/ShowFullScreen";
 
 interface GameImageProps {
     game: Game | undefined;
-
+    onImageLoad?:()=>void;
     isVisible:boolean;
 }
 
@@ -20,7 +20,7 @@ export interface ImageDimensions{
     naturalHeight: number;
 }
 
-export const GameImage = forwardRef<HTMLImageElement, ImgHTMLAttributes<HTMLImageElement> & GameImageProps>(({ isVisible,game, ...props }, ref) => {
+export const GameImage = forwardRef<HTMLImageElement, ImgHTMLAttributes<HTMLImageElement> & GameImageProps>(({ isVisible, onImageLoad,game, ...props }, ref) => {
 
     const { buttonsDisabled,setButtonsDisabled } = useDisablButtonContext();
     const {isRoundEnd} = useRoundEndContext();
@@ -33,6 +33,7 @@ export const GameImage = forwardRef<HTMLImageElement, ImgHTMLAttributes<HTMLImag
 
     const internalRef = useRef<HTMLImageElement>(null);
 
+    
     useImperativeHandle(ref, () => internalRef.current as HTMLImageElement);
     const {showFullScreen} = useShowFullScreen();
     useEffect(() => {
@@ -70,6 +71,9 @@ export const GameImage = forwardRef<HTMLImageElement, ImgHTMLAttributes<HTMLImag
             naturalWidth: img.naturalWidth,
             naturalHeight: img.naturalHeight,
         });
+        
+        // Вызываем колбэк при загрузке изображения
+        onImageLoad?.();
     };
 
     const coordinates = game?.returnPictureCoordinates() || {x:0,y:0, width:0, height:0};
@@ -83,6 +87,13 @@ export const GameImage = forwardRef<HTMLImageElement, ImgHTMLAttributes<HTMLImag
         //масштаб
         const scaleX = imageDimensions.naturalWidth / rect.width;
         const scaleY = imageDimensions.naturalHeight / rect.height;
+
+        setImageDimensions({
+            displayWidth: rect.width,
+            displayHeight: rect.height,
+            naturalWidth: img.naturalWidth,
+            naturalHeight: img.naturalHeight,
+        });
 
         //клик относительно оригинала
         const clickX = (event.clientX - rect.left) * scaleX;
@@ -120,7 +131,7 @@ export const GameImage = forwardRef<HTMLImageElement, ImgHTMLAttributes<HTMLImag
 
     return (
         <FullScreenImage>
-        <div style={{ position: 'relative', display:isVisible ? "" : "none"}} >
+        <div style={{ position: 'relative', display: isVisible ? "" : "none"}} >
             <img
                 className={"image"}
                 src={imageSrc}
@@ -128,8 +139,13 @@ export const GameImage = forwardRef<HTMLImageElement, ImgHTMLAttributes<HTMLImag
                 onLoad={handleImageLoad}
                 ref={internalRef}
                 {...props}
+                // Добавляем стили для плавного появления
+                style={{
+                    ...props.style,
+                    opacity: imageSrc === "-1" ? 0 : 1,
+                    transition: "opacity 0.3s ease-in"
+                }}
             />
-
             {!buttonsDisabled &&  game && imageDimensions && !isRoundEnd && (
                 <BoxAreaOnImage 
                 coordinates={coordinates} 
