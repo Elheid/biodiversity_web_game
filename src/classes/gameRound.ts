@@ -8,7 +8,7 @@ export class GameRound {
     public  player: Player;
     private _gamePictures: GamePictures;
     private onFinishRound?: () => void;
-    private roundId:number;
+    public roundId:number;
 
 
 
@@ -40,7 +40,8 @@ export class GameRound {
 
     public startRound():void{
         this.player.newRound();
-        console.log("Game round started");
+        const startEvent = new CustomEvent<number>("round-start", { detail: this.roundId});
+        window.dispatchEvent(startEvent)
     }
 
     public finishRound():void{

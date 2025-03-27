@@ -39,6 +39,7 @@ export const getFirstRoundData = ()=> getData(MyRoutes.FIRST_ROUND);
 export const getSecondRoundData = ()=> getData(MyRoutes.SECOND_ROUND);
 
 export const isAnswerCorrect = (curRound:string, roundId:number, answer:string)=> postData(MyRoutes.IS_CORRECT_ANSWER(curRound, roundId),{answer:answer});
+export const getTrueAnswer =  (curRound:string, roundId:number)=> getData(`${curRound}/${roundId}/correct`);
 
 export const getRandomRound = (curRound:string)=> getData(MyRoutes.RANDOM_LEVEL(curRound));
 

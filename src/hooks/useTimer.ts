@@ -12,7 +12,7 @@ export const useTimer = () => {
         if (!game || !game.timer.isRunning) return;
 
         const updateTimer = () => {
-            if (abortControllerRef.current.signal.aborted) return;
+            //if (abortControllerRef.current.signal.aborted) return;
 
             const remaining = game.getTimerValue();
             setTimeLeft(remaining);
@@ -34,9 +34,9 @@ export const useTimer = () => {
             window.clearInterval(timerRef.current);
             game.stopGame();
             window.removeEventListener('beforeunload', handleBeforeUnload);
-            abortControllerRef.current.abort();
+            //abortControllerRef.current.abort();
         };
-    }, [game, game?.timer.isRunning]);
+    }, [game, game?.timer.isRunning, game?.timer]);
 
     const formatTime = (ms: number) => {
         const seconds = Math.ceil(ms / 1000);

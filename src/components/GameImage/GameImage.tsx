@@ -9,6 +9,8 @@ import { useShowFullScreen } from "../../context/ShowFullScreen";
 
 interface GameImageProps {
     game: Game | undefined;
+
+    isVisible:boolean;
 }
 
 export interface ImageDimensions{
@@ -18,7 +20,7 @@ export interface ImageDimensions{
     naturalHeight: number;
 }
 
-export const GameImage = forwardRef<HTMLImageElement, ImgHTMLAttributes<HTMLImageElement> & GameImageProps>(({ game, ...props }, ref) => {
+export const GameImage = forwardRef<HTMLImageElement, ImgHTMLAttributes<HTMLImageElement> & GameImageProps>(({ isVisible,game, ...props }, ref) => {
 
     const { buttonsDisabled,setButtonsDisabled } = useDisablButtonContext();
     const {isRoundEnd} = useRoundEndContext();
@@ -118,7 +120,7 @@ export const GameImage = forwardRef<HTMLImageElement, ImgHTMLAttributes<HTMLImag
 
     return (
         <FullScreenImage>
-        <div style={{ position: 'relative'}}>
+        <div style={{ position: 'relative', display:isVisible ? "" : "none"}} >
             <img
                 className={"image"}
                 src={imageSrc}

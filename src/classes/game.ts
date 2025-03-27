@@ -206,6 +206,8 @@ export class Game {
         // Сохраняем данные события, так как они могут быть недоступны позже
         const detail = e.detail;
 
+        this.timer.pause(); //остановить, на время окончания раунда
+
         const isAnswerTrue =  await this.RoundController.checkAnswer(this.gameType);
                 this.changeRoundState();
                 this.roundCounter++;
@@ -219,6 +221,7 @@ export class Game {
                     await onNextRoundStart();
                     await loadOnStart();
                     this.startGame();
+                    this.timer.start(); //восстановиьт, на время начала раунда
                 }, this.timeBetweenRounds);
 
                 console.log(detail);
@@ -244,6 +247,7 @@ export class Game {
     
     
             const roundId = this.roundsInfo[0].id;
+            
             this.roundTitle = this.roundsInfo[0].answerTitle || "";
             this.RoundController = new GameRound(this.player, answers, pictures, roundId, () => this.changeRoundState());
             this.RoundController.startRound();
@@ -253,7 +257,7 @@ export class Game {
     }
 
     public stopGame(): void {
-        this.timer.destroy();
+        this.timer.stop();
         this.RoundController.cleanup();
     }
 

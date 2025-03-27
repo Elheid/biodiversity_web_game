@@ -1,5 +1,5 @@
 // BaseGame.tsx
-import { Box, Button, ButtonGroup, Container, Paper, Typography } from "@mui/material";
+import { Box, Button, ButtonGroup, Container, Paper, Skeleton, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 
 import { useGameState } from "./../hooks/useGameState";
@@ -15,6 +15,9 @@ import { GameType, RoundsInfo } from "../interfaces/rounds";
 import { useGameContext } from "../context/GameContextProvider";
 import { Game } from "../classes/game";
 import { useGamePointsContext } from "../context/GamePointsProvider";
+import { getTrueAnswer } from "../api/api";
+import { TimerComponent } from "./TimerComponent";
+import { ImageContainer } from "./ImageContainer";
 
 interface BaseGameProps {
     //getGameInfo: () => RoundsInfo; // Уточните тип согласно вашей реализацииs
@@ -37,22 +40,61 @@ export const BaseOfGame = ({ gameType }: BaseGameProps) => {
         handleAnswerSelect,
     } = useGameState(2, gameType);
     const { game } = useGameContext();
-    const { timeLeft, formatTime } = useTimer();
 
-    const curRound = game?.roundCounter || 0;
-    //const [answerQuestion, setAnswerQuestion] = useState<string>(getAnswerTitle(game) || "");
     const [showYesNo, setShowYesNo] = useState<boolean>(true); // Состояние для отображения "Да" и "Нет"
 
 
+    const [trueAnswer, setTrueAnswer] = useState<string>("");
+
+
     useEffect(() => {
-        const answerQuestion = getAnswerTitle(game) //game?.roundsInfo[curRound]?.answerTitle;
-        if (answerQuestion) {
-            //setAnswerQuestion(answerQuestion);
 
-            setShowYesNo(true); // При новом раунде снова показываем "Да" и "Нет"
-        }
+            const onRoundStart = (e: CustomEventInit<number>) => {
+                if (game &&  game.roundsInfo[0] && game.roundsInfo[0].id ){
+                    const type = gameType || GameType.firstType;
+                    getTrueAnswer(type === GameType.firstType ? "first-round" : "second-round", e.detail || -1)
+                    .then(res=>setTrueAnswer(res.name))
+                }
+                if (gameType === GameType.secondType) {
+                    setShowYesNo(true)
+                } else {
+                    setShowYesNo(false)
+                }
+            };
 
-    }, [curRound, game]);
+            window.addEventListener("round-start", onRoundStart);
+            return () => window.removeEventListener("round-start", onRoundStart);
+
+    }, [gameType, game]);
+
+    const [answersToShow, setAnswersToShow] = useState<
+    { answerName: string; isAnswerTrue: boolean }[]
+>([]);
+
+useEffect(() => {
+    if (game) {
+        const YesNoAnswers = [
+            { answerName: "Да", isAnswerTrue: false },
+            { answerName: "Нет", isAnswerTrue: false },
+        ]
+        
+        const secondType = game.isThisSecondType();
+        const showEcondRoundAnsw = showYesNo && secondType;
+
+        console.log("currentAnswers:", currentAnswers); // Логируем currentAnswers
+
+        const newAnswersToShow = showEcondRoundAnsw
+            ? YesNoAnswers
+            : currentAnswers ? currentAnswers : YesNoAnswers ;
+
+        console.log("newAnswersToShow:", newAnswersToShow); // Логируем newAnswersToShow
+
+        setAnswersToShow(newAnswersToShow);
+    } else {
+        setAnswersToShow(currentAnswers);
+    }
+}, [showYesNo, game, currentAnswers]);
+
 
     const navigator = useNavigate();
     const {setFirstRoundPoints, setSecondRoundPoints} = useGamePointsContext()
@@ -81,7 +123,7 @@ export const BaseOfGame = ({ gameType }: BaseGameProps) => {
             result: boolean;
         }>) => {
             const title = getAnswerTitle(game)//game?.roundsInfo[curRound]?.answerTitle;
-            if (e.detail && e.detail.result === false && e.detail.answerName === title/*answerQuestion*/) {
+            if (e.detail && e.detail.result === false && e.detail.answerName === title && trueAnswer !== title/*answerQuestion*/) {
                 setShowYesNo(false); // Если ответ неверный, показываем currentAnswers
             }
         };
@@ -112,39 +154,7 @@ export const BaseOfGame = ({ gameType }: BaseGameProps) => {
         }
     };
 
-    const [answersToShow, setAnswersToShow] = useState<
-    { answerName: string; isAnswerTrue: boolean }[]
->([]);
 
-useEffect(() => {
-    if (game) {
-        const secondType = game.isThisSecondType();
-        const showAllAnswers = showYesNo && secondType;
-
-        console.log("currentAnswers:", currentAnswers); // Логируем currentAnswers
-
-        const newAnswersToShow = showAllAnswers
-            ? [
-                { answerName: "Да", isAnswerTrue: true },
-                { answerName: "Нет", isAnswerTrue: false },
-            ]
-            : currentAnswers;
-
-        console.log("newAnswersToShow:", newAnswersToShow); // Логируем newAnswersToShow
-
-        setAnswersToShow(newAnswersToShow);
-    } else {
-        setAnswersToShow(currentAnswers);
-    }
-}, [showYesNo, game, currentAnswers]);
-
-    // Определяем, какие ответы показывать
-    /*const answersToShow = showYesNo && game?.isThisSecondType()
-        ? [
-            { answerName: "Да", isAnswerTrue: true },
-            { answerName: "Нет", isAnswerTrue: false },
-        ]
-        : currentAnswers;*/
 
     return (
         <Container className="start-game" sx={{ display: "flex", flexDirection: "row" }}>
@@ -162,24 +172,9 @@ useEffect(() => {
                 </Typography>
             </div>
             
-            <div className="image-container">
-                <div className="main-image">
-                    <ShowFullScreenProvider>
-                        <GameImage ref={imgRef} game={game} />
-                    </ShowFullScreenProvider>
-                </div>
-            </div>
+            {<ImageContainer ref={imgRef} game={game} />}
 
-        <Box className="timer-container timer-container-big">
-                <Typography 
-                    variant={window.innerWidth < 600 ? 'h6' : 'h3'} 
-                    component="h3" 
-            
-                >
-
-                    {formatTime(timeLeft)}
-                </Typography>
-            </Box>
+            {game && <TimerComponent timer={game?.timer}/>}
 
             <div className="buttons">
                 <Typography className="question-container">
@@ -188,10 +183,12 @@ useEffect(() => {
                 <ButtonGroup orientation={window.innerWidth < 782 ? 'horizontal' : 'vertical'}>
                     {answersToShow?.map((answer) => (
                         <AnswerButton
+                            parentTitle={ getAnswerTitle(game)}
                             key={answer.answerName}
                             answer={answer}
                             isAnswerTrue={isAnswerTrue}
                             isRoundEnd={isRoundEnd}
+                            trueAnswer={trueAnswer}
                             selectedAnswer={selectedAnswer}
                             isDisabled={buttonsDisabled}
                             onClick={onAnswerClick}
@@ -214,129 +211,3 @@ useEffect(() => {
     );
 
 };
-/*
-            <Container className="control-part">
-                <Box className="timer-container">
-                    <Typography variant="h5" component="h2">
-                        {formatTime(timeLeft)}
-                    </Typography>
-                </Box>
-
-                <div className="buttons">
-                    <Typography className="question-container">
-                        {getAnswerTitle(game)}
-                    </Typography>
-                    <ButtonGroup orientation="vertical">
-                        {answersToShow?.map((answer) => (
-                            <AnswerButton
-                                answer={answer}
-                                key={answer.answerName}
-                                isRoundEnd={isRoundEnd}
-                                selectedAnswer={selectedAnswer}
-                                isDisabled={buttonsDisabled}
-                                onClick={onAnswerClick}
-                            />
-                        ))}
-                    </ButtonGroup>
-                    <Button disabled={buttonsDisabled && isRoundEnd} onClick={onAnswerClick}>
-                        SKIP ROUND
-                    </Button>
-                </div>
-
-                <Button onClick={() => navigator("/")}>
-                    <Typography>На главную</Typography>
-                    <Home />
-                </Button>
-            </Container>
-        </Container>
-    );
-};
-*/
-/*
-export const BaseOfGame = ({ gameType }: BaseGameProps) => {
-    const {
-        isRoundEnd,
-        buttonsDisabled,
-        selectedAnswer,
-        currentAnswers,
-        scoreRef,
-        imgRef,
-        handleAnswerSelect,
-    } = useGameState(2, gameType);
-    const {game} = useGameContext();
-    const { timeLeft, formatTime } = useTimer();
-
-    //Для отображения надписи/вопроса в начале каждого раунда
-
-    const curRound = game?.roundCounter || 0;
-    const [answerQuestion, setAnswerQuestion] = useState<string>("");
-
-    useEffect(() => {
-        const answerQuestion = game?.roundsInfo[curRound]?.answerTitle;
-        if (!isRoundEnd && answerQuestion) {
-            setAnswerQuestion(answerQuestion);
-        }
-    }, [curRound, isRoundEnd, game]);
-    //
-    //Это для перехода между играми и выхода на страницу с подсчетом очков
-    const navigator = useNavigate();
-
-    const { firstScore } = useParams<{ firstScore?: string }>();
-
-    useEffect(() => {
-        const nav = (e: CustomEventInit<number>) => navigator(`/end/${firstScore}/${e.detail}`)
-        //window.location.href = "/end/" + e.detail;
-        const onGameEnd = (e: CustomEventInit<number>) => {
-            if (firstScore) {
-                nav(e);
-            } else {
-                navigator(`/second-round/${e.detail}`, { replace: true })
-            }
-        };
-
-        window.addEventListener("game-end", onGameEnd);
-        return () => window.removeEventListener("game-end", onGameEnd);
-    }, [game, firstScore]);
-    //
-
-    const onAnswerClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-        const answerName = e.currentTarget.textContent;
-
-        if (answerName) handleAnswerSelect(answerName);
-    };
-
-    useEffect(()=>{
-        if (answerQuestion){
-            currentAnswers = 
-        }
-    },[])
-
-    return (
-        <Container className="start-game" sx={{
-            display: "flex",
-            flexDirection: "row"
-        }}>
-
-
-            <Paper sx={{ display: "none" }}>
-                Очки:
-                <Typography ref={scoreRef}>{0}</Typography>
-            </Paper>
-
-            <div className="description">
-                <Typography variant="h4" component="h2">
-                    Найди животное на снимке
-                </Typography>
-                <Typography variant="body1" component="h2">
-                    Укажи место, где оно находится
-                </Typography>
-            </div>
-
-
-            <div className="image-container">
-                <div className="main-image">
-                    <ShowFullScreenProvider>
-                        <GameImage ref={imgRef} game={game} />
-                    </ShowFullScreenProvider>
-                </div>
-            </div>*/
