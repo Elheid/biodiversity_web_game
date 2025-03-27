@@ -1,20 +1,18 @@
 // BaseGame.tsx
 import {  Button, ButtonGroup, Container, Paper, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
-
-import { useGameState } from "./../hooks/useGameState";
-
-import { AnswerButton } from "./AnswerButton";
+import { GameType, RoundsInfo } from "../../interfaces/rounds";
+import { Game } from "../../classes/game";
+import { useGameState } from "../../hooks/useGameState";
+import { useGameContext } from "../../context/GameContextProvider";
+import { getTrueAnswer } from "../../api/api";
 import { useNavigate } from "react-router";
+import { useGamePointsContext } from "../../context/GamePointsProvider";
+import { ImageContainer } from "../ImageContainer";
+import { TimerComponent } from "../TimerComponent";
+import { AnswerButton } from "../AnswerButton";
+import { HomeButton } from "../HomeButtons";
 
-import { Home } from "@mui/icons-material";
-import { GameType, RoundsInfo } from "../interfaces/rounds";
-import { useGameContext } from "../context/GameContextProvider";
-import { Game } from "../classes/game";
-import { useGamePointsContext } from "../context/GamePointsProvider";
-import { getTrueAnswer } from "../api/api";
-import { TimerComponent } from "./TimerComponent";
-import { ImageContainer } from "./ImageContainer";
 
 interface BaseGameProps {
     //getGameInfo: () => RoundsInfo; // Уточните тип согласно вашей реализацииs
@@ -148,6 +146,11 @@ useEffect(() => {
         }
     };
 
+    const onSkipClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        const answerName = e.currentTarget.textContent || "";
+        handleAnswerSelect(answerName);
+    }
+
 
 
     return (
@@ -191,17 +194,9 @@ useEffect(() => {
                         />
                     ))}
                 </ButtonGroup>
-                <Button disabled={buttonsDisabled && isRoundEnd} onClick={onAnswerClick}>SKIP ROUND</Button>
-                <Button onClick={() => {
-                    navigator("/")
-                }}>
-                    <Typography>
-                        На главную
-                    </Typography>
-                    <Home />
-                </Button>
+                <Button disabled={buttonsDisabled && isRoundEnd} onClick={onSkipClick}>SKIP ROUND</Button>
+                <HomeButton />
             </div>
-
             {/*</Container>*/}
         </Container>
     );

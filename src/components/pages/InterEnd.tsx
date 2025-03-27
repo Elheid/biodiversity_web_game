@@ -3,15 +3,15 @@ import { NavLink } from "react-router";
 import { useGamePointsContext } from "../../context/GamePointsProvider";
 
 export const InterEnd = ()=>{
-    //const { firstScore } = useParams<{ firstScore?: string }>();
-    //const {secondScore} = useParams<{secondScore?:string}>();
     const {firstRoundPoints} = useGamePointsContext()
     return (
         <Container>
+            <Typography variant="h3">
+                Твой результат
+            </Typography>
             <Typography>
-                Game End
-                Score without ai: 
-                {firstRoundPoints}
+            Верно обработано фотографий:
+            <br/><span className="result-score">{firstRoundPoints}</span>
             </Typography>
             
             <Button >
