@@ -1,7 +1,8 @@
+// ImageContainer.tsx
 import { Skeleton } from "@mui/material";
 import { ShowFullScreenProvider } from "../context/ShowFullScreen";
 import { GameImage } from "./GameImage/GameImage";
-import React, { forwardRef } from "react";
+import React, { forwardRef, useState, useEffect } from "react";
 import { Game } from "../classes/game";
 
 interface ImageContainerProps {
@@ -10,27 +11,36 @@ interface ImageContainerProps {
 
 export const ImageContainer = forwardRef<HTMLImageElement, ImageContainerProps>(
     ({ game }, ref) => {
-        /*Boolean(
-                                (ref as React.RefObject<HTMLImageElement>)?.current?.src?.trim()
-                            )*/
+        const [isImageLoaded, setIsImageLoaded] = useState(false);
+
+        // Сбрасываем состояние загрузки при смене игры
+        useEffect(() => {
+            setIsImageLoaded(false);
+        }, [game]);
+
         return (
             <div className="image-container">
                 <div className="main-image">
                     <ShowFullScreenProvider>
-                        <GameImage 
-                            isVisible={true} 
-                            ref={ref} 
-                            game={game} 
+                        <GameImage
+                            isVisible={isImageLoaded}
+                            ref={ref}
+                            game={game}
+                            onImageLoad={() => setIsImageLoaded(true)}
                         />
                     </ShowFullScreenProvider>
-                    
-                    {<Skeleton 
-                        width={"40vw"} 
-                        height={"30vh"}  
-                        sx={{ 
-                            display: (ref as React.RefObject<HTMLImageElement>)?.current?.src?.trim() 
-                                ? "none" 
-                                : "" 
+                    {<Skeleton
+                        width={"calc(100% - 10%)"} // 100% родителя минус 5% с каждой стороны
+                        height={"calc(100% - 10%)"}
+                        sx={{
+                            display: isImageLoaded ? "none" : "block",
+                            transition: "opacity 0.3s ease-out",
+                            opacity: isImageLoaded ? 0 : 1,
+                            // Фиксируем соотношение сторон как у изображения
+                            aspectRatio: "16/9", // Пример для 711.672×407.312 ≈ 16:9
+                            position: "absolute", // Чтобы скелетон не влиял на поток
+                            top: "5%",
+                            left: "5%"
                         }}
                     />}
                 </div>
@@ -38,6 +48,3 @@ export const ImageContainer = forwardRef<HTMLImageElement, ImageContainerProps>(
         );
     }
 );
-
-// Для отображения имени компонента в DevTools
-ImageContainer.displayName = "ImageContainer";
