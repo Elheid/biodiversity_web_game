@@ -162,7 +162,8 @@ div.start-game {
 
 .main-image{
   position: relative;
-  padding: 5%;
+  padding: 6%;
+
   background: var(--image-container);
   background-size: contain;
   background-position: center;

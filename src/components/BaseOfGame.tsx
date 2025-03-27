@@ -166,6 +166,9 @@ useEffect(() => {
                 </Typography>
             </div>
             
+
+            
+
             {<ImageContainer ref={imgRef} game={game} />}
 
             {game && <TimerComponent timer={game?.timer}/>}

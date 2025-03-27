@@ -63,18 +63,18 @@ export const GameImage = forwardRef<HTMLImageElement, ImgHTMLAttributes<HTMLImag
         }
     },[game, isRoundEnd]);
 
-    const handleImageLoad = (event: React.SyntheticEvent<HTMLImageElement>) => {
-        const img = event.currentTarget;
+const handleImageLoad = (event: React.SyntheticEvent<HTMLImageElement>) => {
+    const img = event.currentTarget;
+    requestAnimationFrame(() => { // ← Ждем следующий кадр рендеринга
         setImageDimensions({
-            displayWidth: img.width,
-            displayHeight: img.height,
+            displayWidth: img.offsetWidth,
+            displayHeight: img.offsetHeight,
             naturalWidth: img.naturalWidth,
             naturalHeight: img.naturalHeight,
         });
-        
-        // Вызываем колбэк при загрузке изображения
         onImageLoad?.();
-    };
+    });
+};
 
     const coordinates = game?.returnPictureCoordinates() || {x:0,y:0, width:0, height:0};
     const {x,y,width,height} = coordinates;
@@ -131,7 +131,7 @@ export const GameImage = forwardRef<HTMLImageElement, ImgHTMLAttributes<HTMLImag
 
     return (
         <FullScreenImage>
-        <div style={{ position: 'relative', display: isVisible ? "" : "none"}} >
+        <div style={{ opacity: isVisible ? 1 : 0, transition: 'opacity 0.3s' }}>
             <img
                 className={"image"}
                 src={imageSrc}
