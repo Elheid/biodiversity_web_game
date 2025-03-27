@@ -1,9 +1,8 @@
-import { Button, Container } from "@mui/material"
-import { NavLink } from "react-router"
+import { Container, Typography } from "@mui/material"
 
-import startButton from "../../assets/img/start.svg"
 import { useEffect } from "react"
 import { endSession } from "../../api/api"
+import { StartButton } from "../StartButton"
 
 export const MainPage = () => {
     useEffect(()=>{
@@ -12,15 +11,20 @@ export const MainPage = () => {
     
     return (
         <Container>
-            <h1>Начальный экран</h1>
+            <h1>Попробуй себя в роли
+            учёного-зоолога!</h1>
 
-            <Button >
-                <NavLink className="icon-button" to={"/first-round-start"}>
-                    
-                        <img src={startButton} alt={"start button"}></img>
-                    
-                </NavLink>
-            </Button>
+            <Typography>
+            До 1000 снимков с фотоловушек
+            в день необходимо обрабатывать исследователям особо охраняемых природных территорий
+            </Typography>
+
+
+            <Typography>
+            AI-помощник возьмет часть работы на себя
+            </Typography>
+            
+            <StartButton to={"/first-round-start"} />
         </Container>
 
     )
