@@ -10,7 +10,6 @@ import { Answer } from "../interfaces/rounds";
 
 interface AnswerButtonProps {
     answer: Answer;
-    isAnswerTrue:boolean;
     parentTitle:string|undefined;
     trueAnswer:string;
     isRoundEnd: boolean;
@@ -31,7 +30,6 @@ enum ButtonImage {
 export const AnswerButton = ({
     answer,
     parentTitle,
-    isAnswerTrue,
     trueAnswer,
     isRoundEnd,
     selectedAnswer,

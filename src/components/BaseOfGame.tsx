@@ -1,15 +1,12 @@
 // BaseGame.tsx
-import { Box, Button, ButtonGroup, Container, Paper, Skeleton, Typography } from "@mui/material";
+import {  Button, ButtonGroup, Container, Paper, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 
 import { useGameState } from "./../hooks/useGameState";
-import { GameImage } from "./GameImage/GameImage";
 
-import { useTimer } from "../hooks/useTimer";
 import { AnswerButton } from "./AnswerButton";
 import { useNavigate } from "react-router";
 
-import { ShowFullScreenProvider } from "../context/ShowFullScreen";
 import { Home } from "@mui/icons-material";
 import { GameType, RoundsInfo } from "../interfaces/rounds";
 import { useGameContext } from "../context/GameContextProvider";
@@ -132,7 +129,6 @@ useEffect(() => {
         return () => window.removeEventListener("checked-answer", onCheckedAnswer);
     }, [game]);
 
-    const [isAnswerTrue, setIsAnswerTrue] = useState(false);
 
     const onAnswerClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         const answerName = e.currentTarget.textContent;
@@ -141,15 +137,13 @@ useEffect(() => {
             // Если есть answerQuestion и показываем "Да" и "Нет", передаем answerQuestion
             const choice = getAnswerTitle(game) || ""//game?.roundsInfo[curRound]?.answerTitle || "";
             game?.RoundController.isAnswerTrue(choice, GameType.secondType).then(res =>{
-                setIsAnswerTrue(res)
                 const answer = answerName === "Да" ?choice:"Нет";
                 if (res || (!res && answerName === "Да"))
                     handleAnswerSelect(answer);
             })
         } else if (answerName) {
             // Иначе передаем текст кнопки
-            game?.RoundController.isAnswerTrue(answerName, gameType || GameType.firstType).then(res =>{
-                setIsAnswerTrue(res)});
+
             handleAnswerSelect(answerName);
         }
     };
@@ -186,7 +180,6 @@ useEffect(() => {
                             parentTitle={ getAnswerTitle(game)}
                             key={answer.answerName}
                             answer={answer}
-                            isAnswerTrue={isAnswerTrue}
                             isRoundEnd={isRoundEnd}
                             trueAnswer={trueAnswer}
                             selectedAnswer={selectedAnswer}
