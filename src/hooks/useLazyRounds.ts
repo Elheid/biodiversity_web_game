@@ -31,7 +31,7 @@ export const useLazyRounds = () => {
 
             setRoundsInfo(prev => ({
                 ...prev,
-                [roundNumber]: mapper(data)
+                [roundNumber]:mapper(data)
             }));
 
             game.updateRoundsInfo([mapper(data)])
