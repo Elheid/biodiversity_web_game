@@ -2,7 +2,7 @@
 import { Skeleton } from "@mui/material";
 import { ShowFullScreenProvider } from "../context/ShowFullScreen";
 import { GameImage } from "./GameImage/GameImage";
-import React, { forwardRef, useState, useEffect } from "react";
+import { forwardRef, useState, useEffect } from "react";
 import { Game } from "../classes/game";
 
 interface ImageContainerProps {
