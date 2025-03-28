@@ -10,7 +10,7 @@ import { useShowFullScreen } from "../../context/ShowFullScreen";
 interface GameImageProps {
     game: Game | undefined;
     onImageLoad?:()=>void;
-    isVisible:boolean;
+    isVisible?:boolean;
 }
 
 export interface ImageDimensions{
@@ -131,7 +131,7 @@ const handleImageLoad = (event: React.SyntheticEvent<HTMLImageElement>) => {
 
     return (
         <FullScreenImage>
-        <div style={{ opacity: isVisible ? 1 : 0, transition: 'opacity 0.3s' }}>
+        <div className="image-wrapper" style={{ opacity: isVisible ? 1 : 0 }}>
             <img
                 className={"image"}
                 src={imageSrc}
@@ -143,7 +143,6 @@ const handleImageLoad = (event: React.SyntheticEvent<HTMLImageElement>) => {
                 style={{
                     ...props.style,
                     opacity: imageSrc === "-1" ? 0 : 1,
-                    transition: "opacity 0.3s ease-in"
                 }}
             />
             {!buttonsDisabled &&  game && imageDimensions && !isRoundEnd && (

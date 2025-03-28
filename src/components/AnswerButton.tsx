@@ -3,7 +3,7 @@
 import { Species } from "../classes/animalSpecies";
 
 import { useEffect, useState } from "react";
-import { Button } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 import { AnswerButtonStyle } from "../style/AnswerButtonStyle"
 import { Answer } from "../interfaces/rounds";
 import { YES_NO_BUTTONS_TEXT } from "../config";
@@ -70,7 +70,9 @@ export const AnswerButton = ({
                 className={`${className} background-icon`}
                 sx={AnswerButtonStyle}
             >
+                <Typography>
                 {answer.answerName}
+                </Typography>
             </Button>
         );
     //}

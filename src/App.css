@@ -57,6 +57,19 @@ div.start-game {
       'image' 
       'buttons'; /* Stack items vertically */
   }
+  .buttons [role="group"]{
+
+    justify-content: center;
+  }
+  
+  .buttons [role="group"] button{
+    min-width: fit-content;
+    box-shadow: none;
+    padding: 2vw;
+    margin: 1vw;
+  }
+
+  
 }
 
 
@@ -120,9 +133,13 @@ div.start-game {
   background-repeat: no-repeat;
 }
 
-.background-icon:hover{
-  background: var(--hover-button-img);
+/* Для устройств с мышью/стилусом */
+@media (hover: hover) and (pointer: fine) {
+  .background-icon:hover {
+    background: var(--hover-button-img);
+  }
 }
+
 
 
 
@@ -147,7 +164,6 @@ div.start-game {
   display: flex;
   flex-direction: column;
 }
-
 .question-container{
   width: fit-content;
   color:white;
@@ -170,6 +186,13 @@ div.start-game {
   background-repeat: no-repeat;
 
   aspect-ratio: 16/9; 
+}
+.image-wrapper{
+  transition: opacity 0.3s;
+  position: relative;
+}
+.image{
+  transition: opacity 0.3s ease-in;
 }
 
 .timer-container-small{
