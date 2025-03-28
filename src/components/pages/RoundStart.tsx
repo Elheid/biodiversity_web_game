@@ -1,22 +1,20 @@
 
 import { useEffect } from "react";
-import { endSession } from "../../api/api";
-import axios from "axios";
+import { endSession, startSessionRequest } from "../../api/api";
 import { GameType } from "../../interfaces/rounds";
 import { TextForRoundStart } from "../TextForRoundStart";
 import { StartButton } from "../StartButton";
 
 export const RoundStart = ({ roundType }: { roundType: GameType }) => {
+
     useEffect(() => {
         endSession()//end prev session
+        startSessionRequest()
     }, [])
 
     /**
      * Just a random request to back, to start a new session on start
      */
-    const startSessionRequest = () => {
-        axios.get("/animals/Олень");
-    }
 
     const roundStartButton = roundType === GameType.firstType ? "first-round" : "second-round";
 
@@ -29,7 +27,7 @@ export const RoundStart = ({ roundType }: { roundType: GameType }) => {
             }}>
                 Start
             </Button>*/}
-            <StartButton to={`/${roundStartButton}`} onClick={()=>startSessionRequest()}/>
+            <StartButton to={`/${roundStartButton}`}/>
         </div>
 
 

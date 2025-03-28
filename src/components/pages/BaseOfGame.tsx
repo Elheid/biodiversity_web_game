@@ -12,6 +12,7 @@ import { ImageContainer } from "../ImageContainer";
 import { TimerComponent } from "../TimerComponent";
 import { AnswerButton } from "../AnswerButton";
 import { HomeButton } from "../HomeButtons";
+import { SCROE_TEXT, SKIP_ROUND_BUTTON_TEXT, TARGET_ANIMAL_TITLE, TRAGET_ANIMAL_SUBTITILE, YES_NO_BUTTONS_TEXT } from "../../config";
 
 
 interface BaseGameProps {
@@ -69,8 +70,8 @@ export const BaseOfGame = ({ gameType }: BaseGameProps) => {
 useEffect(() => {
     if (game) {
         const YesNoAnswers = [
-            { answerName: "Да", isAnswerTrue: false },
-            { answerName: "Нет", isAnswerTrue: false },
+            { answerName: YES_NO_BUTTONS_TEXT.yes, isAnswerTrue: false },
+            { answerName: YES_NO_BUTTONS_TEXT.no, isAnswerTrue: false },
         ]
         
         const secondType = game.isThisSecondType();
@@ -135,8 +136,8 @@ useEffect(() => {
             // Если есть answerQuestion и показываем "Да" и "Нет", передаем answerQuestion
             const choice = getAnswerTitle(game) || ""//game?.roundsInfo[curRound]?.answerTitle || "";
             game?.RoundController.isAnswerTrue(choice, GameType.secondType).then(res =>{
-                const answer = answerName === "Да" ?choice:"Нет";
-                if (res || (!res && answerName === "Да"))
+                const answer = answerName === YES_NO_BUTTONS_TEXT.yes ?choice:YES_NO_BUTTONS_TEXT.no;
+                if (res || (!res && answerName === YES_NO_BUTTONS_TEXT.yes))
                     handleAnswerSelect(answer);
             })
         } else if (answerName) {
@@ -156,16 +157,16 @@ useEffect(() => {
     return (
         <Container className="start-game" sx={{ display: "flex", flexDirection: "row" }}>
             <Paper sx={{ display: "none" }}>
-                Очки:
+                {SCROE_TEXT}:
                 <Typography ref={scoreRef}>{0}</Typography>
             </Paper>
 
             <div className="description">
                 <Typography variant="h4" component="h2">
-                    Найди животное на снимке
+                    {TARGET_ANIMAL_TITLE}
                 </Typography>
                 <Typography variant="body1" component="h2">
-                    Укажи место, где оно находится
+                    {TRAGET_ANIMAL_SUBTITILE}
                 </Typography>
             </div>
             
@@ -194,7 +195,7 @@ useEffect(() => {
                         />
                     ))}
                 </ButtonGroup>
-                <Button disabled={buttonsDisabled && isRoundEnd} onClick={onSkipClick}>SKIP ROUND</Button>
+                <Button disabled={buttonsDisabled && isRoundEnd} onClick={onSkipClick}>{SKIP_ROUND_BUTTON_TEXT}</Button>
                 <HomeButton />
             </div>
             {/*</Container>*/}

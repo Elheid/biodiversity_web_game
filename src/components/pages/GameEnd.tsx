@@ -1,6 +1,7 @@
 import { Container, Stack, Typography } from "@mui/material"
 import { useGamePointsContext } from "../../context/GamePointsProvider";
 import { HomeButton } from "../HomeButtons";
+import { END_TITLE, TRUE_AMOUNT_PHOTO_TEXT, TYPE_OF_SCORE_TEXT } from "../../config";
 
 export const GameEnd = () => {
     const { firstRoundPoints, secondRoundPoints } = useGamePointsContext()
@@ -11,10 +12,10 @@ export const GameEnd = () => {
         gap: "20px"
         }}>
             <Typography variant="h2">
-            СберегAI природу с нами!
+            {END_TITLE}
             </Typography>
             <Typography variant="h4">
-                Верно обработано фотографий
+                {TRUE_AMOUNT_PHOTO_TEXT}
             </Typography>
 
             <Stack 
@@ -27,12 +28,12 @@ export const GameEnd = () => {
             >
 
                 <Typography>
-                    Самостоятельно:
+                    {TYPE_OF_SCORE_TEXT.self}:
                     <br/><span className="result-score">{firstRoundPoints}</span>
                 </Typography>
 
                 <Typography>
-                    С AI-помощником:
+                    {TYPE_OF_SCORE_TEXT.ai}:
                     <br/><span className="result-score">{secondRoundPoints}</span>
                 </Typography>
 

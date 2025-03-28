@@ -49,7 +49,7 @@ export const FullScreenImage: React.FC<React.PropsWithChildren> = ({ children })
                 >
                     <div className={`${styles["fullscreen-image"]}`}>
                         <ImageBox onClick={handleCloseFullScreen} typeOfButton={"close"}>
-                            {/*children*/}
+                            {children}
                         </ImageBox>
                     </div>
                 </div>

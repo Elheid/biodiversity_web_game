@@ -1,5 +1,5 @@
-import { useCallback, useRef, useState } from "react";
-import { getRandomRound, MyRoutes } from "../api/api";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { getRandomRound, MyRoutes, startSessionRequest } from "../api/api";
 import { GameType, RoundsInfo } from "../interfaces/rounds";
 import { mapFirstRound, mapSecondRound } from "../mappingFromBack/mappingDTO";
 import { useGameContext } from "../context/GameContextProvider";
@@ -42,6 +42,9 @@ export const useLazyRounds = () => {
             
         }
     }, [game,roundsInfo]);
+    useEffect(()=>{
+        startSessionRequest()
+    })
 
     return { roundsInfo, loadRound };
 };

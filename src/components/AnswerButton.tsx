@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { Button } from "@mui/material";
 import { AnswerButtonStyle } from "../style/AnswerButtonStyle"
 import { Answer } from "../interfaces/rounds";
+import { YES_NO_BUTTONS_TEXT } from "../config";
 
 
 interface AnswerButtonProps {
@@ -41,7 +42,7 @@ export const AnswerButton = ({
     useEffect(() => {
         
         let answerName = answer.answerName;
-        if (parentTitle && answerName=== "Да" )     answerName = parentTitle;
+        if (parentTitle && answerName=== YES_NO_BUTTONS_TEXT.yes )     answerName = parentTitle;
 
         if (isDisabled) setClassName(ButtonImage.disableButton);
         else setClassName(ButtonImage.normalButton);

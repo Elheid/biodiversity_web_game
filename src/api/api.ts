@@ -43,3 +43,6 @@ export const getTrueAnswer =  (curRound:string, roundId:number)=> getData(`${cur
 
 export const getRandomRound = (curRound:string)=> getData(MyRoutes.RANDOM_LEVEL(curRound));
 
+export const startSessionRequest = () => {
+    axios.get("/animals/Олень");
+}
