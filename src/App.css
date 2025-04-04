@@ -20,6 +20,20 @@
   --subtitle-container:url("/src/assets/img/subtitleContainer.svg");
 }
 
+
+/*подумать над flex-grow: 1; для root */
+/* что-то не так с таймером из-за чего чкачет картинка в игре*/
+/* Что-то сделать с размерами шрифтов*/
+
+
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  min-height: 100vh;
+  overflow-x: hidden; /* Блокируем горизонтальный скролл */
+}
+
 .centred-root{
   margin: 0 auto;
 }
@@ -89,6 +103,12 @@ body {
   background-image: url(/src/assets/img/backgroundMain.png);
 }
 
+.background-main {
+  background-attachment: local; /* Фиксация фона */
+}
+
+
+
 
 @media (max-width: 1336px) {
   .background-main{
@@ -109,6 +129,7 @@ body{
 
 
 div.start-game {
+  max-width: 100vw;
   display: grid; 
   row-gap: 2%;
   column-gap: 10%;
@@ -120,6 +141,8 @@ div.start-game {
     'image buttons'
     'image buttons';
 }
+
+
 
 @media (max-width: 768px) {
   div.start-game {
@@ -159,11 +182,11 @@ div.start-game {
 
   font-size: clamp(1.7rem, 2vw, 3.2rem)
 }
-
+/*
 .main-page-container p{
   font-size: 2rem;
 }
-
+*/
 
 /** Description container main page**/
 .container-image{
@@ -171,11 +194,13 @@ div.start-game {
   width: 80%; /* Настройте по необходимости */
   max-width: 600px; /* Макс. размер по макету */
 
-  background-size: contain;
+  /*background-size: contain;*/
   background-repeat: no-repeat;
 }
 
+
 .inframe-text{
+
   position: absolute;
   top: 12%;
   left: 10%;
@@ -183,13 +208,15 @@ div.start-game {
   bottom: 12%;
   margin: auto 0;
   padding: 15px;
+
+  font-size: 12px;
 }
 
 
 .description-container{
   display: flex;
 }
-.description-container div{
+.description-container .container-image{
 
 
   background-image: var(--description-container);
@@ -200,7 +227,6 @@ div.start-game {
 
 .description-container p{
   /* Адаптивный шрифт */
-  font-size: clamp(12px, 2vw, 1.5rem);
 }
 /** subtitle container main page**/
 .subtitle-container{
@@ -208,7 +234,7 @@ div.start-game {
   text-transform: uppercase;
   /*font-size: 1rem;*/
 
-  width: 100%;
+  /*width: 100%;*/
 
   /*padding: 4%;
   background: var(--subtitle-container);
@@ -230,7 +256,6 @@ div.start-game {
   
   
   /* Адаптивный шрифт */
-  font-size: clamp(12px, 1.5vw, 18px);
 
 }
 /*

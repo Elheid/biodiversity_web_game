@@ -12,6 +12,8 @@ import { setMainPageBodyStyle } from "../../utill"
 
 //import tiger from "../../assets/img/tiger.svg"
 
+import { AutoTextSize } from 'auto-text-size'
+
 export const MainPage = () => {
     useEffect(() => {
         endSession()//end prev session
@@ -29,16 +31,16 @@ export const MainPage = () => {
             <div className="description-container">
                 {<img style={{ maxWidth: "10vw" }} src={bear} alt="bear" />}
                 <div className="container-image">
-                    <Typography className="inframe-text">
-                        {MAIN_PAGE_DESCRIPTION}
-                    </Typography>
+                   
+                    <AutoTextSize  maxFontSizePx={30} mode={'box'} style={{padding:"30px"}}>{MAIN_PAGE_DESCRIPTION}</AutoTextSize>
+                  
                 </div>
             </div>
 
             <div className="subtitle-container container-image">
-                <Typography className="inframe-text">
-                    {MAIN_PAGE_AI_SUBTITLE}
-                </Typography>
+                {/* className="inframe-text" */}
+                    <AutoTextSize maxFontSizePx={30} mode={'box'} style={{padding:"20px"}}>{MAIN_PAGE_AI_SUBTITLE}</AutoTextSize>
+               
             </div>
 
             <div className="bottom-container">
