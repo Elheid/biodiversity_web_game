@@ -4,12 +4,14 @@ import { endSession, startSessionRequest } from "../../api/api";
 import { GameType } from "../../interfaces/rounds";
 import { TextForRoundStart } from "../TextForRoundStart";
 import { StartButton } from "../StartButton";
+import { setStartRoundsBodyStyle } from "../../utill";
 
 export const RoundStart = ({ roundType }: { roundType: GameType }) => {
 
     useEffect(() => {
         endSession()//end prev session
         startSessionRequest()
+        setStartRoundsBodyStyle()
     }, [])
 
     /**
@@ -17,7 +19,7 @@ export const RoundStart = ({ roundType }: { roundType: GameType }) => {
      */
 
     const roundStartButton = roundType === GameType.firstType ? "first-round" : "second-round";
-
+    
     return (
         <div>
             <TextForRoundStart roundType={roundType} />

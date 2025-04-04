@@ -1,5 +1,5 @@
 // BaseGame.tsx
-import {  Button, ButtonGroup, Container, Paper, Typography } from "@mui/material";
+import { Button, ButtonGroup, Container, Paper, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { GameType, RoundsInfo } from "../../interfaces/rounds";
 import { Game } from "../../classes/game";
@@ -13,6 +13,7 @@ import { TimerComponent } from "../TimerComponent";
 import { AnswerButton } from "../AnswerButton";
 import { HomeButton } from "../HomeButtons";
 import { SCROE_TEXT, SKIP_ROUND_BUTTON_TEXT, TARGET_ANIMAL_TITLE, TRAGET_ANIMAL_SUBTITILE, YES_NO_BUTTONS_TEXT } from "../../config";
+import { setRoundsBodyStyle } from "../../utill";
 
 
 interface BaseGameProps {
@@ -21,7 +22,7 @@ interface BaseGameProps {
     gameType?: GameType;
 }
 
-const getAnswerTitle = (game:Game|undefined):string|undefined=>{
+const getAnswerTitle = (game: Game | undefined): string | undefined => {
     return game?.roundTitle;
 }
 
@@ -42,61 +43,65 @@ export const BaseOfGame = ({ gameType }: BaseGameProps) => {
 
     const [trueAnswer, setTrueAnswer] = useState<string>("");
 
+    useEffect(()=>{
+        setRoundsBodyStyle()
+    },[])
+    
 
     useEffect(() => {
 
-            const onRoundStart = (e: CustomEventInit<number>) => {
-                if (game &&  game.roundsInfo[0] && game.roundsInfo[0].id ){
-                    const type = gameType || GameType.firstType;
-                    getTrueAnswer(type === GameType.firstType ? "first-round" : "second-round", e.detail || -1)
-                    .then(res=>setTrueAnswer(res.name))
-                }
-                if (gameType === GameType.secondType) {
-                    setShowYesNo(true)
-                } else {
-                    setShowYesNo(false)
-                }
-            };
+        const onRoundStart = (e: CustomEventInit<number>) => {
+            if (game && game.roundsInfo[0] && game.roundsInfo[0].id) {
+                const type = gameType || GameType.firstType;
+                getTrueAnswer(type === GameType.firstType ? "first-round" : "second-round", e.detail || -1)
+                    .then(res => setTrueAnswer(res.name))
+            }
+            if (gameType === GameType.secondType) {
+                setShowYesNo(true)
+            } else {
+                setShowYesNo(false)
+            }
+        };
 
-            window.addEventListener("round-start", onRoundStart);
-            return () => window.removeEventListener("round-start", onRoundStart);
+        window.addEventListener("round-start", onRoundStart);
+        return () => window.removeEventListener("round-start", onRoundStart);
 
     }, [gameType, game]);
 
     const [answersToShow, setAnswersToShow] = useState<
-    { answerName: string; isAnswerTrue: boolean }[]
->([]);
+        { answerName: string; isAnswerTrue: boolean }[]
+    >([]);
 
-useEffect(() => {
-    if (game) {
-        const YesNoAnswers = [
-            { answerName: YES_NO_BUTTONS_TEXT.yes, isAnswerTrue: false },
-            { answerName: YES_NO_BUTTONS_TEXT.no, isAnswerTrue: false },
-        ]
-        
-        const secondType = game.isThisSecondType();
-        const showEcondRoundAnsw = showYesNo && secondType;
+    useEffect(() => {
+        if (game) {
+            const YesNoAnswers = [
+                { answerName: YES_NO_BUTTONS_TEXT.yes, isAnswerTrue: false },
+                { answerName: YES_NO_BUTTONS_TEXT.no, isAnswerTrue: false },
+            ]
 
-        console.log("currentAnswers:", currentAnswers); // Логируем currentAnswers
+            const secondType = game.isThisSecondType();
+            const showEcondRoundAnsw = showYesNo && secondType;
 
-        const newAnswersToShow = showEcondRoundAnsw
-            ? YesNoAnswers
-            : currentAnswers ? currentAnswers : YesNoAnswers ;
+            console.log("currentAnswers:", currentAnswers); // Логируем currentAnswers
 
-        console.log("newAnswersToShow:", newAnswersToShow); // Логируем newAnswersToShow
+            const newAnswersToShow = showEcondRoundAnsw
+                ? YesNoAnswers
+                : currentAnswers ? currentAnswers : YesNoAnswers;
 
-        setAnswersToShow(newAnswersToShow);
-    } else {
-        setAnswersToShow(currentAnswers);
-    }
-}, [showYesNo, game, currentAnswers]);
+            console.log("newAnswersToShow:", newAnswersToShow); // Логируем newAnswersToShow
+
+            setAnswersToShow(newAnswersToShow);
+        } else {
+            setAnswersToShow(currentAnswers);
+        }
+    }, [showYesNo, game, currentAnswers]);
 
 
     const navigator = useNavigate();
-    const {setFirstRoundPoints, setSecondRoundPoints} = useGamePointsContext()
+    const { setFirstRoundPoints, setSecondRoundPoints } = useGamePointsContext()
 
     useEffect(() => {
-        const points = (e: CustomEventInit<number>)=> e.detail || 0;
+        const points = (e: CustomEventInit<number>) => e.detail || 0;
         const nav = () => navigator(`/end`);
         const onGameEnd = (e: CustomEventInit<number>) => {
             if (gameType === GameType.secondType) {
@@ -135,8 +140,8 @@ useEffect(() => {
         if (game?.isThisSecondType() && showYesNo) {
             // Если есть answerQuestion и показываем "Да" и "Нет", передаем answerQuestion
             const choice = getAnswerTitle(game) || ""//game?.roundsInfo[curRound]?.answerTitle || "";
-            game?.RoundController.isAnswerTrue(choice, GameType.secondType).then(res =>{
-                const answer = answerName === YES_NO_BUTTONS_TEXT.yes ?choice:YES_NO_BUTTONS_TEXT.no;
+            game?.RoundController.isAnswerTrue(choice, GameType.secondType).then(res => {
+                const answer = answerName === YES_NO_BUTTONS_TEXT.yes ? choice : YES_NO_BUTTONS_TEXT.no;
                 if (res || (!res && answerName === YES_NO_BUTTONS_TEXT.yes))
                     handleAnswerSelect(answer);
             })
@@ -169,13 +174,13 @@ useEffect(() => {
                     {TRAGET_ANIMAL_SUBTITILE}
                 </Typography>
             </div>
-            
 
-            
+
+
 
             {<ImageContainer ref={imgRef} game={game} />}
 
-            {game && <TimerComponent timer={game?.timer}/>}
+            {game && <TimerComponent timer={game?.timer} />}
 
             <div className="buttons">
                 <Typography className="question-container">
@@ -184,7 +189,7 @@ useEffect(() => {
                 <ButtonGroup orientation={window.innerWidth < 782 ? 'horizontal' : 'vertical'}>
                     {answersToShow?.map((answer) => (
                         <AnswerButton
-                            parentTitle={ getAnswerTitle(game)}
+                            parentTitle={getAnswerTitle(game)}
                             key={answer.answerName}
                             answer={answer}
                             isRoundEnd={isRoundEnd}

@@ -1,6 +1,6 @@
 #root {
   /*max-width: 1280px;*/
-  margin: 0 auto;
+  
   /*padding: 2rem;*/
   text-align: center;
 
@@ -16,6 +16,56 @@
   --image-container:url("/src/assets/img/imageContainer.svg");
   --timer-container:url("/src/assets/img/timerContainer.svg");
 
+  --description-container:url("/src/assets/img/descriptionContainer.svg");
+  --subtitle-container:url("/src/assets/img/subtitleContainer.svg");
+}
+
+.centred-root{
+  margin: 0 auto;
+}
+
+@font-face {
+  font-family: 'SB Sans Display';
+  src: url('/fonts/sb-sans-display.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'SB Sans Display Bold';
+  src: url('/fonts/sb-sans-display-bold.otf') format('truetype');
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'SB Sans Display Semibold';
+  src: url('/fonts/sb-sans-display-semibold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'SB Sans Text';
+  src: url('/fonts/sb-sans-text.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+}
+
+body {
+  font-family: 'SB Sans Text', sans-serif !important;
+}
+
+h1, h2, h3, h4, h5 {
+  font-family: 'SB Sans Display Semibold', sans-serif !important;
+}
+
+p {
+  font-family: 'SB Sans Display Semibold', sans-serif !important;
+}
+
+.sans-text{
+  font-family: 'SB Sans Text', sans-serif !important;
 }
 
 
@@ -24,13 +74,37 @@ body {
   -moz-user-select: none; 
   -webkit-user-select: none; 
   user-select: none; 
+  align-items: center;
 }
 
-body{
+.background-rounds{
   background-image: url(/src/assets/img/background.png);
-  background-repeat: no-repeat;
+}
+
+.background-main{
+  background-image: url(/src/assets/img/backgroundTiger.jpg);
+}
+
+.background-rounds-start{
+  background-image: url(/src/assets/img/backgroundMain.png);
+}
+
+
+@media (max-width: 1336px) {
+  .background-main{
+    background-image: url(/src/assets/img/backgroundMain.png);
+  }
+}
+
+
+body{
+  color:white;
   background-size: cover;
-  color:white
+  background-position: center;
+  background-repeat: no-repeat;
+  position: relative;
+
+  justify-content: space-around;
 }
 
 
@@ -47,7 +121,7 @@ div.start-game {
     'image buttons';
 }
 
-@media (max-width: 600px) {
+@media (max-width: 768px) {
   div.start-game {
     grid-template-columns: 1fr; /* Stack items on smaller screens */
     grid-template-rows: auto auto auto auto; /* Allow rows to adjust based on content */
@@ -72,7 +146,111 @@ div.start-game {
   
 }
 
+.main-page-container{
+  text-align: left;
+}
 
+.main-title{
+  padding-top: 10vh;
+  padding-right: 20vw;
+  text-transform: uppercase;
+  width: 50vw;
+  padding-bottom: 2vh;
+
+  font-size: clamp(1.7rem, 2vw, 3.2rem)
+}
+
+.main-page-container p{
+  font-size: 2rem;
+}
+
+
+/** Description container main page**/
+.container-image{
+  position: relative;
+  width: 80%; /* Настройте по необходимости */
+  max-width: 600px; /* Макс. размер по макету */
+
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.inframe-text{
+  position: absolute;
+  top: 12%;
+  left: 10%;
+  right: 10%;
+  bottom: 12%;
+  margin: auto 0;
+  padding: 15px;
+}
+
+
+.description-container{
+  display: flex;
+}
+.description-container div{
+
+
+  background-image: var(--description-container);
+
+  aspect-ratio: 366/155; /* Соотношение сторон вашего SVG */
+  
+}
+
+.description-container p{
+  /* Адаптивный шрифт */
+  font-size: clamp(12px, 2vw, 1.5rem);
+}
+/** subtitle container main page**/
+.subtitle-container{
+  margin-left: 20vw;
+  text-transform: uppercase;
+  /*font-size: 1rem;*/
+
+  width: 100%;
+
+  /*padding: 4%;
+  background: var(--subtitle-container);
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;*/
+
+  background-image: var(--subtitle-container);
+  aspect-ratio: 888/115; /* Соотношение сторон вашего SVG */
+
+}
+
+
+
+.subtitle-container p{
+  /*width: fit-content;*/
+  width: 100%;
+
+  
+  
+  /* Адаптивный шрифт */
+  font-size: clamp(12px, 1.5vw, 18px);
+
+}
+/*
+.wolf-image{
+  position: absolute;
+  left: 5vw;
+  top: -10vh;
+}*/
+
+.bottom-container{
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.bottom-container button{
+  width: fit-content;
+  height: fit-content;
+}
 
 .description{
   text-align: left;
