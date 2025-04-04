@@ -194,7 +194,7 @@ div.start-game {
   width: 80%; /* Настройте по необходимости */
   max-width: 600px; /* Макс. размер по макету */
 
-  /*background-size: contain;*/
+  background-size: cover;
   background-repeat: no-repeat;
 }
 
