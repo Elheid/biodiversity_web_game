@@ -1,6 +1,6 @@
 import { Typography } from "@mui/material"
 
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { endSession } from "../../api/api"
 import { StartButton } from "../StartButton"
 import { MAIN_PAGE_AI_SUBTITLE, MAIN_PAGE_DESCRIPTION, MAIN_PAGE_TITLE } from "../../config"
@@ -20,33 +20,54 @@ export const MainPage = () => {
         setMainPageBodyStyle()
     }, [])
 
+
+    const [isMinWidth, setIsMinWidth] = useState(false);
+    const [isMinWidthBear, setIsMinWidthBear] = useState(false);
+
+
+    useEffect(() => {
+    const checkWidth = () => {
+        setIsMinWidth(window.innerWidth > 700);
+        setIsMinWidthBear(window.innerWidth > 900);
+    };
     
+    checkWidth();
+    window.addEventListener('resize', checkWidth);
+    
+    return () => window.removeEventListener('resize', checkWidth);
+    }, []);
+
+
     //document.body.classList.add("centred-root")
-    
+
     return (
         <div className="main-page-container">
             <h1 className="main-title">{MAIN_PAGE_TITLE}</h1>
 
             {/*<img style={{position:"absolute", right: 0, top:"5vh", width:"40vw"}} src={tiger} alt="tiger" />*/}
             <div className="description-container">
-                {<img style={{ maxWidth: "10vw" }} src={bear} alt="bear" />}
-                <div className="container-image">
-                   
-                    <AutoTextSize  maxFontSizePx={30} mode={'box'} style={{padding:"30px"}}>{MAIN_PAGE_DESCRIPTION}</AutoTextSize>
-                  
+                {isMinWidthBear && <img style={{ maxWidth: "10vw" }} src={bear} alt="bear" /> /*меньше 900*/}
+                <div className="container-image container-image-size">
+
+                    <AutoTextSize maxFontSizePx={30} mode={'box'} style={{ padding: "30px" }}>
+                        {MAIN_PAGE_DESCRIPTION}
+                    </AutoTextSize>
+
                 </div>
             </div>
 
-            <div className="subtitle-container container-image">
+            <div className="subtitle-container container-image container-image-size">
                 {/* className="inframe-text" */}
-                    <AutoTextSize maxFontSizePx={30} mode={'box'} style={{padding:"20px"}}>{MAIN_PAGE_AI_SUBTITLE}</AutoTextSize>
-               
+                <AutoTextSize maxFontSizePx={30} mode={'box'} style={{ padding: "20px" }}>
+                    {MAIN_PAGE_AI_SUBTITLE}
+                </AutoTextSize>
+
             </div>
 
             <div className="bottom-container">
-                {<img className="wolf-image" style={{ maxWidth: "15vw" }} src={wolf} alt="wolf" />}
+                {isMinWidth && <img className="wolf-image" style={{ maxWidth: "15vw" }} src={wolf} alt="wolf" />}
                 <StartButton to={"/first-round-start"} />
-                {<img style={{ maxWidth: "10vw" }} src={deer} alt="deer" />}
+                { isMinWidth && <img style={{ maxWidth: "10vw" }} src={deer} alt="deer" /*меньше 700*//>}
             </div>
 
         </div>

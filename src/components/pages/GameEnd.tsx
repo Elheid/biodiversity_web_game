@@ -2,9 +2,16 @@ import { Container, Stack, Typography } from "@mui/material"
 import { useGamePointsContext } from "../../context/GamePointsProvider";
 import { HomeButton } from "../HomeButtons";
 import { END_TITLE, TRUE_AMOUNT_PHOTO_TEXT, TYPE_OF_SCORE_TEXT } from "../../config";
+import { useEffect } from "react";
+import { setEndBodyStyle } from "../../utill";
 
 export const GameEnd = () => {
     const { firstRoundPoints, secondRoundPoints } = useGamePointsContext()
+
+    useEffect(()=>{
+        setEndBodyStyle()
+    },[])
+
     return (
         <Container sx={{
         display: "flex",

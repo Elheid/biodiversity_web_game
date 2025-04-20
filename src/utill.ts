@@ -25,3 +25,10 @@ export const setRoundsBodyStyle = ()=>{
     document.body.classList.add("background")
     document.body.classList.add("background-rounds")
 }
+
+export const setEndBodyStyle = ()=>{
+    document.body.classList = ""
+    document.body.classList.add("background")
+    document.body.classList.add("background-end")
+}
+

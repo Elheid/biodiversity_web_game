@@ -29,7 +29,7 @@ export const RoundStart = ({ roundType }: { roundType: GameType }) => {
             }}>
                 Start
             </Button>*/}
-            <StartButton to={`/${roundStartButton}`}/>
+            <StartButton variant="colored" text="Начать" to={`/${roundStartButton}`}/>
         </div>
 
 

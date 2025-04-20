@@ -1,5 +1,5 @@
 #root {
-  /*max-width: 1280px;*/
+  max-width: 1280px;
   
   /*padding: 2rem;*/
   text-align: center;
@@ -17,6 +17,7 @@
   --timer-container:url("/src/assets/img/timerContainer.svg");
 
   --description-container:url("/src/assets/img/descriptionContainer.svg");
+  --white-description-container:url("/src/assets/img/containerImageWithWhite.png");
   --subtitle-container:url("/src/assets/img/subtitleContainer.svg");
 }
 
@@ -107,8 +108,15 @@ body {
   background-attachment: local; /* Фиксация фона */
 }
 
+.background-end{
+  background-image: url(/src/assets/img/endBack.png);
+}
 
-
+@media (max-width: 1200px) {
+  .background-end{
+    background-image: url(/src/assets/img/backgroundMain.png);
+  }
+}
 
 @media (max-width: 1336px) {
   .background-main{
@@ -189,10 +197,29 @@ div.start-game {
 */
 
 /** Description container main page**/
-.container-image{
-  position: relative;
+
+@media (max-width: 700px) {
+  .container-image-size{
+      width: 100% !important; /* Настройте по необходимости */
+      max-width: 100% !important; /* Макс. размер по макету */
+  }
+  .subtitle-container{
+    margin-left: 0 !important;
+  }
+}
+
+
+.container-image-white-back{
+    background-color: rgba(255, 255, 255, 0.8);
+    color: rgba(51, 63, 72, 1);
+}
+
+.container-image-size{
   width: 80%; /* Настройте по необходимости */
   max-width: 600px; /* Макс. размер по макету */
+}
+.container-image{
+  position: relative;
 
   background-size: cover;
   background-repeat: no-repeat;
@@ -211,6 +238,18 @@ div.start-game {
 
   font-size: 12px;
 }
+
+.white-container{
+  display: flex;
+}
+.white-container .container-image{
+  color:rgba(51, 63, 72, 1);
+  background-image: var(--white-description-container);
+
+  aspect-ratio: 366/155; /* Соотношение сторон вашего SVG */
+  
+}
+
 
 
 .description-container{
@@ -286,11 +325,6 @@ div.start-game {
   grid-area: image;
 }
 
-.timer-container{
-  height: fit-content;
-  grid-area: timer;
-}
-
 .buttons{
   height: 100%;
   grid-area: buttons;
@@ -324,9 +358,6 @@ div.start-game {
   }
 }
 
-.icon-button:hover::after {
-  opacity: 1; /* Показываем второе изображение */
-}
 
 
 
@@ -407,6 +438,12 @@ div.start-game {
 .timer-container-big{
   width: fit-content;
   padding: 4vw;
+}
+
+.timer-container{
+  height: fit-content;
+  grid-area: timer;
+  width: 5vw;
 }
 
 
