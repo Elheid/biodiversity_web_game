@@ -6,7 +6,7 @@ import { Game } from "../../classes/game";
 import { useGameState } from "../../hooks/useGameState";
 import { useGameContext } from "../../context/GameContextProvider";
 import { getTrueAnswer } from "../../api/api";
-import { useNavigate } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { useGamePointsContext } from "../../context/GamePointsProvider";
 import { ImageContainer } from "../ImageContainer";
 import { TimerComponent } from "../TimerComponent";
@@ -20,13 +20,14 @@ interface BaseGameProps {
     //getGameInfo: () => RoundsInfo; // Уточните тип согласно вашей реализацииs
     getNextGameInfo?: () => RoundsInfo; // Опционально для следующего 
     gameType?: GameType;
+    //onlyFirstRound?:boolean;
 }
 
 const getAnswerTitle = (game: Game | undefined): string | undefined => {
     return game?.roundTitle;
 }
 
-export const BaseOfGame = ({ gameType }: BaseGameProps) => {
+export const BaseOfGame = ({ gameType, /*onlyFirstRound = false*/ }: BaseGameProps) => {
     const {
         isRoundEnd,
         buttonsDisabled,
@@ -36,6 +37,11 @@ export const BaseOfGame = ({ gameType }: BaseGameProps) => {
         imgRef,
         handleAnswerSelect,
     } = useGameState(2, gameType);
+
+    const {onlyFirst} = useParams<{onlyFirst:string}>()
+
+    //console.log(onlyFirst)
+
     const { game } = useGameContext();
 
     const [showYesNo, setShowYesNo] = useState<boolean>(true); // Состояние для отображения "Да" и "Нет"
@@ -108,8 +114,14 @@ export const BaseOfGame = ({ gameType }: BaseGameProps) => {
                 setSecondRoundPoints(points(e));
                 nav();
             } else {
-                setFirstRoundPoints(points(e));
-                navigator(`/first-round-end`, { replace: true });
+                if (onlyFirst){
+                    setFirstRoundPoints(points(e));
+                    navigator(`/end`, { replace: true });
+                }
+                else{
+                    setFirstRoundPoints(points(e));
+                    navigator(`/first-round-end`, { replace: true });
+                }
             }
         };
 

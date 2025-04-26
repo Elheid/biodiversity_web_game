@@ -209,6 +209,13 @@ div.start-game {
 }
 
 
+.level-box{
+  transition: transform 0.2s;
+}
+.level-box:hover {
+    transform: scale(1.2);
+}
+    
 .container-image-white-back{
     background-color: rgba(255, 255, 255, 0.8);
     color: rgba(51, 63, 72, 1);

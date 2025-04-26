@@ -1,4 +1,3 @@
-import { Typography } from "@mui/material"
 
 import { useEffect, useState } from "react"
 import { endSession } from "../../api/api"
@@ -66,7 +65,7 @@ export const MainPage = () => {
 
             <div className="bottom-container">
                 {isMinWidth && <img className="wolf-image" style={{ maxWidth: "15vw" }} src={wolf} alt="wolf" />}
-                <StartButton to={"/first-round-start"} />
+                <StartButton to={"choice-level"/*"/first-round-start"*/} />
                 { isMinWidth && <img style={{ maxWidth: "10vw" }} src={deer} alt="deer" /*меньше 700*//>}
             </div>
 

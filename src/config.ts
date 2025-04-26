@@ -2,8 +2,8 @@
 export const BASE_TIME_BEETWEN_ROUNDS = 1.2 *1000;
 export const BASE_DURATION_TIME = 40 *1000;
 //Настройки врмени
-export const CURRENT_DURATION_TIME = 400 * 1000;//время в милисекундах
-export const CURRENT_TIME_BEETWEN_ROUNDS = 1.2 *1000;;
+export const CURRENT_DURATION_TIME = 40 * 1000;//время в милисекундах
+export const CURRENT_TIME_BEETWEN_ROUNDS = 1.2 *1000;
 //
 export const START_ROUND = 0;
 export const START_SCORE = 0;
@@ -26,7 +26,7 @@ export const ROUND_TARGET_TITLE_AI = "Оцени работу с AI-помощн
 export const ROUND_TARGET = ` Обработай как можно больше снимков за ${CURRENT_DURATION_TIME / 1000} секунд!`
 export const RAUND_TEXT = "Раунд"//1 или 2
 //BaseOfGame
-export const SCROE_TEXT = "Очки";
+export const SCROE_TEXT = "Очки";                    
 export const TARGET_ANIMAL_TITLE = "Найди животное на снимке"
 export const TRAGET_ANIMAL_SUBTITILE = "Укажи место, где оно находится"
 
