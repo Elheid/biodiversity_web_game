@@ -12,7 +12,7 @@ import { ImageContainer } from "../ImageContainer";
 import { TimerComponent } from "../TimerComponent";
 import { AnswerButton } from "../AnswerButton";
 import { HomeButton } from "../HomeButtons";
-import { SCROE_TEXT, SKIP_ROUND_BUTTON_TEXT, TARGET_ANIMAL_TITLE, TRAGET_ANIMAL_SUBTITILE, YES_NO_BUTTONS_TEXT } from "../../config";
+import { AMOUNTS_OF_ROUNDS, SCROE_TEXT, SKIP_ROUND_BUTTON_TEXT, TARGET_ANIMAL_TITLE, TRAGET_ANIMAL_SUBTITILE, YES_NO_BUTTONS_TEXT } from "../../config";
 
 
 interface BaseGameProps {
@@ -34,7 +34,7 @@ export const BaseOfGame = ({ gameType }: BaseGameProps) => {
         scoreRef,
         imgRef,
         handleAnswerSelect,
-    } = useGameState(2, gameType);
+    } = useGameState(AMOUNTS_OF_ROUNDS, gameType);
     const { game } = useGameContext();
 
     const [showYesNo, setShowYesNo] = useState<boolean>(true); // Состояние для отображения "Да" и "Нет"
