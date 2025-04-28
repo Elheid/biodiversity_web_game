@@ -21,7 +21,7 @@ export const MAIN_PAGE_AI_SUBTITLE = "AI-помощник возьмет час�
 export const RAUND_START__BUTTON_TEXT = "Начать"//1 или 2
 
 
-export const ROUND_TARGET_TITLE = "Найди животноеи определи его вид";
+export const ROUND_TARGET_TITLE = "Найди животное и определи его вид";
 export const ROUND_TARGET_TITLE_AI = "Оцени работу с AI-помощником";
 export const ROUND_TARGET = ` Обработай как можно больше снимков за ${CURRENT_DURATION_TIME / 1000} секунд!`
 export const RAUND_TEXT = "Раунд"//1 или 2
