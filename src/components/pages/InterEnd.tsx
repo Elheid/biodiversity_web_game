@@ -3,7 +3,7 @@ import { useGamePointsContext } from "../../context/GamePointsProvider";
 import { TRUE_AMOUNT_PHOTO_TEXT, TRY_AI_BUTTON_TEXT, YOUR_SCORE_TEXT } from "../../config";
 import { AutoTextSize } from "auto-text-size";
 import { setStartRoundsBodyStyle } from "../../utill";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { StartButton } from "../StartButton";
 import { useMinWidth } from "../../hooks/useMinWidth";
 

@@ -1,5 +1,5 @@
 
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import { endSession } from "../../api/api"
 import { StartButton } from "../StartButton"
 import { MAIN_PAGE_AI_SUBTITLE, MAIN_PAGE_DESCRIPTION, MAIN_PAGE_TITLE } from "../../config"
