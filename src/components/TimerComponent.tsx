@@ -1,6 +1,7 @@
-import { Box, Typography } from '@mui/material';
+import { Box } from '@mui/material';
 import { useState, useEffect } from 'react';
 import { Timer } from '../classes/timer';
+import { AutoTextSize } from 'auto-text-size';
 
 interface TimerComponentProps {
     timer: Timer;
@@ -43,13 +44,16 @@ export const TimerComponent= ({ timer }: TimerComponentProps) =>{
     };
 
     return (
-        <Box className="timer-container timer-container-big">
-            <Typography
+        <Box className="timer-container timer-container-big" style={{alignItems:"center"}}>
+            {/*<Typography
                 variant={window.innerWidth < 600 ? 'h6' : 'h3'}
                 component="h3"
             >
                 {formatTime(timeLeft)}
-            </Typography>
+            </Typography>*/}
+            <AutoTextSize maxFontSizePx={40} minFontSizePx={10} mode={"boxoneline"} style={{alignItems:"center"}}>
+                {formatTime(timeLeft)}
+            </AutoTextSize>
         </Box>
     );
 }

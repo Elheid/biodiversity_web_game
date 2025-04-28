@@ -12,6 +12,7 @@ import { setMainPageBodyStyle } from "../../utill"
 //import tiger from "../../assets/img/tiger.svg"
 
 import { AutoTextSize } from 'auto-text-size'
+import { useMinWidth } from "../../hooks/useMinWidth"
 
 export const MainPage = () => {
     useEffect(() => {
@@ -20,7 +21,7 @@ export const MainPage = () => {
     }, [])
 
 
-    const [isMinWidth, setIsMinWidth] = useState(false);
+    /*const [isMinWidth, setIsMinWidth] = useState(false);
     const [isMinWidthBear, setIsMinWidthBear] = useState(false);
 
 
@@ -34,8 +35,10 @@ export const MainPage = () => {
     window.addEventListener('resize', checkWidth);
     
     return () => window.removeEventListener('resize', checkWidth);
-    }, []);
+    }, []);*/
+    const {isMinWidth : isMinWidth} = useMinWidth(700)
 
+    const {isMinWidth : isMinWidthBear} = useMinWidth(900)
 
     //document.body.classList.add("centred-root")
 

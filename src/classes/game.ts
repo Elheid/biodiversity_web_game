@@ -1,4 +1,5 @@
 import { BASE_DURATION_TIME, BASE_TIME_BEETWEN_ROUNDS, START_ROUND, START_SCORE } from "../config";
+import { setFirstRoundFromStorage, setSecondRoundFromStorage } from "../context/GamePointsProvider";
 import { Coordinates } from "../interfaces/coordinates";
 import { Answer, GameType, RoundsInfo } from "../interfaces/rounds";
 import { GameRound } from "./gameRound";
@@ -168,6 +169,8 @@ export class Game {
 
     public changeScore(): void {
         this.score++;
+        if(this.gameType === GameType.firstType) setFirstRoundFromStorage(this.score) 
+        if(this.gameType === GameType.secondType) setSecondRoundFromStorage(this.score) 
         if (this.scoreRef) {
             this.scoreRef.textContent = (this.score).toString();
         }

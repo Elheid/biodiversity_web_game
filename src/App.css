@@ -162,6 +162,10 @@ div.start-game {
       'image' 
       'buttons'; /* Stack items vertically */
   }
+  .timer-container{
+    width: 10vw !important;
+    height: 40% !important;
+  }
   .buttons [role="group"]{
 
     justify-content: center;
@@ -177,6 +181,13 @@ div.start-game {
   
 }
 
+.qr-container img{
+  width: 100%;
+}
+.qr-container div img{
+  width: 100%;
+}
+
 .main-page-container{
   text-align: left;
 }
@@ -189,6 +200,27 @@ div.start-game {
   padding-bottom: 2vh;
 
   font-size: clamp(1.7rem, 2vw, 3.2rem)
+}
+
+.container-image{
+  width: 100%;
+}
+
+.text-block-auto-size * {
+    padding-bottom: 2vh;
+}
+
+
+.text-auto-size-container{
+  width:100%;
+  height: auto;
+
+  display:flex; 
+  flex-direction:column;
+  justify-content:center;
+}
+.text-auto-size-container div{
+  width: 100%;
 }
 /*
 .main-page-container p{
@@ -208,6 +240,22 @@ div.start-game {
   }
 }
 
+.gradient-text {
+  background-image: linear-gradient(
+    86.92deg, 
+    #495DB1 -7.63%, 
+    #00B1FF 47.11%, 
+    #00EBC7 102.94%
+  );
+  color: transparent;
+  -webkit-background-clip: text; /* Для поддержки Safari */
+  background-clip: text;
+  display: inline-block; /* Для корректного отображения */
+}
+
+.start-button-img{
+    width: 100%;
+}
 
 .level-box{
   transition: transform 0.2s;
@@ -451,6 +499,9 @@ div.start-game {
   height: fit-content;
   grid-area: timer;
   width: 5vw;
+
+  justify-content:center;
+  height: 20%;
 }
 
 
@@ -481,6 +532,13 @@ font-style: normal;
 font-weight: 700;
 font-size: 5rem;
 line-height: 123px;
+text-align: center;
+color: #00B1FF;
+}
+
+
+.gradient-number{
+font-style: normal;
 text-align: center;
 color: #00B1FF;
 }
