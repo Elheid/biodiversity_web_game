@@ -1,6 +1,6 @@
 #root {
-  /*max-width: 1280px;*/
-  margin: 0 auto;
+  max-width: 1280px;
+  
   /*padding: 2rem;*/
   text-align: center;
 
@@ -16,6 +16,71 @@
   --image-container:url("/src/assets/img/imageContainer.svg");
   --timer-container:url("/src/assets/img/timerContainer.svg");
 
+  --description-container:url("/src/assets/img/descriptionContainer.svg");
+  --white-description-container:url("/src/assets/img/containerImageWithWhite.png");
+  --subtitle-container:url("/src/assets/img/subtitleContainer.svg");
+}
+
+
+/*подумать над flex-grow: 1; для root */
+/* что-то не так с таймером из-за чего чкачет картинка в игре*/
+/* Что-то сделать с размерами шрифтов*/
+
+
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  min-height: 100vh;
+  overflow-x: hidden; /* Блокируем горизонтальный скролл */
+}
+
+.centred-root{
+  margin: 0 auto;
+}
+
+@font-face {
+  font-family: 'SB Sans Display';
+  src: url('/fonts/sb-sans-display.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'SB Sans Display Bold';
+  src: url('/fonts/sb-sans-display-bold.otf') format('truetype');
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'SB Sans Display Semibold';
+  src: url('/fonts/sb-sans-display-semibold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'SB Sans Text';
+  src: url('/fonts/sb-sans-text.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+}
+
+body {
+  font-family: 'SB Sans Text', sans-serif !important;
+}
+
+h1, h2, h3, h4, h5 {
+  font-family: 'SB Sans Display Semibold', sans-serif !important;
+}
+
+p {
+  font-family: 'SB Sans Display Semibold', sans-serif !important;
+}
+
+.sans-text{
+  font-family: 'SB Sans Text', sans-serif !important;
 }
 
 
@@ -24,17 +89,55 @@ body {
   -moz-user-select: none; 
   -webkit-user-select: none; 
   user-select: none; 
+  align-items: center;
 }
 
-body{
+.background-rounds{
   background-image: url(/src/assets/img/background.png);
-  background-repeat: no-repeat;
+}
+
+.background-main{
+  background-image: url(/src/assets/img/backgroundTiger.jpg);
+}
+
+.background-rounds-start{
+  background-image: url(/src/assets/img/backgroundMain.png);
+}
+
+.background-main {
+  background-attachment: local; /* Фиксация фона */
+}
+
+.background-end{
+  background-image: url(/src/assets/img/endBack.png);
+}
+
+@media (max-width: 1200px) {
+  .background-end{
+    background-image: url(/src/assets/img/backgroundMain.png);
+  }
+}
+
+@media (max-width: 1336px) {
+  .background-main{
+    background-image: url(/src/assets/img/backgroundMain.png);
+  }
+}
+
+
+body{
+  color:white;
   background-size: cover;
-  color:white
+  background-position: center;
+  background-repeat: no-repeat;
+  position: relative;
+
+  justify-content: space-around;
 }
 
 
 div.start-game {
+  max-width: 100vw;
   display: grid; 
   row-gap: 2%;
   column-gap: 10%;
@@ -47,7 +150,9 @@ div.start-game {
     'image buttons';
 }
 
-@media (max-width: 600px) {
+
+
+@media (max-width: 768px) {
   div.start-game {
     grid-template-columns: 1fr; /* Stack items on smaller screens */
     grid-template-rows: auto auto auto auto; /* Allow rows to adjust based on content */
@@ -56,6 +161,10 @@ div.start-game {
       'timer' 
       'image' 
       'buttons'; /* Stack items vertically */
+  }
+  .timer-container{
+    width: 10vw !important;
+    height: 40% !important;
   }
   .buttons [role="group"]{
 
@@ -72,7 +181,195 @@ div.start-game {
   
 }
 
+.qr-container img{
+  width: 100%;
+}
+.qr-container div img{
+  width: 100%;
+}
 
+.main-page-container{
+  text-align: left;
+}
+
+.main-title{
+  padding-top: 10vh;
+  padding-right: 20vw;
+  text-transform: uppercase;
+  width: 50vw;
+  padding-bottom: 2vh;
+
+  font-size: clamp(1.7rem, 2vw, 3.2rem)
+}
+
+.container-image{
+  width: 100%;
+}
+
+.text-block-auto-size * {
+    padding-bottom: 2vh;
+}
+
+
+.text-auto-size-container{
+  width:100%;
+  height: auto;
+
+  display:flex; 
+  flex-direction:column;
+  justify-content:center;
+}
+.text-auto-size-container div{
+  width: 100%;
+}
+/*
+.main-page-container p{
+  font-size: 2rem;
+}
+*/
+
+/** Description container main page**/
+
+@media (max-width: 700px) {
+  .container-image-size{
+      width: 100% !important; /* Настройте по необходимости */
+      max-width: 100% !important; /* Макс. размер по макету */
+  }
+  .subtitle-container{
+    margin-left: 0 !important;
+  }
+}
+
+.gradient-text {
+  background-image: linear-gradient(
+    86.92deg, 
+    #495DB1 -7.63%, 
+    #00B1FF 47.11%, 
+    #00EBC7 102.94%
+  );
+  color: transparent;
+  -webkit-background-clip: text; /* Для поддержки Safari */
+  background-clip: text;
+  display: inline-block; /* Для корректного отображения */
+}
+
+.start-button-img{
+    width: 100%;
+}
+
+.level-box{
+  transition: transform 0.2s;
+}
+.level-box:hover {
+    transform: scale(1.2);
+}
+    
+.container-image-white-back{
+    background-color: rgba(255, 255, 255, 0.8);
+    color: rgba(51, 63, 72, 1);
+}
+
+.container-image-size{
+  width: 80%; /* Настройте по необходимости */
+  max-width: 600px; /* Макс. размер по макету */
+}
+.container-image{
+  position: relative;
+
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+
+.inframe-text{
+
+  position: absolute;
+  top: 12%;
+  left: 10%;
+  right: 10%;
+  bottom: 12%;
+  margin: auto 0;
+  padding: 15px;
+
+  font-size: 12px;
+}
+
+.white-container{
+  display: flex;
+}
+.white-container .container-image{
+  color:rgba(51, 63, 72, 1);
+  background-image: var(--white-description-container);
+
+  aspect-ratio: 366/155; /* Соотношение сторон вашего SVG */
+  
+}
+
+
+
+.description-container{
+  display: flex;
+}
+.description-container .container-image{
+
+
+  background-image: var(--description-container);
+
+  aspect-ratio: 366/155; /* Соотношение сторон вашего SVG */
+  
+}
+
+.description-container p{
+  /* Адаптивный шрифт */
+}
+/** subtitle container main page**/
+.subtitle-container{
+  margin-left: 20vw;
+  text-transform: uppercase;
+  /*font-size: 1rem;*/
+
+  /*width: 100%;*/
+
+  /*padding: 4%;
+  background: var(--subtitle-container);
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;*/
+
+  background-image: var(--subtitle-container);
+  aspect-ratio: 888/115; /* Соотношение сторон вашего SVG */
+
+}
+
+
+
+.subtitle-container p{
+  /*width: fit-content;*/
+  width: 100%;
+
+  
+  
+  /* Адаптивный шрифт */
+
+}
+/*
+.wolf-image{
+  position: absolute;
+  left: 5vw;
+  top: -10vh;
+}*/
+
+.bottom-container{
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.bottom-container button{
+  width: fit-content;
+  height: fit-content;
+}
 
 .description{
   text-align: left;
@@ -81,11 +378,6 @@ div.start-game {
 
 .image-container{
   grid-area: image;
-}
-
-.timer-container{
-  height: fit-content;
-  grid-area: timer;
 }
 
 .buttons{
@@ -121,9 +413,6 @@ div.start-game {
   }
 }
 
-.icon-button:hover::after {
-  opacity: 1; /* Показываем второе изображение */
-}
 
 
 
@@ -206,6 +495,15 @@ div.start-game {
   padding: 4vw;
 }
 
+.timer-container{
+  height: fit-content;
+  grid-area: timer;
+  width: 5vw;
+
+  justify-content:center;
+  height: 20%;
+}
+
 
 .timer-container{
   color:black;
@@ -234,6 +532,13 @@ font-style: normal;
 font-weight: 700;
 font-size: 5rem;
 line-height: 123px;
+text-align: center;
+color: #00B1FF;
+}
+
+
+.gradient-number{
+font-style: normal;
 text-align: center;
 color: #00B1FF;
 }

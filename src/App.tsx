@@ -14,6 +14,7 @@ import { GameType } from './interfaces/rounds'
 import { GamePointsProvider } from './context/GamePointsProvider'
 import { InterEnd } from './components/pages/InterEnd'
 import { BaseOfGame } from './components/pages/BaseOfGame'
+import { ChoiceLevel } from './components/pages/ChoiceLevel'
 
 
 function App() {
@@ -37,15 +38,29 @@ function App() {
               <BrowserRouter basename="/">
                 <Routes>
                   <Route path="/" element={<MainPage />} />
-                  <Route path="/first-round-start" element={<RoundStart roundType={GameType.firstType} />} />
+
+                  <Route path="/choice-level" element={<ChoiceLevel />} />
+
+
+                  <Route path="/first-round-start" element={<RoundStart roundType={GameType.firstType} />}>
+                    <Route path="/first-round-start/:onlyFirst" element={<RoundStart roundType={GameType.firstType} />}></Route>
+                  </Route>
+
+                  <Route path="/first-round" element={<BaseOfGame />}>
+                    <Route path="/first-round/:onlyFirst" element={<BaseOfGame />} />
+                  </Route>
+
+                  <Route path="/first-round/:onlyFirst" element={<BaseOfGame />} />
+
 
                   <Route path="/first-round" element={<BaseOfGame />} />
+
                   <Route path="/first-round-end" element={<InterEnd />} />
-                  
+
 
                   <Route path="/second-round-start" element={<RoundStart roundType={GameType.secondType} />} />
 
-                  <Route path="/second-round" element={<BaseOfGame gameType={GameType.secondType}/>} />
+                  <Route path="/second-round" element={<BaseOfGame gameType={GameType.secondType} />} />
                   <Route path="/end" element={<GameEnd />} />
 
 
