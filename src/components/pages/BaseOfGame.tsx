@@ -39,10 +39,13 @@ export const BaseOfGame = ({ gameType, /*onlyFirstRound = false*/ }: BaseGamePro
         imgRef,
         handleAnswerSelect,
 
-     } = useGameState(AMOUNTS_OF_ROUNDS, gameType);
+    } = useGameState(AMOUNTS_OF_ROUNDS, gameType);
 
     const {onlyFirst} = useParams<{onlyFirst:string}>()
 
+    useEffect(()=>{
+        setRoundsBodyStyle()
+    },[])
     //console.log(onlyFirst)
 
     const { game } = useGameContext();
@@ -52,13 +55,6 @@ export const BaseOfGame = ({ gameType, /*onlyFirstRound = false*/ }: BaseGamePro
 
     const [trueAnswer, setTrueAnswer] = useState<string>("");
 
-    useEffect(()=>{
-        
-          
-          
-          
-          ()
-    },[])
     
 
     useEffect(() => {
