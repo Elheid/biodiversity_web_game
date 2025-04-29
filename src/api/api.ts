@@ -1,5 +1,6 @@
 import axios from "axios";
 import { SERVER_URL } from "../config";
+import { TextDTO } from "../interfaces/backendDTO";
 
 const BASE_URL = SERVER_URL;
 
@@ -8,10 +9,26 @@ axios.defaults.withCredentials = true;
 //axios.defaults.headers.common['Authorization'] = localStorage.getItem("token") ? `Bearer ${localStorage.getItem("token") }` : undefined;
 
 
+/*export type LANGUAGE = 
+    "RUSSIAN" | "ENGLISH" | "ITALIAN";*/
+
+export enum LANGUAGE {
+    RUSSIAN = "RUSSIAN",
+    ENGLISH = "ENGLISH",
+    ITALIAN = "ITALIAN"
+}
+
+const langQuery = (lang:LANGUAGE)=>`?language=${lang}`
+
+
 export const MyRoutes = {
     FIRST_ROUND: "first-round",
     SECOND_ROUND: "second-round",
     ANIMALS: "animals",
+
+    TEXTS_WITH_TITLE: function(title: string): string {
+        return `/ui-texts/title/${title}`;
+    },
 
     SESSION_INVALIDATE:"session/invalidate",
 
@@ -28,21 +45,33 @@ const getData = async(route : string) =>{
     const response = await axios.get(route)
     return response.data;
 }
+
+const getDataWithLang = async(route : string, lang:LANGUAGE = LANGUAGE.RUSSIAN) =>{
+    const response = await axios.get(route + langQuery(lang))
+    return response.data;
+}
+
+
 const postData = async(route : string, data:object) =>{
     const response = await axios.post(route, data)
     return response.data;
 }
 
+export const getTexts = async(title:string):Promise<TextDTO>=>{
+    const response = await axios.get(MyRoutes.TEXTS_WITH_TITLE(title))
+    return response.data;
+}
+
 export const endSession = ()=> axios.post(MyRoutes.SESSION_INVALIDATE)
 
-export const getFirstRoundData = ()=> getData(MyRoutes.FIRST_ROUND);
-export const getSecondRoundData = ()=> getData(MyRoutes.SECOND_ROUND);
+export const getFirstRoundData = ()=> getDataWithLang(MyRoutes.FIRST_ROUND);
+export const getSecondRoundData = ()=> getDataWithLang(MyRoutes.SECOND_ROUND);
 
 export const isAnswerCorrect = (curRound:string, roundId:number, answer:string)=> postData(MyRoutes.IS_CORRECT_ANSWER(curRound, roundId),{answer:answer});
 export const getTrueAnswer =  (curRound:string, roundId:number)=> getData(`${curRound}/${roundId}/correct`);
 
-export const getRandomRound = (curRound:string)=> getData(MyRoutes.RANDOM_LEVEL(curRound));
+export const getRandomRound = (curRound:string, lang:LANGUAGE)=> getDataWithLang(MyRoutes.RANDOM_LEVEL(curRound), lang);
 
 export const startSessionRequest = () => {
-    axios.get("/animals/Олень");
+    axios.get("/animals/1");
 }

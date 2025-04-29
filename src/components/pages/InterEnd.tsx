@@ -1,11 +1,12 @@
 import { Container, Typography } from "@mui/material"
 import { useGamePointsContext } from "../../context/GamePointsProvider";
-import { TRUE_AMOUNT_PHOTO_TEXT, TRY_AI_BUTTON_TEXT, YOUR_SCORE_TEXT } from "../../config";
+//import { TRUE_AMOUNT_PHOTO_TEXT, TRY_AI_BUTTON_TEXT, YOUR_SCORE_TEXT } from "../../config";
 import { AutoTextSize } from "auto-text-size";
 import { setStartRoundsBodyStyle } from "../../utill";
 import { useEffect } from "react";
 import { StartButton } from "../StartButton";
 import { useMinWidth } from "../../hooks/useMinWidth";
+import { useTextLang } from "../../hooks/useTextLang";
 
 export const InterEnd = () => {
     const { firstRoundPoints } = useGamePointsContext()
@@ -13,20 +14,11 @@ export const InterEnd = () => {
         setStartRoundsBodyStyle()
     }, [])
 
-    /*const [isMinWidth, setIsMinWidth] = useState(false);
-    
-    
-        useEffect(() => {
-        const checkWidth = () => {
-            setIsMinWidth(window.innerWidth > 824);
-        };
-        
-        checkWidth();
-        window.addEventListener('resize', checkWidth);
-        
-        return () => window.removeEventListener('resize', checkWidth);
-    }, []);*/
     const {isMinWidth} = useMinWidth(824)
+
+    const { text:TRUE_AMOUNT_PHOTO_TEXT } = useTextLang('TRUE_AMOUNT_PHOTO_TEXT');
+    const { text:TRY_AI_BUTTON_TEXT } = useTextLang('TRY_AI_BUTTON_TEXT');
+    const { text:YOUR_SCORE_TEXT } = useTextLang('YOUR_SCORE_TEXT');
 
 
     return (

@@ -6,6 +6,7 @@ import { TextForRoundStart } from "../TextForRoundStart";
 import { StartButton } from "../StartButton";
 import { setStartRoundsBodyStyle } from "../../utill";
 import { useParams } from "react-router";
+import { useTextLang } from "../../hooks/useTextLang";
 
 
 export const RoundStart = ({ roundType }: { roundType: GameType }) => {
@@ -21,6 +22,8 @@ export const RoundStart = ({ roundType }: { roundType: GameType }) => {
     const urlParam = onlyFirst ? `first-round${"/" + onlyFirst}` : `first-round`;
     const roundStartButton = roundType === GameType.firstType ? urlParam : "second-round";
     
+    const { text:RAUND_START__BUTTON_TEXT } = useTextLang('RAUND_START__BUTTON_TEXT');
+
     return (
         <div>
             <TextForRoundStart roundType={roundType} />
@@ -30,7 +33,7 @@ export const RoundStart = ({ roundType }: { roundType: GameType }) => {
             }}>
                 Start
             </Button>*/}
-            <StartButton variant="colored" text="Начать" to={`/${roundStartButton}`}/>
+            <StartButton variant="colored" text={RAUND_START__BUTTON_TEXT} to={`/${roundStartButton}`}/>
         </div>
 
 

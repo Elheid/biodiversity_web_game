@@ -14,7 +14,11 @@ import { AnswerButton } from "../AnswerButton";
 import { HomeButton } from "../HomeButtons";
 import { setRoundsBodyStyle } from "../../utill";
 
-import { AMOUNTS_OF_ROUNDS, SCROE_TEXT, SKIP_ROUND_BUTTON_TEXT, TARGET_ANIMAL_TITLE, TRAGET_ANIMAL_SUBTITILE, YES_NO_BUTTONS_TEXT } from "../../config";
+import { AMOUNTS_OF_ROUNDS,
+    SKIP_ROUND_BUTTON_TEXT_default,
+    /*YES_NO_BUTTONS_TEXT*/} from "../../config";
+import { useLanguageContext } from "../../context/LanguageProvider";
+import { useTextLang } from "../../hooks/useTextLang";
 
 
 
@@ -41,12 +45,20 @@ export const BaseOfGame = ({ gameType, /*onlyFirstRound = false*/ }: BaseGamePro
 
     } = useGameState(AMOUNTS_OF_ROUNDS, gameType);
 
+    const { text:SCROE_TEXT } = useTextLang('SCROE_TEXT');
+    const { text:SKIP_ROUND_BUTTON_TEXT } = useTextLang('SKIP_ROUND_BUTTON_TEXT');
+    const { text:TARGET_ANIMAL_TITLE } = useTextLang('TARGET_ANIMAL_TITLE');
+    const { text:TRAGET_ANIMAL_SUBTITILE } = useTextLang('TRAGET_ANIMAL_SUBTITILE');
+
+    const { text:YES_NO_BUTTONS_TEXT_yes } = useTextLang('YES_NO_BUTTONS_TEXT_yes');
+    const { text:YES_NO_BUTTONS_TEXT_no } = useTextLang('YES_NO_BUTTONS_TEXT_no');
+
     const {onlyFirst} = useParams<{onlyFirst:string}>()
 
     useEffect(()=>{
         setRoundsBodyStyle()
     },[])
-    //console.log(onlyFirst)
+    
 
     const { game } = useGameContext();
 
@@ -55,7 +67,7 @@ export const BaseOfGame = ({ gameType, /*onlyFirstRound = false*/ }: BaseGamePro
 
     const [trueAnswer, setTrueAnswer] = useState<string>("");
 
-    
+    const {language} = useLanguageContext();
 
     useEffect(() => {
 
@@ -63,7 +75,7 @@ export const BaseOfGame = ({ gameType, /*onlyFirstRound = false*/ }: BaseGamePro
             if (game && game.roundsInfo[0] && game.roundsInfo[0].id) {
                 const type = gameType || GameType.firstType;
                 getTrueAnswer(type === GameType.firstType ? "first-round" : "second-round", e.detail || -1)
-                    .then(res => setTrueAnswer(res.name))
+                    .then(res => setTrueAnswer(res.names[language]))
             }
             if (gameType === GameType.secondType) {
                 setShowYesNo(true)
@@ -84,8 +96,8 @@ export const BaseOfGame = ({ gameType, /*onlyFirstRound = false*/ }: BaseGamePro
     useEffect(() => {
         if (game) {
             const YesNoAnswers = [
-                { answerName: YES_NO_BUTTONS_TEXT.yes, isAnswerTrue: false },
-                { answerName: YES_NO_BUTTONS_TEXT.no, isAnswerTrue: false },
+                { answerName: YES_NO_BUTTONS_TEXT_yes, isAnswerTrue: false },
+                { answerName: YES_NO_BUTTONS_TEXT_no, isAnswerTrue: false },
             ]
 
             const secondType = game.isThisSecondType();
@@ -156,8 +168,8 @@ export const BaseOfGame = ({ gameType, /*onlyFirstRound = false*/ }: BaseGamePro
             // Если есть answerQuestion и показываем "Да" и "Нет", передаем answerQuestion
             const choice = getAnswerTitle(game) || ""//game?.roundsInfo[curRound]?.answerTitle || "";
             game?.RoundController.isAnswerTrue(choice, GameType.secondType).then(res => {
-                const answer = answerName === YES_NO_BUTTONS_TEXT.yes ? choice : YES_NO_BUTTONS_TEXT.no;
-                if (res || (!res && answerName === YES_NO_BUTTONS_TEXT.yes))
+                const answer = answerName === YES_NO_BUTTONS_TEXT_yes ? choice : YES_NO_BUTTONS_TEXT_no;
+                if (res || (!res && answerName === YES_NO_BUTTONS_TEXT_yes))
                     handleAnswerSelect(answer);
             })
         } else if (answerName) {
@@ -167,9 +179,9 @@ export const BaseOfGame = ({ gameType, /*onlyFirstRound = false*/ }: BaseGamePro
         }
     };
 
-    const onSkipClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-        const answerName = e.currentTarget.textContent || "";
-        handleAnswerSelect(answerName);
+    const onSkipClick = (/*e: React.MouseEvent<HTMLButtonElement, MouseEvent>*/) => {
+        //const answerName = e.currentTarget.textContent || "";
+        handleAnswerSelect(SKIP_ROUND_BUTTON_TEXT_default);
     }
 
 

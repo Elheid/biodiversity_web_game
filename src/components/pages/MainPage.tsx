@@ -2,7 +2,7 @@
 import { useEffect } from "react"
 import { endSession } from "../../api/api"
 import { StartButton } from "../StartButton"
-import { MAIN_PAGE_AI_SUBTITLE, MAIN_PAGE_DESCRIPTION, MAIN_PAGE_TITLE } from "../../config"
+
 
 import bear from "../../assets/img/bear.svg"
 import wolf from "../../assets/img/wolf.svg"
@@ -13,29 +13,27 @@ import { setMainPageBodyStyle } from "../../utill"
 
 import { AutoTextSize } from 'auto-text-size'
 import { useMinWidth } from "../../hooks/useMinWidth"
+import { useResetPoints } from "../../hooks/resetPoints"
+import {DialogLanguageChange} from "../DialogLanguageChange"
+import { useTextLang } from "../../hooks/useTextLang"
 
 export const MainPage = () => {
+    useResetPoints();
     useEffect(() => {
         endSession()//end prev session
         setMainPageBodyStyle()
+        
     }, [])
-
-
-    /*const [isMinWidth, setIsMinWidth] = useState(false);
-    const [isMinWidthBear, setIsMinWidthBear] = useState(false);
-
-
-    useEffect(() => {
-    const checkWidth = () => {
-        setIsMinWidth(window.innerWidth > 700);
-        setIsMinWidthBear(window.innerWidth > 900);
-    };
     
-    checkWidth();
-    window.addEventListener('resize', checkWidth);
+
+    const { text:START_BUTTON_TEXT } = useTextLang('START_BUTTON_TEXT');
+
+    const { text:MAIN_PAGE_TITLE } = useTextLang('MAIN_PAGE_TITLE');
+    const { text:MAIN_PAGE_DESCRIPTION } = useTextLang('MAIN_PAGE_DESCRIPTION');
+    const { text:MAIN_PAGE_AI_SUBTITLE } = useTextLang('MAIN_PAGE_AI_SUBTITLE');
+
+
     
-    return () => window.removeEventListener('resize', checkWidth);
-    }, []);*/
     const {isMinWidth : isMinWidth} = useMinWidth(700)
 
     const {isMinWidth : isMinWidthBear} = useMinWidth(900)
@@ -44,6 +42,7 @@ export const MainPage = () => {
 
     return (
         <div className="main-page-container">
+            <DialogLanguageChange />
             <h1 className="main-title">{MAIN_PAGE_TITLE}</h1>
 
             {/*<img style={{position:"absolute", right: 0, top:"5vh", width:"40vw"}} src={tiger} alt="tiger" />*/}
@@ -68,7 +67,7 @@ export const MainPage = () => {
 
             <div className="bottom-container">
                 {isMinWidth && <img className="wolf-image" style={{ maxWidth: "15vw" }} src={wolf} alt="wolf" />}
-                <StartButton to={"choice-level"/*"/first-round-start"*/} />
+                <StartButton text={START_BUTTON_TEXT} to={"choice-level"/*"/first-round-start"*/} />
                 { isMinWidth && <img style={{ maxWidth: "10vw" }} src={deer} alt="deer" /*меньше 700*//>}
             </div>
 

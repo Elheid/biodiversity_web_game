@@ -4,6 +4,8 @@ import { setRoundsBodyStyle } from "../../utill"
 import { NavLink } from "react-router";
 import { AutoTextSize } from "auto-text-size";
 import { useMinWidth } from "../../hooks/useMinWidth";
+import { useResetPoints } from "../../hooks/resetPoints";
+import { useTextLang } from "../../hooks/useTextLang";
 
 export interface LevelCardProps {
     title: string;
@@ -12,7 +14,7 @@ export interface LevelCardProps {
     removeAnimation?: boolean;
 }
 export const LevelCard = ({ title, description, to, removeAnimation }: LevelCardProps) => {
-
+    useResetPoints();
     return (
         <Box className={removeAnimation ? "level-box" : ""}>
             <div className="white-container" style={{ display: "block", textDecoration: "none", padding: 0 }}>
@@ -40,24 +42,13 @@ export const LevelCard = ({ title, description, to, removeAnimation }: LevelCard
 }
 
 export const ChoiceLevel = () => {
-    /*const [isMinWidth, setIsMinWidth] = useState(false);
-    
-    
-        useEffect(() => {
-        const checkWidth = () => {
-            setIsMinWidth(window.innerWidth > 862);
-        };
-        
-        checkWidth();
-        window.addEventListener('resize', checkWidth);
-        
-        return () => window.removeEventListener('resize', checkWidth);
-    }, []);*/
     const { isMinWidth } = useMinWidth(862)
 
     useEffect(() => {
         setRoundsBodyStyle()
     }, [])
+
+    const { text:CHOICE_LEVEL_TEXT } = useTextLang('CHOICE_LEVEL_TEXT');
 
     const levelCards = [
         { title: "Full game", description: "Тут будет описаниe", to: "/first-round-start" },
@@ -84,7 +75,7 @@ export const ChoiceLevel = () => {
     return (
         <Box sx={{display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center"}}>
             <Typography className="gradient-text" variant="h3" style={{ padding: "20px", margin:"0 auto" }}>
-                Выбери тип игры
+                {CHOICE_LEVEL_TEXT}
             </Typography>
             <Container sx={{ padding: "0 !important", ...style }}>
                 {levelCards.map(item =>

@@ -1,6 +1,7 @@
 import { isAnswerCorrect, MyRoutes } from "../api/api";
+import { SKIP_ROUND_BUTTON_TEXT } from "../config";
 import { Answer, GamePictures, GameType } from "../interfaces/rounds";
-import { isSpecies } from "./animalSpecies";
+//import { isSpecies } from "./animalSpecies";
 import { Player } from "./player";
 
 export class GameRound {
@@ -84,7 +85,7 @@ export class GameRound {
 
     public async checkAnswer(roundType:GameType):Promise<boolean>{
         const choice = this.player.selectChoice()
-        if (!choice || !isSpecies(choice)) return false;
+        if (!choice || choice === SKIP_ROUND_BUTTON_TEXT/*|| !isSpecies(choice)*/) return false;
         /*const expectedAnswer = this._answers.filter((answer)=>{
             return answer.isAnswerTrue
         })

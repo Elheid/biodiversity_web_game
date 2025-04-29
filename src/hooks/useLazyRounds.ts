@@ -5,6 +5,7 @@ import { mapFirstRound, mapSecondRound } from "../mappingFromBack/mappingDTO";
 import { useGameContext } from "../context/GameContextProvider";
 
 import { Game } from "../classes/game";
+import { useLanguageContext } from "../context/LanguageProvider";
 
 
 export const useLazyRounds = () => {
@@ -12,6 +13,8 @@ export const useLazyRounds = () => {
     const {game} = useGameContext();
     const loadedRounds = useRef<Set<number>>(new Set());
 
+
+    const {language} = useLanguageContext();
 
 
     const loadRound = useCallback(async (game: Game) => {
@@ -23,7 +26,7 @@ export const useLazyRounds = () => {
                 ? MyRoutes.FIRST_ROUND
                 : MyRoutes.SECOND_ROUND;
 
-            const data = await getRandomRound(currRound);
+            const data = await getRandomRound(currRound, language);
 
             const mapper = game.gameType === GameType.firstType
                 ? mapFirstRound

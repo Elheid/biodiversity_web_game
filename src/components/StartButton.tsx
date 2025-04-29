@@ -8,42 +8,40 @@ import interEndButton from "../assets/img/interEndButton.svg"
 import { useMinWidth } from "../hooks/useMinWidth";
 interface StartButton {
     to: string;
-    onClick?:()=>void;
-    variant?:"white"|"colored" | "interEnd";
-    text?:string;
+    onClick?: () => void;
+    variant?: "white" | "colored" | "interEnd";
+    text?: string;
 }
 
 
-export const StartButton= ({ to, onClick, variant = "white", text }: StartButton) => {
+export const StartButton = ({ to, onClick, variant = "white", text }: StartButton) => {
 
-    const {isMinWidth } = useMinWidth(700)
-    let fontSize = isMinWidth ? '2rem' : "1.2rem";
+    const { isMinWidth } = useMinWidth(700)
+    let fontSize = isMinWidth ? '1.5rem' : "1rem";
 
-    const {isMinWidth: isMinWidthSecond } = useMinWidth(436)
-    if (!isMinWidthSecond) fontSize = "0.8rem";
+    const { isMinWidth: isMinWidthSecond } = useMinWidth(436)
+    if (!isMinWidthSecond) fontSize = "0.6rem";
 
     let imageSrc = startButton;
     if (variant === "colored") imageSrc = coloredButton;
 
-    if (variant == "white")
-    return (
-        <Button onClick={()=>(onClick)?.()}>
+    /*<Button onClick={()=>(onClick)?.()}>
             <NavLink className={"icon-button"} to={to}>
                 <img className="start-button-img" src={imageSrc} alt={"start button"}>
                 </img>
             </NavLink>
-        </Button>
-    );
-    if (variant == "colored" || variant == "interEnd"){
-    const imageSrc = variant === "colored" ? coloredButton : interEndButton;
+        </Button>*/
 
-    return (
-        <Button
+    /*
+            <Button
+            className={"icon-button"}
             component={NavLink}
             to={to}
             onClick={onClick}
             sx={{
                 position: 'relative',
+                height:"fit-content",
+                margin:"auto 0",
                 padding: 0,
                 minWidth: 'auto',
                 '&:hover': {
@@ -52,7 +50,7 @@ export const StartButton= ({ to, onClick, variant = "white", text }: StartButton
             }}
         >
             <img 
-                className="start-button-img"
+                className="start-button-img button-icon"
                 src={imageSrc} 
                 alt="Start button" 
                 style={{ display: 'block', width: '100%', height: 'auto' }}
@@ -73,6 +71,115 @@ export const StartButton= ({ to, onClick, variant = "white", text }: StartButton
                     {text}
                 </span>
             )}
-        </Button>)
+        </Button>
+    */
+
+    if (variant == "white")
+        return (
+            <Button
+                className="icon-button"
+                component={NavLink}
+                to={to}
+                onClick={onClick}
+                sx={{
+                    position: 'relative',
+                    height: "fit-content",
+                    margin: "auto 0",
+                    padding: 0,
+                    minWidth: 'auto',
+                    overflow: 'hidden', // Добавляем чтобы обрезать псевдоэлемент
+                    '&:hover': {
+                        backgroundColor: 'transparent',
+                        '&::after': {
+                            opacity: 1 // Управляем псевдоэлементом через sx
+                        }
+                    },
+                    '&::after': {
+                        content: '""',
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        width: '100%',
+                        height: '100%',
+                        background: `var(--start-button-img-hover) center/contain no-repeat`,
+                        opacity: 0,
+                        transition: 'opacity 0.3s',
+                    }
+                }}
+            >
+                <img
+                    src={imageSrc}
+                    className="button-icon"
+                    alt="Start button"
+                    style={{
+                        display: 'block',
+                        width: '100%',
+                        height: 'auto',
+                        transition: 'opacity 0.3s',
+                        position: 'relative', // Добавляем позиционирование
+                        zIndex: 1 // Поднимаем выше псевдоэлемента
+                    }}
+                />
+                {text && (
+                    <span
+                        className="start-button-text"
+                        style={{
+                            
+                            position: 'absolute',
+                            top: '50%',
+                            left: '50%',
+                            transform: 'translate(-50%, -50%)',
+                            color:"rgba(73, 93, 177, 1)",
+                            fontSize: fontSize,
+                            pointerEvents: 'none',
+                            whiteSpace: 'nowrap',
+                            zIndex: 2 // Текст должен быть поверх всего
+                        }}
+                    >
+                        {text}
+                    </span>
+                )}
+            </Button>
+        );
+    if (variant == "colored" || variant == "interEnd") {
+        const imageSrc = variant === "colored" ? coloredButton : interEndButton;
+
+        return (
+            <Button
+                component={NavLink}
+                to={to}
+                onClick={onClick}
+                sx={{
+                    position: 'relative',
+                    padding: 0,
+                    minWidth: 'auto',
+                    '&:hover': {
+                        background: 'none', // Remove MUI hover effect
+                    },
+                }}
+            >
+                <img
+                    className="start-button-img"
+                    src={imageSrc}
+                    alt="Start button"
+                    style={{ display: 'block', width: '100%', height: 'auto' }}
+                />
+                {text && (
+                    <span
+                        style={{
+                            position: 'absolute',
+                            top: '50%',
+                            left: '50%',
+                            transform: 'translate(-50%, -50%)',
+                            color: 'white',
+                            fontSize: fontSize,
+                            pointerEvents: 'none', // Makes the text non-interactive
+                            whiteSpace: 'nowrap',
+                        }}
+                    >
+                        {text}
+                    </span>
+                )}
+            </Button>)
     }
 }

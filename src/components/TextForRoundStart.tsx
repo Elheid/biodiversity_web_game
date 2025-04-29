@@ -1,10 +1,18 @@
 import { Container, Typography } from "@mui/material";
 import { GameType } from "../interfaces/rounds";
-import { ROUND_TARGET, ROUND_TARGET_TITLE_AI, ROUND_TARGET_TITLE, RAUND_TEXT } from "../config";
+//import { ROUND_TARGET, ROUND_TARGET_TITLE_AI, ROUND_TARGET_TITLE, RAUND_TEXT } from "../config";
 import { AutoTextSize } from "auto-text-size";
 import { useMinWidth } from "../hooks/useMinWidth";
+import { useTextLang } from "../hooks/useTextLang";
 
 export const TextForRoundStart = ({ roundType }: { roundType: GameType }) => {
+
+    const { text:ROUND_TARGET,  } = useTextLang('ROUND_TARGET');
+    const { text:ROUND_TARGET_TITLE_AI } = useTextLang('ROUND_TARGET_TITLE_AI');
+    const { text:ROUND_TARGET_TITLE } = useTextLang('ROUND_TARGET_TITLE');
+    const { text:RAUND_TEXT } = useTextLang('RAUND_TEXT');
+
+    
     let roundNum = 1;
     let target = ROUND_TARGET_TITLE;
     if (roundType === GameType.secondType) {
@@ -13,6 +21,7 @@ export const TextForRoundStart = ({ roundType }: { roundType: GameType }) => {
     }
 
     const {isMinWidth } = useMinWidth(740)
+
 
     return (
         <Container className="white-container" sx={{ marginBottom: "8vh" }}>

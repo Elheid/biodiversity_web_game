@@ -1,10 +1,11 @@
 import { Container, Stack, Typography } from "@mui/material"
 import { useGamePointsContext } from "../../context/GamePointsProvider";
 import { HomeButton } from "../HomeButtons";
-import { END_TITLE, TRUE_AMOUNT_PHOTO_TEXT, TYPE_OF_SCORE_TEXT } from "../../config";
+//import { END_TITLE, TRUE_AMOUNT_PHOTO_TEXT, TYPE_OF_SCORE_TEXT } from "../../config";
 import { useEffect } from "react";
 import { setEndBodyStyle } from "../../utill";
 import { QRcode } from "../QRcode";
+import { useTextLang } from "../../hooks/useTextLang";
 
 export const GameEnd = () => {
     const { firstRoundPoints, secondRoundPoints } = useGamePointsContext()
@@ -12,6 +13,12 @@ export const GameEnd = () => {
     useEffect(() => {
         setEndBodyStyle()
     }, [])
+
+    const { text:END_TITLE } = useTextLang('END_TITLE');
+    const { text:TRUE_AMOUNT_PHOTO_TEXT } = useTextLang('TRUE_AMOUNT_PHOTO_TEXT');
+    const { text:TYPE_OF_SCORE_TEXT_ai } = useTextLang('TYPE_OF_SCORE_TEXT_ai');
+    const { text:TYPE_OF_SCORE_TEXT_self } = useTextLang('TYPE_OF_SCORE_TEXT_self');
+
 
     return (
         <Container sx={{
@@ -49,12 +56,12 @@ export const GameEnd = () => {
                 </Typography>*/}
 
                 <div className="">
-                    {TYPE_OF_SCORE_TEXT.self}:
+                    {TYPE_OF_SCORE_TEXT_self}:
                     <br /><span className="result-score">{firstRoundPoints}</span>
                     <QRcode description="test"></QRcode>
                 </div>
                 <div className="">
-                    {TYPE_OF_SCORE_TEXT.ai}:
+                    {TYPE_OF_SCORE_TEXT_ai}:
                     <br /><span className="result-score">{secondRoundPoints}</span>
                     <QRcode description="test"></QRcode>
                 </div>

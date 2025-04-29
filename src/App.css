@@ -4,7 +4,7 @@
   /*padding: 2rem;*/
   text-align: center;
 
-  --start-button-img-hover:url("/src/assets/img/startHover.svg") center/cover;
+  --start-button-img-hover:url("/src/assets/img/startHover.svg");
 
   --disable-button-img:url("/src/assets/img/buttonDisable.svg") center/cover;
   --normal-button-img:url("/src/assets/img/trueButton.svg") center/cover;
@@ -78,6 +78,10 @@ h1, h2, h3, h4, h5 {
 p {
   font-family: 'SB Sans Display Semibold', sans-serif !important;
 }
+span {
+  font-family: 'SB Sans Display Semibold', sans-serif !important;
+}
+
 
 .sans-text{
   font-family: 'SB Sans Text', sans-serif !important;
@@ -151,6 +155,11 @@ div.start-game {
 }
 
 
+.main-page-container {
+    display: flex;
+    flex-direction: column;
+}
+
 
 @media (max-width: 768px) {
   div.start-game {
@@ -176,6 +185,10 @@ div.start-game {
     box-shadow: none;
     padding: 2vw;
     margin: 1vw;
+  }
+
+  .main-page-container {
+    gap: 1vh;
   }
 
   
@@ -395,6 +408,14 @@ div.start-game {
 /*start button*/
 .icon-button:hover .button-icon {
   opacity: 0; /* Плавно скрываем исходное изображение */
+}
+
+.start-button:hover .button-icon {
+  opacity: 0; /* Плавно скрываем исходное изображение */
+}
+
+.start-button-text{
+
 }
 
 .icon-button {

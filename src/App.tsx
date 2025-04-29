@@ -15,6 +15,8 @@ import { GamePointsProvider } from './context/GamePointsProvider'
 import { InterEnd } from './components/pages/InterEnd'
 import { BaseOfGame } from './components/pages/BaseOfGame'
 import { ChoiceLevel } from './components/pages/ChoiceLevel'
+import { LanguageProvider } from './context/LanguageProvider'
+//import {DialogLanguageChange} from './components/DialogLanguageChange'
 
 
 function App() {
@@ -32,45 +34,49 @@ function App() {
 
 
       <QueryClientProvider client={queryClient}>
-        <GamePointsProvider>
-          <DisbleButtonsProvider>
-            <RoundEndProvider>
-              <BrowserRouter basename="/">
-                <Routes>
-                  <Route path="/" element={<MainPage />} />
+        <LanguageProvider>
 
-                  <Route path="/choice-level" element={<ChoiceLevel />} />
+          <GamePointsProvider>
+            <DisbleButtonsProvider>
+              <RoundEndProvider>
+                <BrowserRouter basename="/">
+                {/*<DialogLanguageChange myStyle={{position:"absolute", top:0, left:0}} />*/}
+                  <Routes>
+                    <Route path="/" element={<MainPage />} />
+
+                    <Route path="/choice-level" element={<ChoiceLevel />} />
 
 
-                  <Route path="/first-round-start" element={<RoundStart roundType={GameType.firstType} />}>
-                    <Route path="/first-round-start/:onlyFirst" element={<RoundStart roundType={GameType.firstType} />}></Route>
-                  </Route>
+                    <Route path="/first-round-start" element={<RoundStart roundType={GameType.firstType} />}>
+                      <Route path="/first-round-start/:onlyFirst" element={<RoundStart roundType={GameType.firstType} />}></Route>
+                    </Route>
 
-                  <Route path="/first-round" element={<BaseOfGame />}>
+                    <Route path="/first-round" element={<BaseOfGame />}>
+                      <Route path="/first-round/:onlyFirst" element={<BaseOfGame />} />
+                    </Route>
+
                     <Route path="/first-round/:onlyFirst" element={<BaseOfGame />} />
-                  </Route>
-
-                  <Route path="/first-round/:onlyFirst" element={<BaseOfGame />} />
 
 
-                  <Route path="/first-round" element={<BaseOfGame />} />
+                    <Route path="/first-round" element={<BaseOfGame />} />
 
-                  <Route path="/first-round-end" element={<InterEnd />} />
+                    <Route path="/first-round-end" element={<InterEnd />} />
 
 
-                  <Route path="/second-round-start" element={<RoundStart roundType={GameType.secondType} />} />
+                    <Route path="/second-round-start" element={<RoundStart roundType={GameType.secondType} />} />
 
-                  <Route path="/second-round" element={<BaseOfGame gameType={GameType.secondType} />} />
-                  <Route path="/end" element={<GameEnd />} />
+                    <Route path="/second-round" element={<BaseOfGame gameType={GameType.secondType} />} />
+                    <Route path="/end" element={<GameEnd />} />
 
 
 
-                </Routes>
-              </BrowserRouter>
-            </RoundEndProvider>
-          </DisbleButtonsProvider>
-        </GamePointsProvider>
+                  </Routes>
+                </BrowserRouter>
+              </RoundEndProvider>
+            </DisbleButtonsProvider>
+          </GamePointsProvider>
 
+        </LanguageProvider>
 
       </QueryClientProvider>
     </GameProvider>
