@@ -1,4 +1,5 @@
-import { LANGUAGES_NAMES } from "../config";
+import { LANGUAGE } from "../config";
+
 
 export interface FirstRoundLevelDTO {
     id: number;
@@ -31,5 +32,5 @@ export interface SecondRoundLevelDTO {
 export interface TextDTO{
     id:number;
     title:string;
-    texts:LANGUAGES_NAMES;
+    texts:Record<LANGUAGE, string>;
 }

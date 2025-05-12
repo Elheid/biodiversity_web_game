@@ -6,6 +6,7 @@ import { AutoTextSize } from "auto-text-size";
 import { useMinWidth } from "../../hooks/useMinWidth";
 import { useResetPoints } from "../../hooks/resetPoints";
 import { useTextLang } from "../../hooks/useTextLang";
+import { Loading } from "../Loading";
 
 export interface LevelCardProps {
     title: string;
@@ -13,7 +14,7 @@ export interface LevelCardProps {
     to: string;
     removeAnimation?: boolean;
 }
-export const LevelCard = ({ title, description, to, removeAnimation }: LevelCardProps) => {
+export const LevelCard = ({ title, /*description, */to, removeAnimation }: LevelCardProps) => {
     useResetPoints();
     return (
         <Box className={removeAnimation ? "level-box" : ""}>
@@ -29,7 +30,7 @@ export const LevelCard = ({ title, description, to, removeAnimation }: LevelCard
                         <div>
                             {/*<Typography variant="h4">{title}</Typography>*/}
                             <AutoTextSize maxFontSizePx={30} mode={'box'} style={{ padding: "20px", color: "rgba(51, 63, 72, 1)" }}>
-                                {description}
+                                {/*description*/}
                             </AutoTextSize>
                         </div>
 
@@ -48,7 +49,7 @@ export const ChoiceLevel = () => {
         setRoundsBodyStyle()
     }, [])
 
-    const { text:CHOICE_LEVEL_TEXT } = useTextLang('CHOICE_LEVEL_TEXT');
+    const { text:CHOICE_LEVEL_TEXT, isLoading } = useTextLang('CHOICE_LEVEL_TEXT');
 
     const levelCards = [
         { title: "Full game", description: "Тут будет описаниe", to: "/first-round-start" },
@@ -72,6 +73,12 @@ export const ChoiceLevel = () => {
             boxSizing: "content-box",
             gap: "2vw"
         };
+        
+    if (isLoading){
+        return (
+            <Loading />
+        )
+    }    
     return (
         <Box sx={{display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center"}}>
             <Typography className="gradient-text" variant="h3" style={{ padding: "20px", margin:"0 auto" }}>

@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import { setEndBodyStyle } from "../../utill";
 import { QRcode } from "../QRcode";
 import { useTextLang } from "../../hooks/useTextLang";
+import { Loading } from "../Loading";
 
 export const GameEnd = () => {
     const { firstRoundPoints, secondRoundPoints } = useGamePointsContext()
@@ -14,12 +15,21 @@ export const GameEnd = () => {
         setEndBodyStyle()
     }, [])
 
-    const { text:END_TITLE } = useTextLang('END_TITLE');
-    const { text:TRUE_AMOUNT_PHOTO_TEXT } = useTextLang('TRUE_AMOUNT_PHOTO_TEXT');
-    const { text:TYPE_OF_SCORE_TEXT_ai } = useTextLang('TYPE_OF_SCORE_TEXT_ai');
-    const { text:TYPE_OF_SCORE_TEXT_self } = useTextLang('TYPE_OF_SCORE_TEXT_self');
+    const { text:END_TITLE, isLoading:isLoadingTitle } = useTextLang('END_TITLE');
+    const { text:TRUE_AMOUNT_PHOTO_TEXT, isLoading:isLoadingAmountPhoto } = useTextLang('TRUE_AMOUNT_PHOTO_TEXT');
+    const { text:TYPE_OF_SCORE_TEXT_ai, isLoading:isLoadingScoreAi } = useTextLang('TYPE_OF_SCORE_TEXT_ai');
+    const { text:TYPE_OF_SCORE_TEXT_self, isLoading:isLoadingScoreSelf } = useTextLang('TYPE_OF_SCORE_TEXT_self');
 
+    const isLoading = isLoadingTitle
+    && isLoadingAmountPhoto
+    && isLoadingScoreAi
+    && isLoadingScoreSelf;
 
+    if (isLoading){
+        return(
+            <Loading/>
+        )
+    }
     return (
         <Container sx={{
             display: "flex",

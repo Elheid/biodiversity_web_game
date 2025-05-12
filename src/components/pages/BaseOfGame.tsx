@@ -19,6 +19,7 @@ import { AMOUNTS_OF_ROUNDS,
     /*YES_NO_BUTTONS_TEXT*/} from "../../config";
 import { useLanguageContext } from "../../context/LanguageProvider";
 import { useTextLang } from "../../hooks/useTextLang";
+import { Loading } from "../Loading";
 
 
 
@@ -45,14 +46,15 @@ export const BaseOfGame = ({ gameType, /*onlyFirstRound = false*/ }: BaseGamePro
 
     } = useGameState(AMOUNTS_OF_ROUNDS, gameType);
 
-    const { text:SCROE_TEXT } = useTextLang('SCROE_TEXT');
-    const { text:SKIP_ROUND_BUTTON_TEXT } = useTextLang('SKIP_ROUND_BUTTON_TEXT');
-    const { text:TARGET_ANIMAL_TITLE } = useTextLang('TARGET_ANIMAL_TITLE');
-    const { text:TRAGET_ANIMAL_SUBTITILE } = useTextLang('TRAGET_ANIMAL_SUBTITILE');
+    const { text:SCROE_TEXT, isLoading: isLoadingScore } = useTextLang('SCROE_TEXT');
+    const { text:SKIP_ROUND_BUTTON_TEXT, isLoading: isLoadingRound } = useTextLang('SKIP_ROUND_BUTTON_TEXT');
+    const { text:TARGET_ANIMAL_TITLE, isLoading: isLoadingTitle } = useTextLang('TARGET_ANIMAL_TITLE');
+    const { text:TRAGET_ANIMAL_SUBTITILE, isLoading: isLoadingSubtitle } = useTextLang('TRAGET_ANIMAL_SUBTITILE');
 
-    const { text:YES_NO_BUTTONS_TEXT_yes } = useTextLang('YES_NO_BUTTONS_TEXT_yes');
-    const { text:YES_NO_BUTTONS_TEXT_no } = useTextLang('YES_NO_BUTTONS_TEXT_no');
+    const { text:YES_NO_BUTTONS_TEXT_yes, isLoading: isLoadingYes } = useTextLang('YES_NO_BUTTONS_TEXT_yes');
+    const { text:YES_NO_BUTTONS_TEXT_no , isLoading: isLoadingNo} = useTextLang('YES_NO_BUTTONS_TEXT_no');
 
+    
     const {onlyFirst} = useParams<{onlyFirst:string}>()
 
     useEffect(()=>{
@@ -184,7 +186,17 @@ export const BaseOfGame = ({ gameType, /*onlyFirstRound = false*/ }: BaseGamePro
         handleAnswerSelect(SKIP_ROUND_BUTTON_TEXT_default);
     }
 
-
+    const isLoading = isLoadingScore 
+        && isLoadingRound 
+        && isLoadingTitle 
+        && isLoadingSubtitle 
+        && isLoadingYes 
+        && isLoadingNo
+    if (isLoading){
+        return (
+            <Loading />
+        )
+    }  
 
     return (
         <Container className="start-game" sx={{ display: "flex", flexDirection: "row" }}>

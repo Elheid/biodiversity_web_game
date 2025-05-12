@@ -7,6 +7,7 @@ import { useEffect } from "react";
 import { StartButton } from "../StartButton";
 import { useMinWidth } from "../../hooks/useMinWidth";
 import { useTextLang } from "../../hooks/useTextLang";
+import { Loading } from "../Loading";
 
 export const InterEnd = () => {
     const { firstRoundPoints } = useGamePointsContext()
@@ -16,10 +17,19 @@ export const InterEnd = () => {
 
     const {isMinWidth} = useMinWidth(824)
 
-    const { text:TRUE_AMOUNT_PHOTO_TEXT } = useTextLang('TRUE_AMOUNT_PHOTO_TEXT');
-    const { text:TRY_AI_BUTTON_TEXT } = useTextLang('TRY_AI_BUTTON_TEXT');
-    const { text:YOUR_SCORE_TEXT } = useTextLang('YOUR_SCORE_TEXT');
+    const { text:TRUE_AMOUNT_PHOTO_TEXT, isLoading: isLoadingAmountPhoto } = useTextLang('TRUE_AMOUNT_PHOTO_TEXT');
+    const { text:TRY_AI_BUTTON_TEXT, isLoading: isLoadingTryAi } = useTextLang('TRY_AI_BUTTON_TEXT');
+    const { text:YOUR_SCORE_TEXT, isLoading: isLoadingScore } = useTextLang('YOUR_SCORE_TEXT');
 
+    const isLoading = isLoadingAmountPhoto
+    && isLoadingTryAi
+    && isLoadingScore;
+    
+    if(isLoading){
+        return(
+            <Loading/>
+        )
+    }
 
     return (
         <Container className="container-with-gap">

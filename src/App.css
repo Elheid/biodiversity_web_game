@@ -108,6 +108,14 @@ body {
   background-image: url(/src/assets/img/backgroundMain.png);
 }
 
+.background-rounds-start-1{
+  background-image: url(/src/assets/img/backgroundRoundStart1_2.png);
+}
+
+.background-rounds-start-2{
+  background-image: url(/src/assets/img/backgroundRoundStart2_2.png);
+}
+
 .background-main {
   background-attachment: local; /* Фиксация фона */
 }
@@ -194,11 +202,13 @@ div.start-game {
   
 }
 
-.qr-container img{
+.qr-container img,.qr-container svg{
   width: 100%;
+  height: auto;
 }
-.qr-container div img{
+.qr-container div img,.qr-container div svg{
   width: 100%;
+  height: auto;
 }
 
 .main-page-container{

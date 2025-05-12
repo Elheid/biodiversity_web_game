@@ -4,13 +4,14 @@ import { GameType } from "../interfaces/rounds";
 import { AutoTextSize } from "auto-text-size";
 import { useMinWidth } from "../hooks/useMinWidth";
 import { useTextLang } from "../hooks/useTextLang";
+import { Loading } from "./Loading";
 
 export const TextForRoundStart = ({ roundType }: { roundType: GameType }) => {
 
-    const { text:ROUND_TARGET,  } = useTextLang('ROUND_TARGET');
-    const { text:ROUND_TARGET_TITLE_AI } = useTextLang('ROUND_TARGET_TITLE_AI');
-    const { text:ROUND_TARGET_TITLE } = useTextLang('ROUND_TARGET_TITLE');
-    const { text:RAUND_TEXT } = useTextLang('RAUND_TEXT');
+    const { text:ROUND_TARGET, isLoading: isLoadingTarget  } = useTextLang('ROUND_TARGET');
+    const { text:ROUND_TARGET_TITLE_AI, isLoading: isLoadingTitleAi } = useTextLang('ROUND_TARGET_TITLE_AI');
+    const { text:ROUND_TARGET_TITLE, isLoading: isLoadingTitle } = useTextLang('ROUND_TARGET_TITLE');
+    const { text:RAUND_TEXT, isLoading: isLoadingText } = useTextLang('RAUND_TEXT');
 
     
     let roundNum = 1;
@@ -22,6 +23,16 @@ export const TextForRoundStart = ({ roundType }: { roundType: GameType }) => {
 
     const {isMinWidth } = useMinWidth(740)
 
+    const isLoading = isLoadingTarget
+    && isLoadingTitleAi
+    && isLoadingTitle
+    && isLoadingText;
+    
+    if (isLoading){
+        return(
+            <Loading/>
+        )
+    }
 
     return (
         <Container className="white-container" sx={{ marginBottom: "8vh" }}>

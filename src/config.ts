@@ -1,4 +1,4 @@
-import { getTexts, LANGUAGE } from "./api/api";
+//import { getTexts, LANGUAGE } from "./api/api";
 
 //Нужно только для того, чтобы если CURRENT_DURATION_TIME или CURRENT_TIME_BEETWEN_ROUNDS не будет
 export const BASE_TIME_BEETWEN_ROUNDS = 1.2 * 1000;
@@ -14,17 +14,19 @@ export const START_SCORE = 0;
 
 export const AMOUNTS_OF_ROUNDS = 2
 //Сервер
-const serverIp = "localhost"//"localhost"//"84.201.144.181"//192.168.1.187:5001
-export const SERVER_URL = `http://${serverIp}:5001`//"http://localhost:5001";
+//const apiUrl = import.meta.env.VITE_API_URL;
+const apiHost = import.meta.env.VITE_API_PORT;
+const serverIp = "localhost"//apiUrl//"localhost"//"84.201.144.181"//192.168.1.187:5001
+export const SERVER_URL = `http://${serverIp}:${apiHost}`//"http://localhost:5001";
 
 //Все слова/тексты
 //MainPage
-
-export interface LANGUAGES_NAMES {
-    "RUSSIAN": string;
-    "ENGLISH": string;
-    "ITALIAN"?: string;
+export enum LANGUAGE {
+    RUSSIAN = "RUSSIAN",
+    ENGLISH = "ENGLISH",
+    //ITALIAN = "ITALIAN"
 }
+
 
 export type TextKey =
     | 'START_BUTTON_TEXT'
@@ -55,7 +57,7 @@ export type TextKey =
 
 
 export const START_BUTTON_TEXT = "Начать игру"
-export const getStartButtonText = (lang: LANGUAGE) => getTexts("START_BUTTON_TEXT").then((data) => data.texts[lang])
+//export const getStartButtonText = (lang: LANGUAGE) => getTexts("START_BUTTON_TEXT").then((data) => data.texts[lang])
 
 export const MAIN_PAGE_TITLE = "Попробуй себя в роли учёного-зоолога!"
 export const MAIN_PAGE_DESCRIPTION = "До 1000 снимков с фотоловушек в день необходимо обрабатывать исследователям особо охраняемых природных территорий"

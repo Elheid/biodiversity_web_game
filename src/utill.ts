@@ -28,11 +28,16 @@ export const setMainPageBodyStyle = () => {
     document.body.classList.add("background")
     document.body.classList.add("background-main")
 }
-export const setStartRoundsBodyStyle = () => {
+export const setStartRoundsBodyStyle = (type?:"first-full"|"second-full") => {
     document.body.className = ""
     document.body.classList.add("background")
-    document.body.classList.add("background-rounds-start")
+    if (!type) document.body.classList.add("background-rounds-start")
+    else if (type === "first-full") document.body.classList.add("background-rounds-start-1")
+    else if (type === "second-full") document.body.classList.add("background-rounds-start-2")
 }
+
+
+
 
 export const setRoundsBodyStyle = () => {
     document.body.className = ""

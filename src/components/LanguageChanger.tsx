@@ -1,6 +1,7 @@
 import { Container, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from "@mui/material"
 import { useLanguageContext } from "../context/LanguageProvider"
-import { LANGUAGE } from "../api/api";
+import { LANGUAGE } from "../config";
+
 
 export const LanguageChanger = () => {
     const { language, setLanguage } = useLanguageContext();
@@ -10,9 +11,7 @@ export const LanguageChanger = () => {
         setLanguage(event.target.value as LANGUAGE);
     };
 
-    const languages = [
-        "Russian", "English"
-    ]
+    const languages = Object.values(LANGUAGE);
 
     return (
         <Container sx={{minWidth:"10vw"}}>

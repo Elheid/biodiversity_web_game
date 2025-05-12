@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
-import { LANGUAGE } from '../api/api';
+import { LANGUAGE } from '../config';
+
 
 
 interface LanguageType {
