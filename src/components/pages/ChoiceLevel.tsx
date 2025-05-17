@@ -1,6 +1,6 @@
 import { Box, Container, Typography } from "@mui/material"
 import { useEffect } from "react"
-import { setRoundsBodyStyle } from "../../utill"
+import { setRoundsBodyStyle, setStartRoundsBodyStyle } from "../../utill"
 import { NavLink } from "react-router";
 import { AutoTextSize } from "auto-text-size";
 import { useMinWidth } from "../../hooks/useMinWidth";
@@ -8,6 +8,8 @@ import { useResetPoints } from "../../hooks/resetPoints";
 import { useTextLang } from "../../hooks/useTextLang";
 
 import { LoadingForPreparedWithChildren } from "../LoadingForPrepared";
+import { endSession, startSessionRequest } from "../../api/api";
+
 
 export interface LevelCardProps {
     title: string;
@@ -17,6 +19,15 @@ export interface LevelCardProps {
 }
 export const LevelCard = ({ title, /*description, */to, removeAnimation }: LevelCardProps) => {
     useResetPoints();
+
+    const {isMinWidth : isMinWidth} = useMinWidth(1250)
+        useEffect(() => {
+            endSession()//end prev session
+            startSessionRequest()
+            if (isMinWidth) setStartRoundsBodyStyle("second-full")
+            else setStartRoundsBodyStyle()
+        }, [isMinWidth])
+
     return (
         <Box className={removeAnimation ? "level-box" : ""}>
             <div className="white-container" style={{ display: "block", textDecoration: "none", padding: 0 }}>

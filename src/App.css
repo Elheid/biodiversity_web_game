@@ -34,7 +34,7 @@ html, body {
   min-height: 100vh;
   overflow-x: hidden; /* Блокируем горизонтальный скролл */
 
-  background-color: rgba(21 25 44 / 1 00%);;
+  background-color: rgba(21 25 44 / 100%);
 }
 
 .centred-root{
