@@ -31,7 +31,7 @@ export const TextForRoundStart = ({ roundType, isLoading }: { roundType: GameTyp
 
 
     return (
-        <LoadingForPreparedWithChildren isLoading={isLoadingAllText && isLoading ? false : true}>
+        <LoadingForPreparedWithChildren isLoading={(isLoadingAllText ? false : true) && isLoading}>
             <Container className="white-container" sx={{ marginBottom: "8vh" }}>
                 <div className="container-image">
                     <Container>

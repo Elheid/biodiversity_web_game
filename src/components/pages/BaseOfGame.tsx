@@ -51,6 +51,8 @@ export const BaseOfGame = ({ gameType, /*onlyFirstRound = false*/ }: BaseGamePro
     const { text:TARGET_ANIMAL_TITLE, isLoading: isLoadingTitle } = useTextLang('TARGET_ANIMAL_TITLE');
     const { text:TRAGET_ANIMAL_SUBTITILE, isLoading: isLoadingSubtitle } = useTextLang('TRAGET_ANIMAL_SUBTITILE');
 
+
+    const { text:IS_THIS_ANIMAL_NAME, isLoading: isLoadingAnimalQuestion } = useTextLang('IS_THIS_ANIMAL_NAME');
     const { text:YES_NO_BUTTONS_TEXT_yes, isLoading: isLoadingYes } = useTextLang('YES_NO_BUTTONS_TEXT_yes');
     const { text:YES_NO_BUTTONS_TEXT_no , isLoading: isLoadingNo} = useTextLang('YES_NO_BUTTONS_TEXT_no');
 
@@ -212,6 +214,7 @@ export const BaseOfGame = ({ gameType, /*onlyFirstRound = false*/ }: BaseGamePro
         && isLoadingSubtitle 
         && isLoadingYes 
         && isLoadingNo
+        && isLoadingAnimalQuestion
     /*if (isLoading || !isRoundPrepared){
         return (
             <Loading />
@@ -245,7 +248,7 @@ export const BaseOfGame = ({ gameType, /*onlyFirstRound = false*/ }: BaseGamePro
 
             <div className="buttons">
                 <Typography className="question-container">
-                    {getAnswerTitle(game)}
+                    {IS_THIS_ANIMAL_NAME} {getAnswerTitle(game)}?
                 </Typography>
                 <ButtonGroup orientation={window.innerWidth < 782 ? 'horizontal' : 'vertical'}>
                     {answersToShow?.map((answer) => (

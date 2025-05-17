@@ -52,12 +52,15 @@ export type TextKey =
     | "YES_NO_BUTTONS_TEXT_no"
     | "TYPE_OF_SCORE_TEXT_self"
     | "TYPE_OF_SCORE_TEXT_ai"
-    | "CHOICE_LEVEL_TEXT";
+    | "CHOICE_LEVEL_TEXT"
+    | "IS_THIS_ANIMAL_NAME";
 
 
 
 export const START_BUTTON_TEXT = "Начать игру"
 //export const getStartButtonText = (lang: LANGUAGE) => getTexts("START_BUTTON_TEXT").then((data) => data.texts[lang])
+
+export const IS_THIS_ANIMAL_NAME = "В выбранной области"
 
 export const MAIN_PAGE_TITLE = "Попробуй себя в роли учёного-зоолога!"
 export const MAIN_PAGE_DESCRIPTION = "До 1000 снимков с фотоловушек в день необходимо обрабатывать исследователям особо охраняемых природных территорий"
@@ -93,30 +96,31 @@ export const TYPE_OF_SCORE_TEXT = { self: "Самостоятельно", ai: "�
 export const CHOICE_LEVEL_TEXT = "Выбери тип игры";
 
 export const DEFAULT_TEXTS: Record<TextKey, string> = {
-    START_BUTTON_TEXT: 'Начать игру',
-    MAIN_PAGE_TITLE: 'Попробуй себя в роли учёного-зоолога!',
-    MAIN_PAGE_DESCRIPTION: "До 1000 снимков с фотоловушек в день необходимо обрабатывать исследователям особо охраняемых природных территорий",
-    MAIN_PAGE_AI_SUBTITLE: "AI-помощник возьмет часть работы на себя",
-    RAUND_START__BUTTON_TEXT:"Начать",
-    ROUND_TARGET_TITLE:"Найди животное и определи его вид",
-    ROUND_TARGET_TITLE_AI:"Оцени работу с AI-помощником",
-    DURATION_TIME_GRAD_TEXT:`<span class="gradient-number">${CURRENT_DURATION_TIME / 1000}</span>`,
-    ROUND_TARGET:` Обработай как можно больше снимков за ${DURATION_TIME_GRAD_TEXT}!`,
-    RAUND_TEXT:"Раунд",
-    SCROE_TEXT:"Очки",
-    TARGET_ANIMAL_TITLE:"Найди животное на снимке",
-    TRAGET_ANIMAL_SUBTITILE:"Укажи место, где оно находится",
-    SKIP_ROUND_BUTTON_TEXT:"SKIP BUTTON",
-    HOME_BUTTON_TEXT:"На главную",
-    YES_NO_BUTTONS_TEXT_yes:"Да",
-    YES_NO_BUTTONS_TEXT_no:"Нет",
-    YOUR_SCORE_TEXT:"Твой результат",
-    TRUE_AMOUNT_PHOTO_TEXT:"Верно обработано фотографий:",
-    TRY_AI_BUTTON_TEXT:'Узнать возможности нейросети!',
-    END_TITLE:"СберегAI природу с нами!",
-    TYPE_OF_SCORE_TEXT_self:"Самостоятельно",
-    TYPE_OF_SCORE_TEXT_ai:"С AI-помощником",
+    START_BUTTON_TEXT: START_BUTTON_TEXT,//'Начать игру',
+    MAIN_PAGE_TITLE:MAIN_PAGE_TITLE, //'Попробуй себя в роли учёного-зоолога!',
+    MAIN_PAGE_DESCRIPTION: MAIN_PAGE_DESCRIPTION,//"До 1000 снимков с фотоловушек в день необходимо обрабатывать исследователям особо охраняемых природных территорий",
+    MAIN_PAGE_AI_SUBTITLE:MAIN_PAGE_AI_SUBTITLE, //"AI-помощник возьмет часть работы на себя",
+    RAUND_START__BUTTON_TEXT:RAUND_START__BUTTON_TEXT,//"Начать",
+    ROUND_TARGET_TITLE:ROUND_TARGET_TITLE,//"Найди животное и определи его вид",
+    ROUND_TARGET_TITLE_AI:ROUND_TARGET_TITLE_AI,//"Оцени работу с AI-помощником",
+    DURATION_TIME_GRAD_TEXT:DURATION_TIME_GRAD_TEXT,//`<span class="gradient-number">${CURRENT_DURATION_TIME / 1000}</span>`,
+    ROUND_TARGET:ROUND_TARGET,//` Обработай как можно больше снимков за ${DURATION_TIME_GRAD_TEXT}!`,
+    RAUND_TEXT:RAUND_TEXT,//"Раунд",
+    SCROE_TEXT:SCROE_TEXT,//"Очки",
+    TARGET_ANIMAL_TITLE:TARGET_ANIMAL_TITLE,//"Найди животное на снимке",
+    TRAGET_ANIMAL_SUBTITILE:TRAGET_ANIMAL_SUBTITILE,//"Укажи место, где оно находится",
+    SKIP_ROUND_BUTTON_TEXT:SKIP_ROUND_BUTTON_TEXT,//"SKIP BUTTON",
+    HOME_BUTTON_TEXT:HOME_BUTTON_TEXT,//"На главную",
+    YES_NO_BUTTONS_TEXT_yes: YES_NO_BUTTONS_TEXT.yes,//"Да",
+    YES_NO_BUTTONS_TEXT_no:YES_NO_BUTTONS_TEXT.no,//"Нет",
+    YOUR_SCORE_TEXT:YOUR_SCORE_TEXT,//"Твой результат",
+    TRUE_AMOUNT_PHOTO_TEXT:TRUE_AMOUNT_PHOTO_TEXT,//"Верно обработано фотографий:",
+    TRY_AI_BUTTON_TEXT:TRY_AI_BUTTON_TEXT,//'Узнать возможности нейросети!',
+    END_TITLE:END_TITLE,//"СберегAI природу с нами!",
+    TYPE_OF_SCORE_TEXT_self:TYPE_OF_SCORE_TEXT.self,//"Самостоятельно",
+    TYPE_OF_SCORE_TEXT_ai:TYPE_OF_SCORE_TEXT.ai,//"С AI-помощником",
 
-    CHOICE_LEVEL_TEXT:"Выбери тип игры",
+    CHOICE_LEVEL_TEXT:CHOICE_LEVEL_TEXT,//"Выбери тип игры",
+    IS_THIS_ANIMAL_NAME: IS_THIS_ANIMAL_NAME,
 
 };
