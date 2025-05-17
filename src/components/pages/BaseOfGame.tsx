@@ -247,9 +247,9 @@ export const BaseOfGame = ({ gameType, /*onlyFirstRound = false*/ }: BaseGamePro
             {game && <TimerComponent timer={game?.timer} />}
 
             <div className="buttons">
-                <Typography className="question-container">
+                {game && game.isThisSecondType() && <Typography className="question-container">
                     {IS_THIS_ANIMAL_NAME} {getAnswerTitle(game)}?
-                </Typography>
+                </Typography>}
                 <ButtonGroup orientation={window.innerWidth < 782 ? 'horizontal' : 'vertical'}>
                     {answersToShow?.map((answer) => (
                         <AnswerButton
