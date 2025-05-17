@@ -14,9 +14,9 @@ export const START_SCORE = 0;
 
 export const AMOUNTS_OF_ROUNDS = 2
 //Сервер
-//const apiUrl = import.meta.env.VITE_API_URL;
+const apiUrl = import.meta.env.VITE_API_URL;
 const apiHost = import.meta.env.VITE_API_PORT;
-const serverIp = "localhost"//apiUrl//"localhost"//"84.201.144.181"//192.168.1.187:5001
+const serverIp = apiUrl//"localhost"//apiHost//"localhost"//apiUrl//"localhost"//"84.201.144.181"//192.168.1.187:5001
 export const SERVER_URL = `http://${serverIp}:${apiHost}`//"http://localhost:5001";
 
 //Все слова/тексты

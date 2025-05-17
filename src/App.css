@@ -96,6 +96,8 @@ body {
   align-items: center;
 }
 
+
+
 .background-rounds{
   background-image: url(/src/assets/img/background.png);
 }
@@ -136,6 +138,9 @@ body {
   }
 }
 
+.background{
+  transition: background-image 0.3s ease;
+}
 
 body{
   color:white;

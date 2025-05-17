@@ -7,7 +7,8 @@ import { useEffect } from "react";
 import { StartButton } from "../StartButton";
 import { useMinWidth } from "../../hooks/useMinWidth";
 import { useTextLang } from "../../hooks/useTextLang";
-import { Loading } from "../Loading";
+
+import { LoadingForPreparedWithChildren } from "../LoadingForPrepared";
 
 export const InterEnd = () => {
     const { firstRoundPoints } = useGamePointsContext()
@@ -15,27 +16,23 @@ export const InterEnd = () => {
         setStartRoundsBodyStyle()
     }, [])
 
-    const {isMinWidth} = useMinWidth(824)
+    const { isMinWidth } = useMinWidth(824)
 
-    const { text:TRUE_AMOUNT_PHOTO_TEXT, isLoading: isLoadingAmountPhoto } = useTextLang('TRUE_AMOUNT_PHOTO_TEXT');
-    const { text:TRY_AI_BUTTON_TEXT, isLoading: isLoadingTryAi } = useTextLang('TRY_AI_BUTTON_TEXT');
-    const { text:YOUR_SCORE_TEXT, isLoading: isLoadingScore } = useTextLang('YOUR_SCORE_TEXT');
+    const { text: TRUE_AMOUNT_PHOTO_TEXT, isLoading: isLoadingAmountPhoto } = useTextLang('TRUE_AMOUNT_PHOTO_TEXT');
+    const { text: TRY_AI_BUTTON_TEXT, isLoading: isLoadingTryAi } = useTextLang('TRY_AI_BUTTON_TEXT');
+    const { text: YOUR_SCORE_TEXT, isLoading: isLoadingScore } = useTextLang('YOUR_SCORE_TEXT');
 
     const isLoading = isLoadingAmountPhoto
-    && isLoadingTryAi
-    && isLoadingScore;
-    
-    if(isLoading){
-        return(
-            <Loading/>
-        )
-    }
+        && isLoadingTryAi
+        && isLoadingScore;
+
 
     return (
-        <Container className="container-with-gap">
-            <div className="white-container" style={{ marginBottom: "8vh" }}>
-                <div className="container-image" style={{justifyContent: "center"}}>
-                    {/*<div className="text-auto-size-container">
+        <LoadingForPreparedWithChildren isLoading={isLoading ? false : true}>
+            <Container className="container-with-gap">
+                <div className="white-container" style={{ marginBottom: "8vh" }}>
+                    <div className="container-image" style={{ justifyContent: "center" }}>
+                        {/*<div className="text-auto-size-container">
                     <div className="">
                         <AutoTextSize maxFontSizePx={60} mode={"oneline"} style={{ padding: "20px" }}>
                             {YOUR_SCORE_TEXT}
@@ -59,18 +56,18 @@ export const InterEnd = () => {
 
 
 
-                    {<AutoTextSize className="text-block-auto-size" maxFontSizePx={50} mode={"box"} style={{ padding: "20px" }}>
-                        <Typography variant={isMinWidth ? "h1" :"h3"} >
-                            {YOUR_SCORE_TEXT}
-                        </Typography>
-                        <Typography variant="h5">
-                            {TRUE_AMOUNT_PHOTO_TEXT}
-                        </Typography>
-                        <Typography>
-                        <span className="result-score">{firstRoundPoints}</span>
-                        </Typography>
-                    </AutoTextSize>}
-                    {/*<AutoTextSize maxFontSizePx={30} mode={"box"} style={{ padding: "20px" }}>
+                        {<AutoTextSize className="text-block-auto-size" maxFontSizePx={50} mode={"box"} style={{ padding: "20px" }}>
+                            <Typography variant={isMinWidth ? "h1" : "h3"} >
+                                {YOUR_SCORE_TEXT}
+                            </Typography>
+                            <Typography variant="h5">
+                                {TRUE_AMOUNT_PHOTO_TEXT}
+                            </Typography>
+                            <Typography>
+                                <span className="result-score">{firstRoundPoints}</span>
+                            </Typography>
+                        </AutoTextSize>}
+                        {/*<AutoTextSize maxFontSizePx={30} mode={"box"} style={{ padding: "20px" }}>
                     {YOUR_SCORE_TEXT}<br/>
                     
                     
@@ -78,14 +75,15 @@ export const InterEnd = () => {
 
                     <br /><span className="result-score">{firstRoundPoints}</span>
                     </AutoTextSize>*/}
+                    </div>
                 </div>
-            </div>
-            {/*<Button >
+                {/*<Button >
                 <NavLink to={"/second-round-start"}>
                     {TRY_AI_BUTTON_TEXT}
                 </NavLink>
             </Button>*/}
-            <StartButton variant="interEnd" text={TRY_AI_BUTTON_TEXT} to={"/second-round-start"} />
-        </Container>
+                <StartButton variant="interEnd" text={TRY_AI_BUTTON_TEXT} to={"/second-round-start"} />
+            </Container>
+        </LoadingForPreparedWithChildren>
     )
 }

@@ -19,7 +19,7 @@ import { AMOUNTS_OF_ROUNDS,
     /*YES_NO_BUTTONS_TEXT*/} from "../../config";
 import { useLanguageContext } from "../../context/LanguageProvider";
 import { useTextLang } from "../../hooks/useTextLang";
-import { Loading } from "../Loading";
+import { LoadingForPreparedWithChildren } from "../LoadingForPrepared";
 
 
 
@@ -186,20 +186,42 @@ export const BaseOfGame = ({ gameType, /*onlyFirstRound = false*/ }: BaseGamePro
         handleAnswerSelect(SKIP_ROUND_BUTTON_TEXT_default);
     }
 
-    const isLoading = isLoadingScore 
+
+    //const [isRoundPrepared, setIsPrepared] = useState(false)
+
+    /*useEffect(()=>{
+        const onRoundStart = ()=>{
+            setIsPrepared(true)
+        }
+        const onRoundEnd = ()=>{
+            setIsPrepared(false)
+        }
+        window.addEventListener("round-start", onRoundStart);
+        window.addEventListener("round-end", onRoundEnd);
+
+        return () => {
+            window.removeEventListener("round-start", onRoundStart);
+            window.removeEventListener("round-end", onRoundEnd);
+        }
+    },)*/
+
+
+    const isLoading =isLoadingScore 
         && isLoadingRound 
         && isLoadingTitle 
         && isLoadingSubtitle 
         && isLoadingYes 
         && isLoadingNo
-    if (isLoading){
+    /*if (isLoading || !isRoundPrepared){
         return (
             <Loading />
         )
-    }  
+    }  */
+
 
     return (
-        <Container className="start-game" sx={{ display: "flex", flexDirection: "row" }}>
+        <LoadingForPreparedWithChildren isLoading={isLoading ? false : true} haveRounds={true}>
+            <Container className="start-game" sx={{ display: "flex", flexDirection: "row" }}>
             <Paper sx={{ display: "none" }}>
                 {SCROE_TEXT}:
                 <Typography ref={scoreRef}>{0}</Typography>
@@ -244,6 +266,8 @@ export const BaseOfGame = ({ gameType, /*onlyFirstRound = false*/ }: BaseGamePro
             </div>
             {/*</Container>*/}
         </Container>
+        </LoadingForPreparedWithChildren>
+
     );
 
 };

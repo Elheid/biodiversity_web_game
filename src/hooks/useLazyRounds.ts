@@ -39,6 +39,12 @@ export const useLazyRounds = () => {
 
             game.updateRoundsInfo([mapper(data)])
             loadedRounds.current.add(roundNumber);
+
+        //const startEvent = new CustomEvent<number>("round-start-loaded")
+        //window.dispatchEvent(startEvent)
+
+
+
         } catch (error) {
 
             console.error('Error loading round:', error);

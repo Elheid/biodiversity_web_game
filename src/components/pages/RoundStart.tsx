@@ -7,7 +7,7 @@ import { StartButton } from "../StartButton";
 import { setStartRoundsBodyStyle } from "../../utill";
 import { useParams } from "react-router";
 import { useTextLang } from "../../hooks/useTextLang";
-import { Loading } from "../Loading";
+
 import { useMinWidth } from "../../hooks/useMinWidth";
 
 /*
@@ -33,11 +33,6 @@ export const RoundStart = ({ roundType }: { roundType: GameType }) => {
 
     const { text: RAUND_START__BUTTON_TEXT, isLoading } = useTextLang('RAUND_START__BUTTON_TEXT');
 
-    if (isLoading) {
-        return (
-            <Loading />
-        )
-    }
     /*const imagesObjUp = {
         img: roundType === GameType.firstType ? deer : bear,
         alt: roundType === GameType.firstType ? "deer" : "bear",
@@ -54,7 +49,7 @@ export const RoundStart = ({ roundType }: { roundType: GameType }) => {
                 imageStyle={{ maxWidth: "25vw", position: "absolute", top: 0, left: "10%" }}
                 alt={imagesObjUp.alt} />*/}
             <div>
-                <TextForRoundStart roundType={roundType} />
+                <TextForRoundStart isLoading={isLoading ? false : true} roundType={roundType} />
                 {/*<Button onClick={() => {
                 startSessionRequest()
                 nav(`/${roundStartButton}`)

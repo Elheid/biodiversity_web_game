@@ -44,7 +44,7 @@ export const useTextLang = (textKey: TextKey) => {
 
     return {
         text: addVariable.length > 1 ? addVariable.join(" ") : translatedText,
-        isLoading: query.isLoading,
+        isLoading: query.isLoading || translatedText,
         error: query.error ? 'Ошибка загрузки текста ' + query.error : null
     };
 };

@@ -16,6 +16,7 @@ import { InterEnd } from './components/pages/InterEnd'
 import { BaseOfGame } from './components/pages/BaseOfGame'
 import { ChoiceLevel } from './components/pages/ChoiceLevel'
 import { LanguageProvider } from './context/LanguageProvider'
+import ImagePreloader from './components/ImagePreloader'
 //import {DialogLanguageChange} from './components/DialogLanguageChange'
 
 
@@ -40,6 +41,8 @@ function App() {
             <DisbleButtonsProvider>
               <RoundEndProvider>
                 <BrowserRouter basename="/">
+
+                <ImagePreloader />
                 {/*<DialogLanguageChange myStyle={{position:"absolute", top:0, left:0}} />*/}
                   <Routes>
                     <Route path="/" element={<MainPage />} />

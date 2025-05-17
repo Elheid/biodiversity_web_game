@@ -6,7 +6,7 @@ import { useEffect } from "react";
 import { setEndBodyStyle } from "../../utill";
 import { QRcode } from "../QRcode";
 import { useTextLang } from "../../hooks/useTextLang";
-import { Loading } from "../Loading";
+import { LoadingForPreparedWithChildren } from "../LoadingForPrepared";
 
 export const GameEnd = () => {
     const { firstRoundPoints, secondRoundPoints } = useGamePointsContext()
@@ -15,45 +15,41 @@ export const GameEnd = () => {
         setEndBodyStyle()
     }, [])
 
-    const { text:END_TITLE, isLoading:isLoadingTitle } = useTextLang('END_TITLE');
-    const { text:TRUE_AMOUNT_PHOTO_TEXT, isLoading:isLoadingAmountPhoto } = useTextLang('TRUE_AMOUNT_PHOTO_TEXT');
-    const { text:TYPE_OF_SCORE_TEXT_ai, isLoading:isLoadingScoreAi } = useTextLang('TYPE_OF_SCORE_TEXT_ai');
-    const { text:TYPE_OF_SCORE_TEXT_self, isLoading:isLoadingScoreSelf } = useTextLang('TYPE_OF_SCORE_TEXT_self');
+    const { text: END_TITLE, isLoading: isLoadingTitle } = useTextLang('END_TITLE');
+    const { text: TRUE_AMOUNT_PHOTO_TEXT, isLoading: isLoadingAmountPhoto } = useTextLang('TRUE_AMOUNT_PHOTO_TEXT');
+    const { text: TYPE_OF_SCORE_TEXT_ai, isLoading: isLoadingScoreAi } = useTextLang('TYPE_OF_SCORE_TEXT_ai');
+    const { text: TYPE_OF_SCORE_TEXT_self, isLoading: isLoadingScoreSelf } = useTextLang('TYPE_OF_SCORE_TEXT_self');
 
     const isLoading = isLoadingTitle
-    && isLoadingAmountPhoto
-    && isLoadingScoreAi
-    && isLoadingScoreSelf;
+        && isLoadingAmountPhoto
+        && isLoadingScoreAi
+        && isLoadingScoreSelf;
 
-    if (isLoading){
-        return(
-            <Loading/>
-        )
-    }
     return (
-        <Container sx={{
-            display: "flex",
-            flexDirection: "column",
-            gap: "20px",
-            textTransform: "uppercase"
-        }}>
-            <Typography variant="h2">
-                {END_TITLE}
-            </Typography>
-            <Typography className="gradient-text" variant="h4">
-                {TRUE_AMOUNT_PHOTO_TEXT}
-            </Typography>
+        <LoadingForPreparedWithChildren isLoading={isLoading ? false : true}>
+            <Container sx={{
+                display: "flex",
+                flexDirection: "column",
+                gap: "20px",
+                textTransform: "uppercase"
+            }}>
+                <Typography variant="h2">
+                    {END_TITLE}
+                </Typography>
+                <Typography className="gradient-text" variant="h4">
+                    {TRUE_AMOUNT_PHOTO_TEXT}
+                </Typography>
 
-            <Stack
-                direction="row"
-                spacing={2}
-                sx={{
-                    justifyContent: "center",
-                    alignItems: "center",
-                }}
-            >
+                <Stack
+                    direction="row"
+                    spacing={2}
+                    sx={{
+                        justifyContent: "center",
+                        alignItems: "center",
+                    }}
+                >
 
-                {/*<Typography>
+                    {/*<Typography>
                     {TYPE_OF_SCORE_TEXT.self}:
                     <br/><span className="result-score">{firstRoundPoints}</span>
                     <QRcode description="test"></QRcode>
@@ -65,20 +61,21 @@ export const GameEnd = () => {
                     <QRcode description="test"></QRcode>
                 </Typography>*/}
 
-                <div className="">
-                    {TYPE_OF_SCORE_TEXT_self}:
-                    <br /><span className="result-score">{firstRoundPoints}</span>
-                    <QRcode description="test"></QRcode>
-                </div>
-                <div className="">
-                    {TYPE_OF_SCORE_TEXT_ai}:
-                    <br /><span className="result-score">{secondRoundPoints}</span>
-                    <QRcode description="test"></QRcode>
-                </div>
+                    <div className="">
+                        {TYPE_OF_SCORE_TEXT_self}:
+                        <br /><span className="result-score">{firstRoundPoints}</span>
+                        <QRcode description="test"></QRcode>
+                    </div>
+                    <div className="">
+                        {TYPE_OF_SCORE_TEXT_ai}:
+                        <br /><span className="result-score">{secondRoundPoints}</span>
+                        <QRcode description="test"></QRcode>
+                    </div>
 
-            </Stack>
+                </Stack>
 
-            <HomeButton />
-        </Container >
+                <HomeButton />
+            </Container >
+        </LoadingForPreparedWithChildren>
     )
 }

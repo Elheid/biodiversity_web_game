@@ -6,7 +6,8 @@ import { AutoTextSize } from "auto-text-size";
 import { useMinWidth } from "../../hooks/useMinWidth";
 import { useResetPoints } from "../../hooks/resetPoints";
 import { useTextLang } from "../../hooks/useTextLang";
-import { Loading } from "../Loading";
+
+import { LoadingForPreparedWithChildren } from "../LoadingForPrepared";
 
 export interface LevelCardProps {
     title: string;
@@ -20,7 +21,7 @@ export const LevelCard = ({ title, /*description, */to, removeAnimation }: Level
         <Box className={removeAnimation ? "level-box" : ""}>
             <div className="white-container" style={{ display: "block", textDecoration: "none", padding: 0 }}>
                 <div className="container-image">
-                    <NavLink to={to} className={"level-text"} style={{/*padding:"5vw"</div>*/ color: "rgba(51, 63, 72, 1)"}}>
+                    <NavLink to={to} className={"level-text"} style={{/*padding:"5vw"</div>*/ color: "rgba(51, 63, 72, 1)" }}>
                         <div style={{ justifyContent: "center" }}>
                             {/*<Typography variant="h4">{title}</Typography>*/}
                             <AutoTextSize maxFontSizePx={40} mode={'box'} style={{ padding: "20px" }}>
@@ -49,7 +50,7 @@ export const ChoiceLevel = () => {
         setRoundsBodyStyle()
     }, [])
 
-    const { text:CHOICE_LEVEL_TEXT, isLoading } = useTextLang('CHOICE_LEVEL_TEXT');
+    const { text: CHOICE_LEVEL_TEXT, isLoading } = useTextLang('CHOICE_LEVEL_TEXT');
 
     const levelCards = [
         { title: "Full game", description: "Тут будет описаниe", to: "/first-round-start" },
@@ -73,28 +74,23 @@ export const ChoiceLevel = () => {
             boxSizing: "content-box",
             gap: "2vw"
         };
-        
-    if (isLoading){
-        return (
-            <Loading />
-        )
-    }    
     return (
-        <Box sx={{display:"flex", flexDirection:"column", justifyContent:"center", alignItems:"center"}}>
-            <Typography className="gradient-text" variant="h3" style={{ padding: "20px", margin:"0 auto" }}>
-                {CHOICE_LEVEL_TEXT}
-            </Typography>
-            <Container sx={{ padding: "0 !important", ...style }}>
-                {levelCards.map(item =>
-                    <LevelCard
-                        removeAnimation={isMinWidth}
-                        key={item.title}
-                        title={item.title}
-                        description={item.description}
-                        to={item.to}
-                    />)}
-            </Container>
-        </Box>
-
+        <LoadingForPreparedWithChildren isLoading={isLoading ? false : true}>
+            <Box sx={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}>
+                <Typography className="gradient-text" variant="h3" style={{ padding: "20px", margin: "0 auto" }}>
+                    {CHOICE_LEVEL_TEXT}
+                </Typography>
+                <Container sx={{ padding: "0 !important", ...style }}>
+                    {levelCards.map(item =>
+                        <LevelCard
+                            removeAnimation={isMinWidth}
+                            key={item.title}
+                            title={item.title}
+                            description={item.description}
+                            to={item.to}
+                        />)}
+                </Container>
+            </Box>
+        </LoadingForPreparedWithChildren>
     )
 }

@@ -90,9 +90,19 @@ export const useGameState = (totalRounds: number, gameType?:GameType) => {
         const onCheckedAnswer = () => {
             if (game?.isThisSecondType())setCurrentAnswers(getCurrAnswers(game))
         };
+        const onRoundStart = ()=>{
+            console.log("round start")
+            setCurrentAnswers(getCurrAnswers(game))
+        }
 
         window.addEventListener("checked-answer", onCheckedAnswer);
-        return () => window.removeEventListener("checked-answer", onCheckedAnswer);
+
+        window.addEventListener("round-start", onRoundStart);
+
+        return () => {
+            window.removeEventListener("checked-answer", onCheckedAnswer);
+            window.removeEventListener("round-start", onRoundStart);
+        }
 
     },[gameStarted, game, currentRound])
 

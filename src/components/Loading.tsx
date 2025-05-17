@@ -1,7 +1,15 @@
-import { CircularProgress } from "@mui/material"
+import { CircularProgress, CircularProgressProps } from "@mui/material"
 
-export const Loading = ()=>{
+export const Loading = (props: CircularProgressProps) => {
     return (
-        <CircularProgress></CircularProgress>
+        <div style={{
+            position:"absolute",
+            width:"fit-content",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, 50%)"
+        }}>
+            <CircularProgress {...props}></CircularProgress>
+        </div>
     )
 }
