@@ -14,21 +14,21 @@ export const LanguageChanger = () => {
     const languages = Object.values(LANGUAGE);
 
     return (
-        <Container sx={{minWidth:"10vw"}}>
-            <FormControl fullWidth>
-                <InputLabel id="demo-simple-select-label">Language</InputLabel>
-                <Select
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    value={language}
-                    label="Age"
-                    onChange={handleChange}
-                >
-                    {languages.map((item, index)=>
-                    <MenuItem key={index} value={item.toUpperCase()}>{item}</MenuItem>
-                    )}
-                </Select>
-            </FormControl>
+        <Container sx={{ minWidth: "10vw" }}>
+                    <FormControl fullWidth>
+                        <InputLabel id="demo-simple-select-label">Language</InputLabel>
+                        <Select
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            value={language}
+                            label="Age"
+                            onChange={handleChange}
+                        >
+                            {languages.map((item, index) =>
+                                <MenuItem key={index} value={item.toUpperCase()}>{item}</MenuItem>
+                            )}
+                        </Select>
+                    </FormControl>
         </Container>
     )
 }

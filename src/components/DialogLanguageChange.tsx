@@ -7,10 +7,16 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 
 import { LanguageChanger } from './LanguageChanger';
-import { Typography } from '@mui/material';
+import { Container, Typography } from '@mui/material';
 import { useLanguageContext } from '../context/LanguageProvider';
 
-export const DialogLanguageChange =({myStyle}:{myStyle?:object})=> {
+export const DialogLanguageChange = ({
+    myStyle,
+    variant = "default"
+}: {
+    myStyle?: object;
+    variant?: "default" | "less-back";
+}) => {
     const [open, setOpen] = React.useState(false);
     const handleClickOpen = () => {
         setOpen(true);
@@ -23,22 +29,36 @@ export const DialogLanguageChange =({myStyle}:{myStyle?:object})=> {
     };
     const { language } = useLanguageContext();
 
+
     return (
-        <div style={myStyle}>
-            <Typography>{language}</Typography>
-            <Button sx={{paddingLeft:0}} onClick={handleClickOpen}>Change language</Button>
-            <Dialog disableEscapeKeyDown open={open} onClose={handleClose}>
-                <DialogTitle>Select language</DialogTitle>
-                <DialogContent sx={{paddingTop: "30px !important"}}>
-                    <Box component="form" sx={{ display: 'flex', flexWrap: 'wrap' }}>
-                        <LanguageChanger></LanguageChanger>
-                    </Box>
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleClose}>Cancel</Button>
-                    <Button onClick={handleClose}>Ok</Button>
-                </DialogActions>
-            </Dialog>
-        </div>
+        <Container
+            className={variant === "default" ? "description-container" : undefined}
+            sx={{ marginBottom: "8vh", ...myStyle }}
+        >
+            <div className={
+                variant === "default"
+                    ? "lang-container"
+                    : "container-less-back"
+            }>
+                <Typography>{language}</Typography>
+                <Button variant='outlined' sx={{ color: "white" }} onClick={handleClickOpen}>
+                    Change language
+                </Button>
+
+                <Dialog disableEscapeKeyDown open={open} onClose={handleClose}>
+                    <DialogTitle >Select language</DialogTitle>
+                    <DialogContent sx={{ paddingTop: "30px !important" }}>
+                        <Box component="form" sx={{ display: 'flex', flexWrap: 'wrap' }}>
+                            <LanguageChanger></LanguageChanger>
+                        </Box>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={handleClose}>Cancel</Button>
+                        <Button onClick={handleClose}>Ok</Button>
+                    </DialogActions>
+                </Dialog>
+
+            </div>
+        </Container>
     );
-}
+};

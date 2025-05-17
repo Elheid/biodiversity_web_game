@@ -325,7 +325,23 @@ div.start-game {
 .white-container{
   display: flex;
 }
-.white-container .container-image{
+.lang-container{
+  position: relative;
+  background-size: cover;
+  background-repeat: no-repeat;
+  padding: 2%;
+}
+
+.container-less-back{
+    border: 1px solid rgb(11 83 127 / 58%);
+    background: rgb(11 83 127 / 20%);
+    border-radius: 20px;
+    backdrop-filter: blur(8px);
+    padding: 2%;
+    width: fit-content;
+}
+
+.white-container .container-image, .white-container .lang-container{
   color:rgba(51, 63, 72, 1);
   background-image: var(--white-description-container);
 
@@ -335,10 +351,12 @@ div.start-game {
 
 
 
+
+
 .description-container{
   display: flex;
 }
-.description-container .container-image{
+.description-container .container-image, .description-container .lang-container{
 
 
   background-image: var(--description-container);
