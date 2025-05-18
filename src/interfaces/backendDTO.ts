@@ -1,3 +1,6 @@
+import { LANGUAGE } from "../config";
+
+
 export interface FirstRoundLevelDTO {
     id: number;
     imageWithAnimal: string; // base64
@@ -24,4 +27,10 @@ export interface SecondRoundLevelDTO {
         width: number;
         height: number;
     };
+}
+
+export interface TextDTO{
+    id:number;
+    title:string;
+    texts:Record<LANGUAGE, string>;
 }

@@ -59,7 +59,7 @@ export class Game {
 
         this.timer.onTimeout(() => {
             console.log("Game time out");
-            this.finishGane()
+            this.finishGame()
         })
 
         if (timeBetweenRounds) this.timeBetweenRounds = timeBetweenRounds
@@ -91,7 +91,7 @@ export class Game {
 
         this.timer.onTimeout(() => {
             console.log("Game time out");
-            this.finishGane()
+            this.finishGame()
         })
 
         if (timeBetweenRounds) this.timeBetweenRounds = timeBetweenRounds
@@ -219,7 +219,7 @@ export class Game {
                     this.changeScore();
                     console.log("start new Round");
                 }
-
+                this.RoundController.finishRound();
                 window.setTimeout(async () => {
                     await onNextRoundStart();
                     await loadOnStart();
@@ -231,7 +231,7 @@ export class Game {
     }
 
 
-    public finishGane(): void {
+    public finishGame(): void {
         console.log("Game Ends");
         const endEvent = new CustomEvent<number>("game-end", { detail: this.score })
         window.dispatchEvent(endEvent)
@@ -241,9 +241,10 @@ export class Game {
         if (this.roundCounter === START_ROUND) this.timer.start();
 
         if (this.roundCounter >= this.rounds) {
-            this.finishGane()
+            this.finishGame()
             return;
         }
+
         if (this.roundsInfo){
             const answers = this.roundsInfo[0].answers;
             const pictures = this.roundsInfo[0].gamePictures;

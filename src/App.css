@@ -4,7 +4,7 @@
   /*padding: 2rem;*/
   text-align: center;
 
-  --start-button-img-hover:url("/src/assets/img/startHover.svg") center/cover;
+  --start-button-img-hover:url("/src/assets/img/startHover.svg");
 
   --disable-button-img:url("/src/assets/img/buttonDisable.svg") center/cover;
   --normal-button-img:url("/src/assets/img/trueButton.svg") center/cover;
@@ -33,6 +33,8 @@ html, body {
   width: 100%;
   min-height: 100vh;
   overflow-x: hidden; /* Блокируем горизонтальный скролл */
+
+  background-color: rgba(21 25 44 / 100%);
 }
 
 .centred-root{
@@ -78,6 +80,10 @@ h1, h2, h3, h4, h5 {
 p {
   font-family: 'SB Sans Display Semibold', sans-serif !important;
 }
+span {
+  font-family: 'SB Sans Display Semibold', sans-serif !important;
+}
+
 
 .sans-text{
   font-family: 'SB Sans Text', sans-serif !important;
@@ -92,6 +98,8 @@ body {
   align-items: center;
 }
 
+
+
 .background-rounds{
   background-image: url(/src/assets/img/background.png);
 }
@@ -102,6 +110,14 @@ body {
 
 .background-rounds-start{
   background-image: url(/src/assets/img/backgroundMain.png);
+}
+
+.background-rounds-start-1{
+  background-image: url(/src/assets/img/backgroundRoundStart1_2.png);
+}
+
+.background-rounds-start-2{
+  background-image: url(/src/assets/img/backgroundRoundStart2_2.png);
 }
 
 .background-main {
@@ -124,6 +140,9 @@ body {
   }
 }
 
+.background{
+  transition: background-image 0.3s ease;
+}
 
 body{
   color:white;
@@ -150,6 +169,11 @@ div.start-game {
     'image buttons';
 }
 
+
+.main-page-container {
+    display: flex;
+    flex-direction: column;
+}
 
 
 @media (max-width: 768px) {
@@ -178,14 +202,20 @@ div.start-game {
     margin: 1vw;
   }
 
+  .main-page-container {
+    gap: 1vh;
+  }
+
   
 }
 
-.qr-container img{
+.qr-container img,.qr-container svg{
   width: 100%;
+  height: auto;
 }
-.qr-container div img{
+.qr-container div img,.qr-container div svg{
   width: 100%;
+  height: auto;
 }
 
 .main-page-container{
@@ -297,7 +327,23 @@ div.start-game {
 .white-container{
   display: flex;
 }
-.white-container .container-image{
+.lang-container{
+  position: relative;
+  background-size: cover;
+  background-repeat: no-repeat;
+  padding: 2%;
+}
+
+.container-less-back{
+    border: 1px solid rgb(11 83 127 / 58%);
+    background: rgb(11 83 127 / 20%);
+    border-radius: 20px;
+    backdrop-filter: blur(8px);
+    padding: 2%;
+    width: fit-content;
+}
+
+.white-container .container-image, .white-container .lang-container{
   color:rgba(51, 63, 72, 1);
   background-image: var(--white-description-container);
 
@@ -307,10 +353,12 @@ div.start-game {
 
 
 
+
+
 .description-container{
   display: flex;
 }
-.description-container .container-image{
+.description-container .container-image, .description-container .lang-container{
 
 
   background-image: var(--description-container);
@@ -395,6 +443,14 @@ div.start-game {
 /*start button*/
 .icon-button:hover .button-icon {
   opacity: 0; /* Плавно скрываем исходное изображение */
+}
+
+.start-button:hover .button-icon {
+  opacity: 0; /* Плавно скрываем исходное изображение */
+}
+
+.start-button-text{
+
 }
 
 .icon-button {
