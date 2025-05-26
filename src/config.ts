@@ -14,8 +14,8 @@ export const START_SCORE = 0;
 
 export const AMOUNTS_OF_ROUNDS = 500;
 //Сервер
-const apiUrl = import.meta.env.VITE_API_URL;
-const apiHost = import.meta.env.VITE_API_PORT;
+const apiUrl ="158.160.32.5"//import.meta.env.VITE_API_URL;
+const apiHost = "5001"//import.meta.env.VITE_API_PORT;
 const serverIp = apiUrl//"localhost"//apiHost//"localhost"//apiUrl//"localhost"//"84.201.144.181"//192.168.1.187:5001
 export const SERVER_URL = `http://${serverIp}:${apiHost}`//"http://localhost:5001";
 
