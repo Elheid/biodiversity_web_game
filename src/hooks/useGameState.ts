@@ -138,6 +138,7 @@ export const useGameState = (totalRounds: number, gameType?:GameType) => {
         stateRef,
         handleAnswerSelect,
         nextRound,
-        setIsRoundEnd
+        setIsRoundEnd,
+        setButtonsDisabled
     };
 };

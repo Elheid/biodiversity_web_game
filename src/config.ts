@@ -1,18 +1,18 @@
 //import { getTexts, LANGUAGE } from "./api/api";
 
 //Нужно только для того, чтобы если CURRENT_DURATION_TIME или CURRENT_TIME_BEETWEN_ROUNDS не будет
-export const BASE_TIME_BEETWEN_ROUNDS = 1.2 * 1000;
-export const BASE_DURATION_TIME = 400 * 1000;
+export const BASE_TIME_BEETWEN_ROUNDS = 100;//0.5 * 1000;
+export const BASE_DURATION_TIME = 40 * 1000;
 //Настройки врмени
 
 export const CURRENT_DURATION_TIME = 40 * 1000;//время в милисекундах
-export const CURRENT_TIME_BEETWEN_ROUNDS = 1.2 * 1000;;
+export const CURRENT_TIME_BEETWEN_ROUNDS = 100;//1.2 * 1000;;
 
 //
 export const START_ROUND = 0;
 export const START_SCORE = 0;
 
-export const AMOUNTS_OF_ROUNDS = 2
+export const AMOUNTS_OF_ROUNDS = 500;
 //Сервер
 const apiUrl = import.meta.env.VITE_API_URL;
 const apiHost = import.meta.env.VITE_API_PORT;

@@ -43,7 +43,7 @@ export const BaseOfGame = ({ gameType, /*onlyFirstRound = false*/ }: BaseGamePro
         scoreRef,
         imgRef,
         handleAnswerSelect,
-
+        setButtonsDisabled
     } = useGameState(AMOUNTS_OF_ROUNDS, gameType);
 
     const { text:SCROE_TEXT, isLoading: isLoadingScore } = useTextLang('SCROE_TEXT');
@@ -116,6 +116,8 @@ export const BaseOfGame = ({ gameType, /*onlyFirstRound = false*/ }: BaseGamePro
             console.log("newAnswersToShow:", newAnswersToShow); // Логируем newAnswersToShow
 
             setAnswersToShow(newAnswersToShow);
+            if (newAnswersToShow === YesNoAnswers) setButtonsDisabled(false)
+            else if (secondType)setButtonsDisabled(false);
         } else {
             setAnswersToShow(currentAnswers);
         }
@@ -167,7 +169,7 @@ export const BaseOfGame = ({ gameType, /*onlyFirstRound = false*/ }: BaseGamePro
 
     const onAnswerClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         const answerName = e.currentTarget.textContent;
-
+        setButtonsDisabled(true)
         if (game?.isThisSecondType() && showYesNo) {
             // Если есть answerQuestion и показываем "Да" и "Нет", передаем answerQuestion
             const choice = getAnswerTitle(game) || ""//game?.roundsInfo[curRound]?.answerTitle || "";
@@ -220,7 +222,9 @@ export const BaseOfGame = ({ gameType, /*onlyFirstRound = false*/ }: BaseGamePro
             <Loading />
         )
     }  */
-
+    useEffect(()=>{
+        if(isLoading)setButtonsDisabled(true)
+    },[isLoading])
 
     return (
         <LoadingForPreparedWithChildren isLoading={isLoading ? false : true} haveRounds={true}>

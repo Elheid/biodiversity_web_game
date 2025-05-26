@@ -59,7 +59,7 @@ export const GameImage = forwardRef<HTMLImageElement, ImgHTMLAttributes<HTMLImag
 
     useEffect(()=>{
         if(game && !isRoundEnd){
-            if(game.isThisSecondType()) setButtonsDisabled(false);
+            //if(game.isThisSecondType()) setButtonsDisabled(false);
         }
     },[game, isRoundEnd]);
 
@@ -117,7 +117,7 @@ const handleImageLoad = (event: React.SyntheticEvent<HTMLImageElement>) => {
     
     
             // Попал в нужную облать или нет
-                setButtonsDisabled(false);
+                //setButtonsDisabled(false);
                 //if (!game.isThisSecondType())game.changePictureToResult();
         }
     },[imageDimensions])
@@ -129,6 +129,13 @@ const handleImageLoad = (event: React.SyntheticEvent<HTMLImageElement>) => {
         }
     }, [game, internalRef.current]);
 
+    const isSecond = game && game.isThisSecondType();
+    const firstCondition = !buttonsDisabled &&  game && imageDimensions && !isRoundEnd
+    const secondCondition = game && isSecond && imageDimensions && !isRoundEnd;
+    const showBox = ((firstCondition) 
+            || (secondCondition));
+    console.log(firstCondition, "first")
+    console.log(secondCondition, "second")
     return (
         <FullScreenImage>
         <div className="image-wrapper" style={{ opacity: isVisible ? 1 : 0 }}>
@@ -145,7 +152,7 @@ const handleImageLoad = (event: React.SyntheticEvent<HTMLImageElement>) => {
                     opacity: imageSrc === "-1" ? 0 : 1,
                 }}
             />
-            {!buttonsDisabled &&  game && imageDimensions && !isRoundEnd && (
+            { showBox&& (
                 <BoxAreaOnImage 
                 coordinates={coordinates} 
                 imageDimensions={imageDimensions} 
