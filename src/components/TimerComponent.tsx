@@ -3,57 +3,66 @@ import { useState, useEffect } from 'react';
 import { Timer } from '../classes/timer';
 import { AutoTextSize } from 'auto-text-size';
 
+/**
+ * Props for the TimerComponent.
+ */
 interface TimerComponentProps {
     timer: Timer;
 }
 
-export const TimerComponent= ({ timer }: TimerComponentProps) =>{
+/**
+ * TimerComponent displays a countdown timer.
+ * It updates every 100ms and formats the remaining time as MM:SS.
+ */
+export const TimerComponent = ({ timer }: TimerComponentProps) => {
     const [timeLeft, setTimeLeft] = useState(timer.remainingTime);
 
     useEffect(() => {
-        // Функция для обновления времени
+        // Function to update the remaining time state
         const updateTime = () => {
             setTimeLeft(timer.remainingTime);
         };
 
-        // Обновляем время сразу при монтировании
+        // Update immediately on mount
         updateTime();
 
-        // Настраиваем интервал для обновления времени каждые 100 мс
+        // Set interval to update time every 100ms
         const interval = setInterval(updateTime, 100);
 
-        // Коллбэк при завершении таймера
+        // Callback when timer finishes
         const timeoutCallback = () => {
             setTimeLeft(0);
         };
 
-        // Подписываемся на событие завершения таймера
+        // Subscribe to timer timeout event
         timer.onTimeout(timeoutCallback);
 
-        // Очистка при размонтировании
+        // Cleanup on unmount
         return () => {
             clearInterval(interval);
-            // Удаляем коллбэк из таймера
-            timer.offTimeout(timeoutCallback); // Добавьте этот метод в класс Timer
+            // Remove timeout callback from timer
+            timer.offTimeout(timeoutCallback); // Ensure this method exists in Timer class
         };
     }, [timer, timer.isRunning]);
-    
+
+    // Format milliseconds to MM:SS string
     const formatTime = (ms: number) => {
         const seconds = Math.ceil(ms / 1000);
         return `${Math.floor(seconds / 60)}:${(seconds % 60).toString().padStart(2, '0')}`;
     };
 
     return (
-        <Box className="timer-container timer-container-big" style={{alignItems:"center"}}>
+        <Box className="timer-container timer-container-big" style={{ alignItems: "center" }}>
+            {/* Uncomment Typography if needed for different styling */}
             {/*<Typography
                 variant={window.innerWidth < 600 ? 'h6' : 'h3'}
                 component="h3"
             >
                 {formatTime(timeLeft)}
             </Typography>*/}
-            <AutoTextSize maxFontSizePx={40} minFontSizePx={10} mode={"boxoneline"} style={{alignItems:"center"}}>
+            <AutoTextSize maxFontSizePx={40} minFontSizePx={10} mode={"boxoneline"} style={{ alignItems: "center" }}>
                 {formatTime(timeLeft)}
             </AutoTextSize>
         </Box>
     );
-}
+};

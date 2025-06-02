@@ -2,13 +2,21 @@ import { useCallback } from "react";
 import { ImageDimensions } from "./GameImage";
 import { Coordinates } from "../../interfaces/coordinates";
 
+/**
+ * Props for the BoxAreaOnImage component.
+ */
 interface BoxAreaOnImageProps {
-    imageDimensions: ImageDimensions,
+    imageDimensions: ImageDimensions;
     coordinates: Coordinates;
     drawAreaCondition: boolean;
-    boxColor?:string;
+    boxColor?: string;
 }
 
+/**
+ * Calculates the style for the box area on the image based on coordinates and image dimensions.
+ * @param props - BoxAreaOnImageProps
+ * @returns Style object or undefined if drawAreaCondition is false.
+ */
 const getAreaStyle = ({ coordinates, imageDimensions, drawAreaCondition }: BoxAreaOnImageProps) => {
     if (!drawAreaCondition) return;
 
@@ -23,11 +31,14 @@ const getAreaStyle = ({ coordinates, imageDimensions, drawAreaCondition }: BoxAr
     };
 };
 
-
+/**
+ * BoxAreaOnImage component renders a styled box overlay on an image to highlight an area.
+ * It displays the coordinates as a label above the box.
+ */
 export const BoxAreaOnImage = ({ coordinates, imageDimensions, drawAreaCondition, boxColor }: BoxAreaOnImageProps) => {
     const memoGetArea = useCallback(() =>
         getAreaStyle({ coordinates, imageDimensions, drawAreaCondition })
-    , [coordinates, imageDimensions, drawAreaCondition])
+    , [coordinates, imageDimensions, drawAreaCondition]);
 
     return (
         <div
@@ -55,4 +66,4 @@ export const BoxAreaOnImage = ({ coordinates, imageDimensions, drawAreaCondition
             </div>
         </div>
     );
-}
+};

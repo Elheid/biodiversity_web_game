@@ -1,20 +1,28 @@
+/**
+ * GameRound class manages a single round of the game, including answers, pictures, and player state.
+ */
 import { isAnswerCorrect, MyRoutes } from "../api/api";
 import { SKIP_ROUND_BUTTON_TEXT } from "../config";
 import { Answer, GamePictures, GameType } from "../interfaces/rounds";
-//import { isSpecies } from "./animalSpecies";
+
 import { Player } from "./player";
 
 export class GameRound {
     private _answers: Answer[];
-    public  player: Player;
+    public player: Player;
     private _gamePictures: GamePictures;
     private onFinishRound?: () => void;
-    public roundId:number;
+    public roundId: number;
 
-
-
-
-    constructor(player:Player, _answers: Answer[], _gamePictures:GamePictures, roundId:number, onFinishRound?: () => void) {
+    /**
+     * Constructs a new GameRound instance.
+     * @param player - The player object.
+     * @param _answers - Array of possible answers for the round.
+     * @param _gamePictures - Pictures associated with the round.
+     * @param roundId - Identifier for the round.
+     * @param onFinishRound - Optional callback to execute when the round finishes.
+     */
+    constructor(player: Player, _answers: Answer[], _gamePictures: GamePictures, roundId: number, onFinishRound?: () => void) {
         this.player = player;
         this._answers = _answers;
         this._gamePictures = _gamePictures;
@@ -23,54 +31,89 @@ export class GameRound {
         this.roundId = roundId;
     }
 
-    public getRoundId():number{
+    /**
+     * Gets the round ID.
+     * @returns The round identifier.
+     */
+    public getRoundId(): number {
         return this.roundId;
     }
 
-    public returnPlayerRoundState(){
+    /**
+     * Gets the player's current round state.
+     * @returns The round state string.
+     */
+    public returnPlayerRoundState() {
         return this.player.roundState;
     }
 
-    public returnCurrentAnswers():Answer[]{
+    /**
+     * Gets the current answers for the round.
+     * @returns Array of answers.
+     */
+    public returnCurrentAnswers(): Answer[] {
         return this._answers;
     }
-    public returnCurrentPictures():GamePictures{
+
+    /**
+     * Gets the pictures associated with the round.
+     * @returns GamePictures object.
+     */
+    public returnCurrentPictures(): GamePictures {
         return this._gamePictures;
     }
 
-
-    public startRound():void{
+    /**
+     * Starts the round by resetting player state and dispatching a round-start event.
+     */
+    public startRound(): void {
         this.player.newRound();
-        const startEvent = new CustomEvent<number>("round-start", { detail: this.roundId});
-        window.dispatchEvent(startEvent)
+        const startEvent = new CustomEvent<number>("round-start", { detail: this.roundId });
+        window.dispatchEvent(startEvent);
     }
 
-    public finishRound():void{
+    /**
+     * Finishes the round by calling the finish callback and dispatching a round-end event.
+     */
+    public finishRound(): void {
         this.onFinishRound?.();
 
         console.log("Game round end");
-        const endEvent = new CustomEvent<string>("round-end")
-        window.dispatchEvent(endEvent)
+        const endEvent = new CustomEvent<string>("round-end");
+        window.dispatchEvent(endEvent);
     }
 
-
-    public showResultPicture():void{
+    /**
+     * Logs the result picture URL to the console.
+     */
+    public showResultPicture(): void {
         console.log(this._gamePictures.resultPictureUrl);
     }
 
-    public ChoiceAnswer(name:string):void{
+    /**
+     * Sets the player's choice and dispatches a choice-answer event.
+     * @param name - The chosen answer name.
+     */
+    public ChoiceAnswer(name: string): void {
         this.player.choiceName = name;
 
-        const answerEvent = new CustomEvent<string>("choice-answer", {detail:name})
-        window.dispatchEvent(answerEvent)
+        const answerEvent = new CustomEvent<string>("choice-answer", { detail: name });
+        window.dispatchEvent(answerEvent);
     }
 
-    public async isAnswerTrue(choice:string, roundType:GameType){
-        const route = roundType === GameType.firstType ? MyRoutes.FIRST_ROUND:MyRoutes.SECOND_ROUND;
+    /**
+     * Checks if the given choice is correct by calling the API.
+     * Dispatches a checked-answer event for second type games.
+     * @param choice - The chosen answer.
+     * @param roundType - The type of the game round.
+     * @returns Promise resolving to true if the answer is correct, false otherwise.
+     */
+    public async isAnswerTrue(choice: string, roundType: GameType) {
+        const route = roundType === GameType.firstType ? MyRoutes.FIRST_ROUND : MyRoutes.SECOND_ROUND;
         const isAnswerTrueObj = await isAnswerCorrect(route, this.roundId, choice || "");
         const isAnswerTrue = isAnswerTrueObj.isCorrect;
 
-        if( roundType === GameType.secondType ){
+        if (roundType === GameType.secondType) {
             const answerEvent = new CustomEvent("checked-answer", {
                 detail: {
                     answerName: choice,
@@ -83,9 +126,15 @@ export class GameRound {
         return isAnswerTrue;
     }
 
-    public async checkAnswer(roundType:GameType):Promise<boolean>{
-        const choice = this.player.selectChoice()
-        if (!choice || choice === SKIP_ROUND_BUTTON_TEXT/*|| !isSpecies(choice)*/) return false;
+    /**
+     * Checks the player's selected answer and updates player state accordingly.
+     * @param roundType - The type of the game round.
+     * @returns Promise resolving to true if the answer is correct, false otherwise.
+     */
+    public async checkAnswer(roundType: GameType): Promise<boolean> {
+        const choice = this.player.selectChoice();
+        if (!choice || choice === SKIP_ROUND_BUTTON_TEXT) return false;
+
         /*const expectedAnswer = this._answers.filter((answer)=>{
             return answer.isAnswerTrue
         })
@@ -98,7 +147,7 @@ export class GameRound {
             }
         }*/
 
-        const isAnswerTrue = this.isAnswerTrue(choice, roundType)
+        const isAnswerTrue = await this.isAnswerTrue(choice, roundType);
         if (isAnswerTrue) return isAnswerTrue;
 
         this.player.playerLose();
@@ -106,14 +155,16 @@ export class GameRound {
         return false;
     }
 
+    /**
+     * Cleans up the round by removing event handlers and callbacks.
+     */
     public cleanup(): void {
-        // 1. Удаляем обработчики событий
-        
-        // 2. Обнуляем коллбэки
-        this.onFinishRound = undefined;
-        
-        // 3. Дополнительные очистки при необходимости
-        // (например, если есть таймеры в расширенной логике)
-    }
+        // 1. Remove event handlers
 
+        // 2. Clear callbacks
+        this.onFinishRound = undefined;
+
+        // 3. Additional cleanup if needed
+        // (e.g., timers in extended logic)
+    }
 }

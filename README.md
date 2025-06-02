@@ -1,3 +1,38 @@
+# Переменные в config.js
+//время в милисекундах
+##  Время раунда: 
+CURRENT_DURATION_TIME
+##  Время задержки до следующего раунда
+CURRENT_TIME_BEETWEN_ROUNDS
+
+## Настройка адреса сервера 
+const serverIp // "localhost" // ip сервера
+const apiHost = // "5001" // порт сервера
+
+
+
+## Настройка qr кодов
+
+export const QRcontent_self  // текст в qr code
+export const QRdescription_self // подпись для него
+
+export const QRcontent_ai // текст в qr code
+export const QRdescription_ai // подпись для него
+
+
+
+## Чтобы добавить язык на фронте нужно 
+Добавить его в этот enum
+export enum LANGUAGE {
+    RUSSIAN = "RUSSIAN",
+    ENGLISH = "ENGLISH",
+    //ITALIAN = "ITALIAN"
+}
+
+
+export type TextKey // словарь переменных для получения их из бд через хук useTextLang
+export const DEFAULT_TEXTS: Record<TextKey, string> // словарь их базовых значений, если язык русский
+
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.

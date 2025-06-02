@@ -1,6 +1,19 @@
 # Используем официальный образ Node.js
 FROM node:18 AS build
 
+
+# # Принимаем аргументы
+# ARG VITE_API_URL
+# ARG VITE_API_PORT
+# ARG VITE_TEST_ENV
+
+# # Устанавливаем переменные окружения для сборки
+# ENV VITE_API_URL=$VITE_API_URL
+# ENV VITE_API_PORT=$VITE_API_PORT
+# ENV VITE_TEST_ENV=$VITE_TEST_ENV
+
+
+
 # Устанавливаем рабочую директорию
 WORKDIR /app
 

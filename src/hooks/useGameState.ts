@@ -1,6 +1,9 @@
+/**
+ * Custom React hook to manage the game state and interactions.
+ */
 import { useEffect, useRef, useState } from 'react';
 import { Game } from '../classes/game';
-import { Species } from '../classes/animalSpecies';
+
 import { Player } from '../classes/player';
 
 import { getCurrAnswers } from '../utill';
@@ -11,17 +14,21 @@ import { Answer, GameType } from '../interfaces/rounds';
 import { useLazyRounds } from './useLazyRounds';
 import { useGameContext } from '../context/GameContextProvider';
 
-
-
-export const useGameState = (totalRounds: number, gameType?:GameType) => {
+/**
+ * useGameState hook manages the game lifecycle, current round, answers, and UI state.
+ * @param totalRounds - Total number of rounds in the game.
+ * @param gameType - Optional game type to determine game mode.
+ * @returns Object containing game state and handlers.
+ */
+export const useGameState = (totalRounds: number, gameType?: GameType) => {
     const {game, setGame} = useGameContext();
     const [gameStarted, setGameStarted] = useState(false);
     //const [isRoundEnd, setIsRoundEnd] = useState(false);
     const [currentRound, setCurrentRound] = useState(0);
-    const [selectedAnswer, setSelectedAnswer] = useState<Species | null>(null);
+    const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
     const [currentAnswers, setCurrentAnswers] = useState<Answer[]>([]);
 
-    const {buttonsDisabled, setButtonsDisabled}= useDisablButtonContext()
+    const {buttonsDisabled, setButtonsDisabled}= useDisablButtonContext();
     const {isRoundEnd, setIsRoundEnd} = useRoundEndContext();
 
     const scoreRef = useRef<HTMLSpanElement>(null);
@@ -35,8 +42,7 @@ export const useGameState = (totalRounds: number, gameType?:GameType) => {
             loadRound(game);
     }, [currentRound, loadRound, game]);*/
     
-
-    // Инициализация игры
+    // Initialize the game when refs are available
     useEffect(() => {
         if (scoreRef.current && imgRef.current) {
             const player = new Player();
@@ -53,14 +59,15 @@ export const useGameState = (totalRounds: number, gameType?:GameType) => {
             );
             setGame(game);
 
-            const start = async()=>{
-                await loadRound(game)
+            const start = async () => {
+                await loadRound(game);
                 game.startGame();
                 setGameStarted(true);
     
                 setButtonsDisabled(true);
-            }
+            };
             start();
+
             const onChoiceAnswer = (e: CustomEventInit<number>) => {
                 setIsRoundEnd(true);
                 game?.nextRound(e, () => {
@@ -68,53 +75,55 @@ export const useGameState = (totalRounds: number, gameType?:GameType) => {
                     setIsRoundEnd(false);
                     setSelectedAnswer(null);
                     setCurrentRound(prev => prev + 1);
-                
-                }, ()=>loadRound(game));
+                }, () => loadRound(game));
             };
 
-            window.addEventListener("choice-answer", onChoiceAnswer)
-            return ()=>{
+            window.addEventListener("choice-answer", onChoiceAnswer);
+            return () => {
                 setIsRoundEnd(false);
-                window.removeEventListener("choice-answer", onChoiceAnswer)
+                window.removeEventListener("choice-answer", onChoiceAnswer);
                 if (game) {
                     game.stopGame();
                 }
-            }
+            };
         }
     }, [totalRounds, setButtonsDisabled]);
 
-    useEffect(()=>{
+    // Update current answers on game start, checked answer, or round start events
+    useEffect(() => {
         if (gameStarted)
-            setCurrentAnswers(getCurrAnswers(game))
+            setCurrentAnswers(getCurrAnswers(game));
 
         const onCheckedAnswer = () => {
-            if (game?.isThisSecondType())setCurrentAnswers(getCurrAnswers(game))
+            if (game?.isThisSecondType()) setCurrentAnswers(getCurrAnswers(game));
         };
-        const onRoundStart = ()=>{
-            console.log("round start")
-            setCurrentAnswers(getCurrAnswers(game))
-        }
+        const onRoundStart = () => {
+            console.log("round start");
+            setCurrentAnswers(getCurrAnswers(game));
+        };
 
         window.addEventListener("checked-answer", onCheckedAnswer);
-
         window.addEventListener("round-start", onRoundStart);
 
         return () => {
             window.removeEventListener("checked-answer", onCheckedAnswer);
             window.removeEventListener("round-start", onRoundStart);
-        }
+        };
+    }, [gameStarted, game, currentRound]);
 
-    },[gameStarted, game, currentRound])
-
-
-    // Обработчик выбора ответа
+    /**
+     * Handles answer selection by the user.
+     * @param answerName - The selected answer name.
+     */
     const handleAnswerSelect = (answerName: string) => {
         game?.RoundController.ChoiceAnswer(answerName);
         setButtonsDisabled(true);
-        setSelectedAnswer(answerName as Species);
+        setSelectedAnswer(answerName);
     };
 
-    // Переход к следующему раунду
+    /**
+     * Advances to the next round and resets relevant state.
+     */
     const nextRound = () => {
         setButtonsDisabled(false);
         setIsRoundEnd(false);
@@ -125,7 +134,6 @@ export const useGameState = (totalRounds: number, gameType?:GameType) => {
             return newRound;
         });
     };
-
 
     return {
         isRoundEnd,
@@ -138,6 +146,7 @@ export const useGameState = (totalRounds: number, gameType?:GameType) => {
         stateRef,
         handleAnswerSelect,
         nextRound,
-        setIsRoundEnd
+        setIsRoundEnd,
+        setButtonsDisabled
     };
 };
