@@ -1,32 +1,28 @@
-import { JSX } from "react"
-import containerImg from "../assets/img/qrCodeContainer.svg"
+import { JSX } from "react";
+import containerImg from "../assets/img/qrCodeContainer.svg";
 import { QRCodeSVG } from "qrcode.react";
 
-import { Container, Typography } from "@mui/material"
-/*
-export const QRcode = ( {description, qrCode}:{description:string, qrCode?:JSX.Element})=>{
-    const qrImage = qrCode ? qrCode : <img src={testQR}/>
-    return (
-        <Container className="qr-container" sx={{display:"flex", flexDirection:"column"}}>
-        <img src={containerImg}/>
-        {qrImage}
-        {description}
-        </Container>
-    )
-}*/
+import { Container, Typography } from "@mui/material";
 
-export const QRcode = ({
-    description,
-    qrCode,
-}: {
+/**
+ * Props for the QRcode component.
+ */
+interface QRcodeProps {
     description: string;
+    qrContent: string;
     qrCode?: JSX.Element;
-}) => {
+}
+
+/**
+ * QRcode component renders a QR code inside a styled container with a description.
+ * It uses QRCodeSVG from 'qrcode.react' and supports custom QR code elements.
+ */
+export const QRcode = ({ description, qrContent, qrCode }: QRcodeProps) => {
     const defaultQR = (
         <QRCodeSVG
-            value="Тестовый код"
-            size={256} // Размер SVG
-            level="Q" // Уровень коррекции ошибок (L, M, Q, H)
+            value={qrContent}
+            size={256} // SVG size
+            level="Q" // Error correction level (L, M, Q, H)
             bgColor="#ffffff"
             fgColor="#000000"
         />
@@ -39,8 +35,8 @@ export const QRcode = ({
             sx={{
                 display: "flex",
                 flexDirection: "column",
-                alignItems: "center", // Центрирование по горизонтали
-                gap: 2, // Отступ между элементами
+                alignItems: "center", // Center horizontally
+                gap: 2, // Gap between elements
                 width: "100%",
                 maxWidth: "25vw !important",
             }}
@@ -55,13 +51,13 @@ export const QRcode = ({
                     justifyContent: "center",
                     alignItems: "center",
                     padding: "20px",
-                    minWidth: "80px"
+                    minWidth: "80px",
                 }}
             >
                 {qrImage}
             </div>
 
-            {/* Описание под контейнером */}
+            {/* Description below the container */}
             <Typography variant="body1" textAlign="center">
                 {description}
             </Typography>

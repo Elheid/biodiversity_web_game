@@ -13,11 +13,21 @@ export const START_ROUND = 0;
 export const START_SCORE = 0;
 
 export const AMOUNTS_OF_ROUNDS = 500;
+
+export const QRcontent_self = "test self";
+export const QRdescription_self = "desc test self";
+
+export const QRcontent_ai = "test ai";
+export const QRdescription_ai = "desc test ai";
+
+
 //Сервер
-const apiUrl ="158.160.32.5"//import.meta.env.VITE_API_URL;
+//const apiUrl =import.meta.env.VITE_API_URL;
+
 const apiHost = "5001"//import.meta.env.VITE_API_PORT;
-const serverIp = apiUrl//"localhost"//apiHost//"localhost"//apiUrl//"localhost"//"84.201.144.181"//192.168.1.187:5001
+const serverIp = "localhost" //apiUrl//"localhost"//apiHost//"localhost"//apiUrl//"localhost"//"84.201.144.181"//192.168.1.187:5001
 export const SERVER_URL = `http://${serverIp}:${apiHost}`//"http://localhost:5001";
+
 
 //Все слова/тексты
 //MainPage

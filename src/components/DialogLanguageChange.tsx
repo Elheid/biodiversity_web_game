@@ -10,25 +10,44 @@ import { LanguageChanger } from './LanguageChanger';
 import { Container, Typography } from '@mui/material';
 import { useLanguageContext } from '../context/LanguageProvider';
 
+/**
+ * Props for the DialogLanguageChange component.
+ */
+interface DialogLanguageChangeProps {
+    myStyle?: object;
+    variant?: "default" | "less-back";
+}
+
+/**
+ * DialogLanguageChange component renders a button that opens a dialog to change the language.
+ * It displays the current language and uses LanguageChanger inside the dialog.
+ */
 export const DialogLanguageChange = ({
     myStyle,
     variant = "default"
-}: {
-    myStyle?: object;
-    variant?: "default" | "less-back";
-}) => {
+}: DialogLanguageChangeProps) => {
     const [open, setOpen] = React.useState(false);
+
+    /**
+     * Opens the language change dialog.
+     */
     const handleClickOpen = () => {
         setOpen(true);
     };
 
+    /**
+     * Closes the language change dialog.
+     * Prevents closing on backdrop click.
+     * @param event - The synthetic event.
+     * @param reason - The reason for closing.
+     */
     const handleClose = (event: React.SyntheticEvent<unknown>, reason?: string) => {
         if (event && reason !== 'backdropClick') {
             setOpen(false);
         }
     };
-    const { language } = useLanguageContext();
 
+    const { language } = useLanguageContext();
 
     return (
         <Container
@@ -46,10 +65,10 @@ export const DialogLanguageChange = ({
                 </Button>
 
                 <Dialog disableEscapeKeyDown open={open} onClose={handleClose}>
-                    <DialogTitle >Select language</DialogTitle>
+                    <DialogTitle>Select language</DialogTitle>
                     <DialogContent sx={{ paddingTop: "30px !important" }}>
                         <Box component="form" sx={{ display: 'flex', flexWrap: 'wrap' }}>
-                            <LanguageChanger></LanguageChanger>
+                            <LanguageChanger />
                         </Box>
                     </DialogContent>
                     <DialogActions>

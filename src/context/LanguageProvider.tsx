@@ -1,21 +1,32 @@
 import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 import { LANGUAGE } from '../config';
 
-
-
+/**
+ * Interface defining the shape of the Language context.
+ */
 interface LanguageType {
     language: LANGUAGE;
     setLanguage: React.Dispatch<React.SetStateAction<LANGUAGE>>;
 };
 
+/**
+ * React context for the Language state.
+ */
 const LanguageContext = createContext<LanguageType | undefined>(undefined);
 
+/**
+ * Props for the LanguageProvider component.
+ */
 interface LanguageProps {
     children: ReactNode;
 }
 
+/**
+ * LanguageProvider component provides the Language context to its children.
+ * It initializes language state from localStorage and persists changes.
+ */
 export const LanguageProvider: React.FC<LanguageProps> = ({ children }) => {
-    // Инициализация состояния с чтением из localStorage
+    // Initialize language state from localStorage or default to Russian
     const [language, setLanguage] = useState<LANGUAGE>(() => {
         if (typeof window === 'undefined') {
             return LANGUAGE.RUSSIAN;
@@ -27,7 +38,7 @@ export const LanguageProvider: React.FC<LanguageProps> = ({ children }) => {
         return LANGUAGE.RUSSIAN;
     });
 
-    // Сохраняем изменения языка в localStorage
+    // Persist language changes to localStorage
     useEffect(() => {
         localStorage.setItem('app-language', language);
     }, [language]);
@@ -39,6 +50,11 @@ export const LanguageProvider: React.FC<LanguageProps> = ({ children }) => {
     );
 };
 
+/**
+ * Custom hook to access the Language context.
+ * Throws an error if used outside of LanguageProvider.
+ * @returns The Language context value.
+ */
 export const useLanguageContext = () => {
     const context = useContext(LanguageContext);
     if (context === undefined) {

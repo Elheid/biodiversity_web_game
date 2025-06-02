@@ -1,19 +1,23 @@
-import { Container, Stack, Typography } from "@mui/material"
+import { Container, Stack, Typography } from "@mui/material";
 import { useGamePointsContext } from "../../context/GamePointsProvider";
 import { HomeButton } from "../HomeButtons";
-//import { END_TITLE, TRUE_AMOUNT_PHOTO_TEXT, TYPE_OF_SCORE_TEXT } from "../../config";
 import { useEffect } from "react";
 import { setEndBodyStyle } from "../../utill";
 import { QRcode } from "../QRcode";
 import { useTextLang } from "../../hooks/useTextLang";
 import { LoadingForPreparedWithChildren } from "../LoadingForPrepared";
+import { QRcontent_ai, QRcontent_self, QRdescription_ai, QRdescription_self } from "../../config";
 
+/**
+ * GameEnd component displays the end of game summary with scores and QR codes.
+ * It shows localized text and uses context to get game points.
+ */
 export const GameEnd = () => {
-    const { firstRoundPoints, secondRoundPoints } = useGamePointsContext()
+    const { firstRoundPoints, secondRoundPoints } = useGamePointsContext();
 
     useEffect(() => {
-        setEndBodyStyle()
-    }, [])
+        setEndBodyStyle();
+    }, []);
 
     const { text: END_TITLE, isLoading: isLoadingTitle } = useTextLang('END_TITLE');
     const { text: TRUE_AMOUNT_PHOTO_TEXT, isLoading: isLoadingAmountPhoto } = useTextLang('TRUE_AMOUNT_PHOTO_TEXT');
@@ -48,34 +52,20 @@ export const GameEnd = () => {
                         alignItems: "center",
                     }}
                 >
-
-                    {/*<Typography>
-                    {TYPE_OF_SCORE_TEXT.self}:
-                    <br/><span className="result-score">{firstRoundPoints}</span>
-                    <QRcode description="test"></QRcode>
-                </Typography>
-                
-                <Typography>
-                    {TYPE_OF_SCORE_TEXT.ai}:
-                    <br/><span className="result-score">{secondRoundPoints}</span>
-                    <QRcode description="test"></QRcode>
-                </Typography>*/}
-
                     <div className="">
                         {TYPE_OF_SCORE_TEXT_self}:
                         <br /><span className="result-score">{firstRoundPoints}</span>
-                        <QRcode description="test"></QRcode>
+                        <QRcode qrContent={QRcontent_self} description={QRdescription_self}></QRcode>
                     </div>
                     <div className="">
                         {TYPE_OF_SCORE_TEXT_ai}:
                         <br /><span className="result-score">{secondRoundPoints}</span>
-                        <QRcode description="test"></QRcode>
+                        <QRcode qrContent={QRcontent_ai} description={QRdescription_ai}></QRcode>
                     </div>
-
                 </Stack>
 
                 <HomeButton />
-            </Container >
+            </Container>
         </LoadingForPreparedWithChildren>
-    )
-}
+    );
+};

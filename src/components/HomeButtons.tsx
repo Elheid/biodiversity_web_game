@@ -4,12 +4,17 @@ import { useNavigate } from "react-router";
 
 import { useTextLang } from "../hooks/useTextLang";
 
-export const HomeButton = ()=>{
+/**
+ * HomeButton component renders a button that navigates to the home page.
+ * It displays localized text and a home icon.
+ */
+export const HomeButton = () => {
     const navigator = useNavigate();
-    const { text:HOME_BUTTON_TEXT } = useTextLang('HOME_BUTTON_TEXT');
-    return(
+    const { text: HOME_BUTTON_TEXT } = useTextLang('HOME_BUTTON_TEXT');
+
+    return (
         <Button onClick={() => {
-            navigator("/")
+            navigator("/");
         }}>
             <Typography>
                 {HOME_BUTTON_TEXT}
@@ -17,4 +22,4 @@ export const HomeButton = ()=>{
             <Home />
         </Button>
     );
-}
+};

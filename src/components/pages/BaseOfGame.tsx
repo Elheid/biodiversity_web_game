@@ -1,4 +1,10 @@
-// BaseGame.tsx
+/**
+ * BaseOfGame component manages the main game interface and logic.
+ * It handles game rounds, answers, timers, and navigation.
+ * 
+ * @param props - BaseGameProps containing optional gameType and getNextGameInfo.
+ * @returns JSX.Element representing the game UI.
+ */
 import { Button, ButtonGroup, Container, Paper, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { GameType, RoundsInfo } from "../../interfaces/rounds";
@@ -21,20 +27,20 @@ import { useLanguageContext } from "../../context/LanguageProvider";
 import { useTextLang } from "../../hooks/useTextLang";
 import { LoadingForPreparedWithChildren } from "../LoadingForPrepared";
 
-
-
 interface BaseGameProps {
     //getGameInfo: () => RoundsInfo; // Уточните тип согласно вашей реализацииs
-    getNextGameInfo?: () => RoundsInfo; // Опционально для следующего 
-    gameType?: GameType;
+    getNextGameInfo?: () => RoundsInfo; // Optional function to get next game info
+    gameType?: GameType; // Optional game type to determine game mode
     //onlyFirstRound?:boolean;
 }
 
 const getAnswerTitle = (game: Game | undefined): string | undefined => {
+    // Helper function to get the current round's title from the game object
     return game?.roundTitle;
 }
 
 export const BaseOfGame = ({ gameType, /*onlyFirstRound = false*/ }: BaseGameProps) => {
+    // Destructure game state and handlers from custom hook useGameState
     const {
         isRoundEnd,
         buttonsDisabled,
@@ -46,35 +52,38 @@ export const BaseOfGame = ({ gameType, /*onlyFirstRound = false*/ }: BaseGamePro
         setButtonsDisabled
     } = useGameState(AMOUNTS_OF_ROUNDS, gameType);
 
+    // Load localized text strings and loading states using useTextLang hook
     const { text:SCROE_TEXT, isLoading: isLoadingScore } = useTextLang('SCROE_TEXT');
     const { text:SKIP_ROUND_BUTTON_TEXT, isLoading: isLoadingRound } = useTextLang('SKIP_ROUND_BUTTON_TEXT');
     const { text:TARGET_ANIMAL_TITLE, isLoading: isLoadingTitle } = useTextLang('TARGET_ANIMAL_TITLE');
     const { text:TRAGET_ANIMAL_SUBTITILE, isLoading: isLoadingSubtitle } = useTextLang('TRAGET_ANIMAL_SUBTITILE');
 
-
     const { text:IS_THIS_ANIMAL_NAME, isLoading: isLoadingAnimalQuestion } = useTextLang('IS_THIS_ANIMAL_NAME');
     const { text:YES_NO_BUTTONS_TEXT_yes, isLoading: isLoadingYes } = useTextLang('YES_NO_BUTTONS_TEXT_yes');
     const { text:YES_NO_BUTTONS_TEXT_no , isLoading: isLoadingNo} = useTextLang('YES_NO_BUTTONS_TEXT_no');
 
-    
+    // Get URL parameter onlyFirst from react-router useParams hook
     const {onlyFirst} = useParams<{onlyFirst:string}>()
 
+    // Set body style for rounds on component mount
     useEffect(()=>{
         setRoundsBodyStyle()
     },[])
-    
 
+    // Get game object from context
     const { game } = useGameContext();
 
-    const [showYesNo, setShowYesNo] = useState<boolean>(true); // Состояние для отображения "Да" и "Нет"
+    // State to control display of Yes/No buttons
+    const [showYesNo, setShowYesNo] = useState<boolean>(true);
 
-
+    // State to store the true answer string
     const [trueAnswer, setTrueAnswer] = useState<string>("");
 
+    // Get current language from context
     const {language} = useLanguageContext();
 
+    // Effect to handle round start event and fetch true answer
     useEffect(() => {
-
         const onRoundStart = (e: CustomEventInit<number>) => {
             if (game && game.roundsInfo[0] && game.roundsInfo[0].id) {
                 const type = gameType || GameType.firstType;
