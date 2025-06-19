@@ -70,12 +70,13 @@ export const useGameState = (totalRounds: number, gameType?: GameType) => {
 
             const onChoiceAnswer = (e: CustomEventInit<number>) => {
                 setIsRoundEnd(true);
+                loadRound(game)
                 game?.nextRound(e, () => {
                     setButtonsDisabled(true);
                     setIsRoundEnd(false);
                     setSelectedAnswer(null);
                     setCurrentRound(prev => prev + 1);
-                }, () => loadRound(game));
+                }, () => null);
             };
 
             window.addEventListener("choice-answer", onChoiceAnswer);

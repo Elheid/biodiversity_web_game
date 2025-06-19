@@ -17,6 +17,7 @@ import { BaseOfGame } from './components/pages/BaseOfGame'
 import { ChoiceLevel } from './components/pages/ChoiceLevel'
 import { LanguageProvider } from './context/LanguageProvider'
 import ImagePreloader from './components/ImagePreloader'
+import { NotFound } from './components/pages/NotFound'
 //import {DialogLanguageChange} from './components/DialogLanguageChange'
 
 
@@ -71,7 +72,7 @@ function App() {
                     <Route path="/second-round" element={<BaseOfGame gameType={GameType.secondType} />} />
                     <Route path="/end" element={<GameEnd />} />
 
-
+                    <Route path="*" element={<NotFound />} />
 
                   </Routes>
                 </BrowserRouter>

@@ -23,7 +23,7 @@ export const useLazyRounds = () => {
      * @param game - The current Game instance.
      */
     const loadRound = useCallback(async (game: Game) => {
-        if (loadedRounds.current.has(game.roundCounter) || !game || game.roundCounter === game.rounds) return;
+        if (!game || game.roundCounter === game.rounds) return;
         const roundNumber = game.roundCounter;
         try {
             const currRound = game.gameType === GameType.firstType
@@ -35,12 +35,20 @@ export const useLazyRounds = () => {
             const mapper = game.gameType === GameType.firstType
                 ? mapFirstRound
                 : mapSecondRound;
-
-            setRoundsInfo(prev => ({
-                ...prev,
+            /*if(loadedRounds.current.has(game.roundCounter)){
+                setRoundsInfo({
                 [roundNumber]: mapper(data)
-            }));
-
+            });
+        }
+            else {
+                setRoundsInfo(prev => ({
+                                ...prev,
+                                [roundNumber]: mapper(data)
+                            }));
+            }*/
+            setRoundsInfo({
+                [roundNumber]: mapper(data)
+            });
             game.updateRoundsInfo([mapper(data)]);
             loadedRounds.current.add(roundNumber);
 
